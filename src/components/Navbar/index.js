@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 const links = [
   {
@@ -13,10 +14,6 @@ const links = [
   {
     name: 'Marmitas',
     route: '/marmitas',
-  },
-  {
-    name: 'Questionario',
-    route: '/questionario',
   },
 ];
 
@@ -36,7 +33,7 @@ export default function NavComponent() {
       <Navbar bg="dark" variant="dark" expand={false} className="mb-3">
         <Container>
           <Navbar.Brand>
-            <img
+            <Image
               src="/vercel.svg"
               width="80"
               height="30"

@@ -32,6 +32,12 @@
         pattern: /[;]/,
         template: `export { default as {{pascalCase route}} } from './{{pascalCase route}}';`,
       },
+      {
+        type: 'append',
+        path: '../src/components/Navbar/index.js',
+        pattern: /(},)/,
+        template: `  {name: '{{pascalCase route}}',route: '/{{lowerCase route}}'},`,
+      },
     ],
   });
 };
