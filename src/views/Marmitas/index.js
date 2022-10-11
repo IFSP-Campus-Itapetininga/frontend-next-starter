@@ -1,7 +1,7 @@
 ﻿import { Container } from 'react-bootstrap';
 import { Layout } from 'layout';
 
-import { Card } from './components';
+import { Card, SectionButton } from './components';
 import styles from './Marmitas.module.scss';
 
 const mockedOrder = [
@@ -84,6 +84,12 @@ export default function MarmitaView() {
   return (
     <Layout session="Marmitas">
       <Container className="py-5">
+        <div className={styles.sectionWrapper}>
+          <SectionButton>Nova Venda</SectionButton>
+          <SectionButton color="yellow">Prato do dia</SectionButton>
+          <SectionButton color="light-blue">Pedidos</SectionButton>
+          <SectionButton color="gray">Faturamento</SectionButton>
+        </div>
         <div className={styles.wrapper}>
           {mockedOrder.map((order) => (
             <Card key={order.id} order={order.id} {...order} />

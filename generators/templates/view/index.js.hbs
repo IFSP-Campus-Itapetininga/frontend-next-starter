@@ -1,11 +1,18 @@
-﻿import style from './{{pascalCase route}}.module.scss'
+﻿import { Container } from 'react-bootstrap'; 
+import { Layout } from 'layout';
 
-const {{pascalCase route}} = () => {
+import style from './{{pascalCase route}}.module.scss' 
+
+export default function {{pascalCase route}}() { 
   return (
-    <div style={style.content}>
-      <p>{{pascalCase route}} page!</p>
-    </div>
-  )
-}
+    <Layout session={'TESTE'}>
+      <Container className='py-5'>
 
-export default {{pascalCase route}}
+        <div style={style.content}>
+          <p>{{pascalCase route}} page!</p>
+        </div>
+      </Container>
+
+    </Layout>
+    ) 
+}

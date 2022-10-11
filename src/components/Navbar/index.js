@@ -14,6 +14,10 @@ const links = [
     name: 'Marmitas',
     route: '/marmitas',
   },
+  {
+    name: 'Questionario',
+    route: '/questionario',
+  },
 ];
 
 export default function NavComponent() {
