@@ -1,0 +1,95 @@
+$font-md: 1rem;
+$bold: 700;
+$line-md: 14px;
+
+.cardContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin: 0;
+    font-weight: $bold;
+    font-size: $font-md;
+    line-height: $line-md;
+  }
+}
+
+.cardBodyWrapp {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    line-height: normal;
+    align-self: center;
+    width: 1.2rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.cardFooterWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  p {
+    margin: 0;
+    font-weight: $bold;
+    font-size: $font-md;
+    line-height: $line-md;
+  }
+
+  span {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: $line-md;
+    color: #adb5bd;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    &:first-child {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+  }
+}
+
+.offCanvaBody {
+  height: 95%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  span {
+    font-weight: $bold;
+    font-size: $font-md;
+    line-height: $line-md;
+  }
+
+  .offcanvaFooter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+  }
+}
