@@ -36,7 +36,9 @@ export default function Input({
         }}
       />
 
-      <Form.Text className="text-muted">{errors && errors[name]}</Form.Text>
+      <Form.Control.Feedback type="invalid">
+        {errors && errors[name]}
+      </Form.Control.Feedback>
     </Form.Group>
   );
 }
