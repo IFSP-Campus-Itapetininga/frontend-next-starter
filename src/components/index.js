@@ -1,3 +1,4 @@
+import Navbar from './Navbar';
 import { Input } from './Form';
 
-export { Input };
+export { Input, Navbar };
