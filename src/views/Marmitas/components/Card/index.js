@@ -6,12 +6,12 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
 import styled from './card.module.scss';
-import { formatMoney } from '../../utils';
-import { OffCanvas } from '../';
+import { formatMoney } from 'utils';
+import { OffCanvas } from 'components';
 
-const renderTooltip = (props) => (
+const renderTooltip = ({ text, ...props }) => (
   <Tooltip id="button-tooltip" {...props}>
-    Ver mais
+    {text}
   </Tooltip>
 );
 
@@ -39,7 +39,7 @@ export default function CardComponent({ order, ...rest }) {
             <OverlayTrigger
               placement="right"
               delay={{ show: 150, hide: 50 }}
-              overlay={renderTooltip}
+              overlay={(evt) => renderTooltip({ text: 'Ver mais', ...evt })}
             >
               <button type="button" onClick={() => setShow(true)}>
                 <img src="/icons/chevron-double-down.svg" alt="Ver mais" />
@@ -56,12 +56,28 @@ export default function CardComponent({ order, ...rest }) {
           </div>
 
           <div>
-            <Button variant="dark">
-              <img src="/icons/x-lg.svg" alt="icone de cancelar" />
-            </Button>
-            <Button variant="primary">
-              <img src="/icons/check-lg.svg" alt="icone de concordo" />
-            </Button>
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 150, hide: 50 }}
+              overlay={(evt) =>
+                renderTooltip({ text: 'Cancelar pedido', ...evt })
+              }
+            >
+              <Button variant="dark">
+                <img src="/icons/x-lg.svg" alt="icone de cancelar" />
+              </Button>
+            </OverlayTrigger>
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 150, hide: 50 }}
+              overlay={(evt) =>
+                renderTooltip({ text: 'Confirmar pedido', ...evt })
+              }
+            >
+              <Button variant="primary">
+                <img src="/icons/check-lg.svg" alt="icone de concordo" />
+              </Button>
+            </OverlayTrigger>
           </div>
         </div>
       </Card.Footer>

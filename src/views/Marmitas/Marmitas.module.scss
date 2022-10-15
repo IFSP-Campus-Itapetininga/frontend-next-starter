@@ -1,0 +1,11 @@
+﻿.wrapper {
+  display: grid;
+  grid-template-columns: unset;
+  grid-auto-rows: 1fr;
+  grid-gap: 1.5rem;
+
+  @media (min-width: 960px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: unset;
+  }
+}

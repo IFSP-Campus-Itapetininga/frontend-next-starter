@@ -11,7 +11,7 @@
     actions: [
       {
         type: 'add',
-        path: '../src/pages/{{lowerCase route}}/index.js',
+        path: '../src/pages/{{lowerCase route}}.js',
         templateFile: './templates/page/index.js.hbs',
       },
       {
