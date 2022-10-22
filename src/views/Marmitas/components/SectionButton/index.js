@@ -1,12 +1,14 @@
+import { Slot } from '@radix-ui/react-slot';
 import styled from './SectionButton.module.scss';
-export default function Button({ children, color, buttonAction }) {
+
+export default function Button({ asChild, color, buttonAction, ...rest }) {
+  const Comp = asChild ? Slot : 'button';
+
   return (
-    <button
-      type="button"
+    <Comp
       onClick={buttonAction}
-      className={`${styled.button} ${styled[color]}`}
-    >
-      {children}
-    </button>
+      className={`${styled.slotContent} ${styled[color]}`}
+      {...rest}
+    />
   );
 }

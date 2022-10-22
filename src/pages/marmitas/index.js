@@ -1,5 +1,5 @@
-import { Marmitas } from 'views';
+import { MarmitaHome } from 'views';
 
 export default function MarmitaPage() {
-  return <Marmitas />;
+  return <MarmitaHome />;
 }
