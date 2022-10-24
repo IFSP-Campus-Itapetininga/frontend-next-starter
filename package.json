@@ -10,6 +10,7 @@
     "generate": "plop --plopfile ./generators/plopGenerateComponentPage.js"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.0.1",
     "bootstrap": "^5.2.1",
     "next": "12.3.1",
     "react": "18.2.0",
