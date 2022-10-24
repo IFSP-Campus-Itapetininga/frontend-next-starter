@@ -1,0 +1,43 @@
+$green: #20c997;
+$yellow: #ffc107;
+$light-blue: #0dcaf0;
+$gray: #6c757d;
+
+.slotContent {
+  width: 9.1rem;
+  height: 3rem;
+  color: #fff;
+  font-weight: 500;
+  border-radius: 4px;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: $green;
+  transition: 0.5s background ease;
+
+  &:hover {
+    color: white;
+    background-color: darken($green, 10%);
+  }
+
+  &.yellow {
+    background-color: $yellow;
+    &:hover {
+      background-color: darken($yellow, 10%);
+    }
+  }
+  &.light-blue {
+    background-color: $light-blue;
+    &:hover {
+      background-color: darken($light-blue, 10%);
+    }
+  }
+  &.gray {
+    background-color: $gray;
+    &:hover {
+      background-color: darken($gray, 10%);
+    }
+  }
+}

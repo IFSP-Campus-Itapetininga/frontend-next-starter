@@ -2,18 +2,11 @@ import { useState } from 'react';
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 
 import styled from './card.module.scss';
 import { formatMoney } from 'utils';
-import { OffCanvas } from 'components';
-
-const renderTooltip = ({ text, ...props }) => (
-  <Tooltip id="button-tooltip" {...props}>
-    {text}
-  </Tooltip>
-);
+import { OffCanvas, Tooltip } from 'components';
+import Image from 'next/image';
 
 const renderOrders = (data) => {
   return data.map((el, id) => (
@@ -36,15 +29,16 @@ export default function CardComponent({ order, ...rest }) {
         <div className={styled.cardBodyWrapp}>
           {renderOrders(rest?.plate.slice(0, 2))}
           {rest?.plate.length > 2 && (
-            <OverlayTrigger
-              placement="right"
-              delay={{ show: 150, hide: 50 }}
-              overlay={(evt) => renderTooltip({ text: 'Ver mais', ...evt })}
-            >
+            <Tooltip text="Ver mais">
               <button type="button" onClick={() => setShow(true)}>
-                <img src="/icons/chevron-double-down.svg" alt="Ver mais" />
+                <Image
+                  width="14px"
+                  height="14px"
+                  alt="icone"
+                  src="/icons/chevron-double-down.svg"
+                />
               </button>
-            </OverlayTrigger>
+            </Tooltip>
           )}
         </div>
       </Card.Body>
@@ -56,28 +50,26 @@ export default function CardComponent({ order, ...rest }) {
           </div>
 
           <div>
-            <OverlayTrigger
-              placement="right"
-              delay={{ show: 150, hide: 50 }}
-              overlay={(evt) =>
-                renderTooltip({ text: 'Cancelar pedido', ...evt })
-              }
-            >
+            <Tooltip text="Cancelar pedido">
               <Button variant="dark">
-                <img src="/icons/x-lg.svg" alt="icone de cancelar" />
+                <Image
+                  width="14px"
+                  height="14px"
+                  src="/icons/x-lg.svg"
+                  alt="icone de cancelar"
+                />
               </Button>
-            </OverlayTrigger>
-            <OverlayTrigger
-              placement="right"
-              delay={{ show: 150, hide: 50 }}
-              overlay={(evt) =>
-                renderTooltip({ text: 'Confirmar pedido', ...evt })
-              }
-            >
+            </Tooltip>
+            <Tooltip text="Confirmar pedido">
               <Button variant="primary">
-                <img src="/icons/check-lg.svg" alt="icone de concordo" />
+                <Image
+                  width="14px"
+                  height="14px"
+                  alt="icone"
+                  src="/icons/check-lg.svg"
+                />
               </Button>
-            </OverlayTrigger>
+            </Tooltip>
           </div>
         </div>
       </Card.Footer>
