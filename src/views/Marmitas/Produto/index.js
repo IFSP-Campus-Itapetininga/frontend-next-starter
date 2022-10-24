@@ -2,41 +2,17 @@ import { Container, Button, OverlayTrigger } from 'react-bootstrap';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { Layout } from 'layout';
-import { Input, Table, Tooltip } from 'components';
+import { Input, Table, Tooltip, Pagination } from 'components';
 import { Header } from '../components';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-const mockData = [
-  {
-    id: 2,
-    titulo: 'Marmita de frango com batata (P)',
-    preco: 15,
-    criadoEm: '2022-10-22T05:10:37.000Z',
-    alteradoEm: '2022-10-22T05:10:37.000Z',
-  },
-  {
-    id: 3,
-    titulo: 'Bife acebolado (G)',
-    preco: 18,
-    criadoEm: '2022-10-22T05:10:37.000Z',
-    alteradoEm: '2022-10-22T05:10:37.000Z',
-  },
-  {
-    id: 4,
-    titulo: 'Coca-cola 2L',
-    preco: 8,
-    criadoEm: '2022-10-22T05:10:37.000Z',
-    alteradoEm: '2022-10-22T05:10:37.000Z',
-  },
-];
-
-export default function MarmitaView() {
-  const [data, setData] = useState([]);
+export default function MarmitaView({ products, filter, setFilter }) {
+  const [tableData, setTableData] = useState([]);
   const methods = useForm();
 
   useEffect(() => {
-    const result = mockData.map(({ id, titulo, preco }) => {
+    const result = products?.data.map(({ id, titulo, preco }) => {
       return {
         id,
         titulo,
@@ -76,13 +52,26 @@ export default function MarmitaView() {
       };
     });
 
-    setData(result);
+    setTableData(result);
   }, []);
-
-  console.log(data);
 
   const onSubmit = async (values) => {
     console.log(values);
+  };
+
+  const handlePagination = (type) => {
+    const pagination = {
+      first: 1,
+      prev: filter.page - 1,
+      next: filter.page + 1,
+    }[type];
+
+    console.log(pagination);
+
+    setFilter({
+      ...filter,
+      page: pagination || 1,
+    });
   };
 
   return (
@@ -128,7 +117,13 @@ export default function MarmitaView() {
                 acessor: 'action',
               },
             ]}
-            data={data}
+            data={tableData}
+          />
+
+          <Pagination
+            page={products?.page}
+            end={products?.page === products?.totalPage}
+            handlePaginate={handlePagination}
           />
         </div>
       </Container>
