@@ -1,14 +1,35 @@
-import { Container, Button, OverlayTrigger } from 'react-bootstrap';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { Container, Button } from 'react-bootstrap';
+import { Layout } from 'layout';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { Layout } from 'layout';
 import { Input, Table, Tooltip, Pagination } from 'components';
 import { Header } from '../components';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { Cadastro } from './Cadastro';
+
+const tableHeader = [
+  {
+    name: '#',
+    acessor: 'id',
+  },
+  {
+    name: 'Produto',
+    acessor: 'titulo',
+  },
+  {
+    name: 'Preço',
+    acessor: 'preco',
+  },
+  {
+    name: 'Ações',
+    acessor: 'action',
+  },
+];
 
 export default function MarmitaView({ products, filter, setFilter }) {
   const [tableData, setTableData] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const methods = useForm();
 
   useEffect(() => {
@@ -66,8 +87,6 @@ export default function MarmitaView({ products, filter, setFilter }) {
       next: filter.page + 1,
     }[type];
 
-    console.log(pagination);
-
     setFilter({
       ...filter,
       page: pagination || 1,
@@ -77,7 +96,7 @@ export default function MarmitaView({ products, filter, setFilter }) {
   return (
     <Layout session="Marmitas">
       <Container className="py-4">
-        <Header />
+        <Header route="/marmitas" action={() => setShowModal(true)} />
 
         <div className="mt-4">
           <FormProvider {...methods}>
@@ -98,27 +117,7 @@ export default function MarmitaView({ products, filter, setFilter }) {
           </FormProvider>
         </div>
         <div className="mt-4">
-          <Table
-            header={[
-              {
-                name: '#',
-                acessor: 'id',
-              },
-              {
-                name: 'Produto',
-                acessor: 'titulo',
-              },
-              {
-                name: 'Preço',
-                acessor: 'preco',
-              },
-              {
-                name: 'Ações',
-                acessor: 'action',
-              },
-            ]}
-            data={tableData}
-          />
+          <Table header={tableHeader} data={tableData} />
 
           <Pagination
             page={products?.page}
@@ -127,6 +126,8 @@ export default function MarmitaView({ products, filter, setFilter }) {
           />
         </div>
       </Container>
+
+      <Cadastro showModal={showModal} setShowModal={setShowModal} />
     </Layout>
   );
 }
