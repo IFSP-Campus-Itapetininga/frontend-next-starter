@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
+import styles from './SecretariaInicio.module.scss'
 
-import TelaCrud from '../layout/TelaCrud';
-import Teste from '../layout/Teste'
+
+// IMPORT LAYOUT
+import TelaCrudOficina from '../layout/CadastroOficina/TelaCrudOficina';
+import TelaCrudOficineiro from '../layout/CadastroOficineiro/TelaCrudOficineiro';
+
 
 
 function SecretariaInicio(){
 
+
+
     //Tela Inicial da Secretaria
     const [showMainSecretaria, setShowMainSecretaria] = useState(true);
 
+    
+    
     const [showCadastrarOficina, setShowCadastrarOficina] = useState(false);
     function mostrarCadastroOficina(){
         setShowMainSecretaria(false)
@@ -52,19 +60,48 @@ function SecretariaInicio(){
         <>
 
             { showMainSecretaria === true  && (
+
+
+
+
                 <div className='container' >
+
+                    
                     <h1>Secretaria Institucional</h1>
                     <hr/>
-                    <div onClick={mostrarCadastroOficina}> Cadastrar Oficina </div>                
-                    <div onClick={mostrarCadastroOficineiro}>Cadastro Oficineiro</div>
-                    <div onClick={mostrarCadastroAssistido}>Cadastro Assistido</div>
-                    <div onClick={mostrarCadastroTurma}>Cadastro Turma</div>
-                    <div onClick={mostrarMatricula}>Matrícula</div>
+
+                    <div className={styles.containerCards}>
+                        <div className={styles.cardContainer} onClick={mostrarCadastroOficina}>
+                            <img src='/asset/imgCadastrarOficina.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <p >Cadastrar Oficina </p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarCadastroOficineiro}>
+                            <img src='/asset/imgOficineiro.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <p >Cadastrar Oficineiro </p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarCadastroAssistido}>
+                            <img src='/asset/imgAssistido.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <p >Cadastrar Assistido </p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarCadastroTurma}>
+                            <img src='/asset/imgTurma.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <p >Cadastrar Turma </p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <img src='/asset/imgMatricula.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <p >Matrícula</p>
+                        </div>
+                    </div>
+
                 </div>
+
+
+
             ) }
+
             { showCadastrarOficina === true && (
                 <div>                    
-                    <TelaCrud 
+                    <TelaCrudOficina 
                         titulo={'Cadastro Oficina'} 
                         fechar={setShowCadastrarOficina}  
                         abrir={setShowMainSecretaria} 
@@ -74,10 +111,11 @@ function SecretariaInicio(){
             ) }
             { showCadastroOficineiro === true && (
                 <div>  
-                    <TelaCrud 
+                   <TelaCrudOficineiro
                         titulo={'Cadastro Oficineiro'} 
                         fechar={setShowCadastrarOficineiro}  
-                        abrir={setShowMainSecretaria}    
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar Oficineiro'} 
                     />
                 </div>
             ) }

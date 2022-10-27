@@ -1,23 +1,23 @@
-import styles from './TelaCrud.module.scss'
+import styles from '../CadastroOficina/TelaCrudOficina.module.scss'
 import React, { useState, useEffect } from 'react';
 
 
 
-//Layout
-import CardsOficina from './CardsOficina';
-import CadastroOficinaModal from './CadastroOficinaModal'
+// Import Layout
+
+import CadastroOficineiroModal from './CadastroOficineiroModal';
+import CardsOficineiros from './CardsOficineiros';
 
 /*
     Props
         titulo      = título da página
         abrir       = tela que deve ser aberta
         fechar      = tela que deve ser fechada
-        placeholder = texto dentro do input
-    
+        placeholder = texto dentro do input    
 
 */
 
-function TelaCrud({ titulo, abrir, fechar, placeholder }) {
+function TelaCrudOficineiro({ titulo, abrir, fechar, placeholder }) {
 
     //Salvar o Projeto
     const [projects, setProjects] = useState([])
@@ -28,6 +28,12 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
     //mensagem
     const [mensagem, setMensagem] = useState(false)
 
+    //URL API
+    const urlAPI = "http://localhost:5000/"
+
+    //Apagar o campo de busca após resultado for verdadeiro
+    const [consulta, setConsulta] = useState()
+
     // Fechar a atual tela e abrir a tela inicial
     function abrirFechar() {
         abrir(true) // abri a tela inicio
@@ -37,7 +43,7 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
     //Carregamento Inicial ao abrir o componente
     useEffect(() => {
 
-        fetch('https://sexta-e-nois-dbjson.vercel.app/projetos', {
+        fetch(`${urlAPI}projetos`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -65,7 +71,7 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
 
     //recarrega página
     function recarregaPagina() {
-        fetch('https://sexta-e-nois-dbjson.vercel.app/projetos', {
+        fetch(`${urlAPI}projetos`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -94,7 +100,7 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
     //Carrega as oficinas pesquisadas    
     function carregaOficinas(palavra) {
         let oficina = RegExp(`${palavra}`, 'gi')
-        fetch('https://sexta-e-nois-dbjson.vercel.app/projetos', {
+        fetch(`${urlAPI}projetos`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -109,14 +115,15 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
                     //console.log(teste) verdadeiro ou falso
 
                     if (teste) {
-                        setMensagem(false)
+                        setMensagem(false)                        
+                        apagaCampoBusca()
                         return teste
                     } else {
                         setMensagem(true)
-                        return teste
-
+                        return teste       
                     }
                 }
+                
                 setProjects(data.filter((project) =>
                     busca(project.nome),
                     setMensagem(false)
@@ -127,33 +134,6 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
         )
     }
     
-
-    /*
-    function carregaOficinas(expressao) {
-        let oficina = RegExp(`${expressao}`, 'gi')
-
-
-        function busca(projeto) {
-            let teste = projeto.search(oficina) > -1 ? true : false
-            //console.log(teste) verdadeiro ou falso
-
-            if (teste) {
-                setMensagem(false)
-                return teste
-            } else {
-                setMensagem(true)
-                return teste
-
-            }
-        }
-        setProjects(data.filter((project) =>
-            busca(project.nome),
-            setMensagem(false)
-        ))
-
-    }
-    */
-
     //não deixa a págian dar reload
     const submit = (e) => {
         e.preventDefault()
@@ -167,12 +147,13 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
         //console.log(texto)
         carregaOficinas(texto)
         setPalavra(texto)
+        setConsulta(texto)
     }
 
     //Cadastrar nova oficina
     function cadastrarOficina(oficina) {
 
-        fetch("https://sexta-e-nois-dbjson.vercel.app/projetos",
+        fetch(`${urlAPI}projetos`,
             {
                 method: 'POST',
                 headers: {
@@ -197,7 +178,7 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
 
     //Remover oficina pelo ID
     function removerOficinaID(id) {
-        fetch(`https://sexta-e-nois-dbjson.vercel.app/projetos/${id}`, {
+        fetch(`${urlAPI}projetos/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -222,13 +203,21 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
             setPalavra(''),
             setProjects({}),
             recarregaPagina()
-        }, "1100")
+        }, "3000")
+    }
+
+    //Apagar o campo após um tempo sem interação
+    function apagaCampoBusca(){
+        setTimeout(() => {
+            setPalavra('')
+            setConsulta('')
+        }, "5000")
     }
 
     //atualizar nova oficina
     function atualizarOficina(oficina) {
 
-        fetch(`https://sexta-e-nois-dbjson.vercel.app/projetos/${oficina.id}`,
+        fetch(`${urlAPI}projetos/${oficina.id}`,
             {
                 method: 'PUT',
                 headers: {
@@ -253,7 +242,7 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
 
 
 
-
+    //Render
     return (
         <div className={styles.container}>
 
@@ -270,6 +259,7 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
                     <input
                         type="text"
                         name='nome'
+                        value={consulta}
                         placeholder={placeholder}
                         onChange={buscaInput}
                     />
@@ -277,6 +267,7 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
                     <button
                         className='btn btn-primary'
                         onClick={carregaOficinas}
+                        
                     >Consultar
                     </button>
 
@@ -284,7 +275,7 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
                 </form>
                 <div className={styles.btncadastro}>
 
-                    <CadastroOficinaModal
+                    <CadastroOficineiroModal
 
                         textbtn={'Cadastrar'}
                         titulo={'Cadastrar Oficina'}
@@ -303,7 +294,7 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
                     projects.map((project) => (
 
 
-                        <CardsOficina
+                        <CardsOficineiros
 
                             id={project.id}
 
@@ -337,4 +328,4 @@ function TelaCrud({ titulo, abrir, fechar, placeholder }) {
 
 }
 
-export default TelaCrud
+export default TelaCrudOficineiro
