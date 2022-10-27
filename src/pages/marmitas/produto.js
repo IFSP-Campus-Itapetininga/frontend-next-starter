@@ -1,43 +1,43 @@
 import { useState } from 'react';
 import { MarmitaProduto } from 'views';
 
-const mockData = {
-  data: [
-    {
-      id: 2,
-      titulo: 'Marmita de frango com batata (P)',
-      preco: 15,
-      criadoEm: '2022-10-22T05:10:37.000Z',
-      alteradoEm: '2022-10-22T05:10:37.000Z',
-    },
-    {
-      id: 3,
-      titulo: 'Bife acebolado (G)',
-      preco: 18,
-      criadoEm: '2022-10-22T05:10:37.000Z',
-      alteradoEm: '2022-10-22T05:10:37.000Z',
-    },
-    {
-      id: 4,
-      titulo: 'Coca-cola 2L',
-      preco: 8,
-      criadoEm: '2022-10-22T05:10:37.000Z',
-      alteradoEm: '2022-10-22T05:10:37.000Z',
-    },
-  ],
-  limit: 12,
+import { getAllProducts } from 'services';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+
+const filterProps = {
   page: 1,
-  totalPage: 1,
+  limit: 8,
+  search: '',
 };
 
 export default function MarmitaProdutoPage() {
-  const [filter, setFilter] = useState({ page: 1, limit: 12, search: '' });
+  const [filter, setFilter] = useState(filterProps);
+
+  const { data: products, isLoading } = useQuery(
+    ['getAllProducts', filter],
+    () => getAllProducts(filter)
+  );
 
   return (
-    <MarmitaProduto filter={filter} setFilter={setFilter} products={mockData} />
+    <MarmitaProduto
+      filter={filter}
+      setFilter={setFilter}
+      products={products}
+      isLoading={isLoading}
+    />
   );
 }
 
 export async function getServerSideProps() {
-  return { props: {} };
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['getAllProducts', filterProps], () =>
+    getAllProducts(filterProps)
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 }

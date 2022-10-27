@@ -1,29 +1,37 @@
 import { Modal, Input, Loading } from 'components';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { createProduct } from 'services';
+import { convertMonetaryToDecimal } from 'utils';
 
 export function Cadastro({ showModal, setShowModal }) {
   const methods = useForm();
+  const queryClient = useQueryClient();
 
-  const {
-    data,
-    isLoading: isLoadingEdit,
-    isFetching,
-  } = useQuery(['fetchProductInfo', /*PASSAR ID AQUI*/ 'id'], createProduct, {
-    enabled: showModal === 'edit',
-  });
+  const { isLoading: isLoadingEdit, isFetching } = useQuery(
+    ['fetchProductInfo', /*PASSAR ID AQUI*/ 'id'],
+    createProduct,
+    {
+      enabled: showModal === 'edit',
+    }
+  );
 
   const { mutate, isLoading } = useMutation(createProduct, {
     onSuccess: () => {
+      queryClient.invalidateQueries(['getAllProducts']);
       setShowModal('');
+      methods.reset('');
     },
   });
 
   const onSubmit = methods.handleSubmit(async (values) => {
-    mutate(values);
+    const data = {
+      ...values,
+      preco: convertMonetaryToDecimal(values.preco),
+    };
+    mutate(data);
   });
 
   return (

@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 import styled from './card.module.scss';
-import { formatMoney } from 'utils';
+import { convertMonetary } from 'utils';
 import { OffCanvas, Tooltip } from 'components';
 import Image from 'next/image';
 
@@ -13,7 +13,7 @@ const renderOrders = (data) => {
     <div key={id} className={styled.cardContainer}>
       <p>{el.name}</p>
       <p>
-        {el.amount}x - {formatMoney(el.price)}
+        {el.amount}x - {convertMonetary(el.price)}
       </p>
     </div>
   ));
@@ -46,7 +46,7 @@ export default function CardComponent({ order, ...rest }) {
         <div className={styled.cardFooterWrap}>
           <div>
             <span>Total:</span>
-            <p>{formatMoney(rest.total)}</p>
+            <p>{convertMonetary(rest.total)}</p>
           </div>
 
           <div>
@@ -87,7 +87,7 @@ export default function CardComponent({ order, ...rest }) {
 
             <div className={styled.cardContainer}>
               <p>Total</p>
-              <p>{formatMoney(rest.total)}</p>
+              <p>{convertMonetary(rest.total)}</p>
             </div>
           </div>
 

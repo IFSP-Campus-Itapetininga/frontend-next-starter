@@ -1,1 +1,3 @@
-export { default as formatMoney } from './formatMoney';
+import { convertMonetary, convertMonetaryToDecimal } from './formatMoney';
+
+export { convertMonetary, convertMonetaryToDecimal };

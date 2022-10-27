@@ -4,7 +4,7 @@ import { Container, Button } from 'react-bootstrap';
 import { Layout } from 'layout';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { Input, Table, Tooltip, Pagination } from 'components';
+import { Input, Table, Tooltip, Pagination, Loading } from 'components';
 import { Header } from '../components';
 import { Cadastro } from './Cadastro';
 
@@ -27,7 +27,12 @@ const tableHeader = [
   },
 ];
 
-export default function MarmitaView({ products, filter, setFilter }) {
+export default function MarmitaView({
+  products,
+  filter,
+  setFilter,
+  isLoading,
+}) {
   const [tableData, setTableData] = useState([]);
   const [showProductModal, setShowProductModal] = useState('');
 
@@ -76,7 +81,7 @@ export default function MarmitaView({ products, filter, setFilter }) {
     });
 
     setTableData(result);
-  }, []);
+  }, [products]);
 
   const onSubmit = async (values) => {
     console.log(values);
@@ -136,6 +141,8 @@ export default function MarmitaView({ products, filter, setFilter }) {
         showModal={showProductModal}
         setShowModal={setShowProductModal}
       />
+
+      <Loading show={isLoading} />
     </Layout>
   );
 }
