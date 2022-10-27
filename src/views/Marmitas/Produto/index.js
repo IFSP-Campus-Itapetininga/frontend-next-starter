@@ -29,7 +29,8 @@ const tableHeader = [
 
 export default function MarmitaView({ products, filter, setFilter }) {
   const [tableData, setTableData] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showProductModal, setShowProductModal] = useState('');
+
   const methods = useForm();
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export default function MarmitaView({ products, filter, setFilter }) {
                 <Button
                   className="py-2 px-2 d-flex align-items-center justify-content-center"
                   variant="primary"
+                  onClick={() => setShowProductModal('edit')}
                 >
                   <Image
                     src="/icons/pencil-square.svg"
@@ -96,7 +98,10 @@ export default function MarmitaView({ products, filter, setFilter }) {
   return (
     <Layout session="Marmitas">
       <Container className="py-4">
-        <Header route="/marmitas" action={() => setShowModal(true)} />
+        <Header
+          route="/marmitas"
+          action={() => setShowProductModal('create')}
+        />
 
         <div className="mt-4">
           <FormProvider {...methods}>
@@ -127,7 +132,10 @@ export default function MarmitaView({ products, filter, setFilter }) {
         </div>
       </Container>
 
-      <Cadastro showModal={showModal} setShowModal={setShowModal} />
+      <Cadastro
+        showModal={showProductModal}
+        setShowModal={setShowProductModal}
+      />
     </Layout>
   );
 }

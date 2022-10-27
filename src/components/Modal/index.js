@@ -11,7 +11,7 @@ export default function ModalComponent({
   children,
 }) {
   return (
-    <Modal show={show} onHide={() => setShow(false)}>
+    <Modal show={show} onHide={setShow}>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

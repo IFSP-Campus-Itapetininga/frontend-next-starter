@@ -56,16 +56,12 @@ const maskDate = ({ evt, mask }) => {
 const maskMoney = ({ evt, mask }) => {
   if (mask === 'currency') {
     let value = evt.currentTarget.value;
+    value = value
+      .replace(/\D/g, '')
+      .replace(/(\d)(\d{2})$/, '$1,$2')
+      .replace(/(?=(\d{3})+(\D))\B/g, '.');
 
-    value = value.replace(/\D/g, '').replace('.', '').replace(',', '');
-
-    const formated = new Intl.NumberFormat('pt-BR', {
-      minimumFractionDigits: 2,
-    }).format(parseFloat(value) / 100);
-
-    const result = formated === 'NaN' ? '' : formated;
-
-    evt.currentTarget.value = 'R$' + result;
+    evt.currentTarget.value = value;
   }
 };
 
