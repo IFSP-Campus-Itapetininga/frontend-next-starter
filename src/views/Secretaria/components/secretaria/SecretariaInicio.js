@@ -5,6 +5,7 @@ import styles from './SecretariaInicio.module.scss'
 // IMPORT LAYOUT
 import TelaCrudOficina from '../layout/CadastroOficina/TelaCrudOficina';
 import TelaCrudOficineiro from '../layout/CadastroOficineiro/TelaCrudOficineiro';
+import TelaCrudAssistido from '../layout/CadastroAssistido/TelaCrudAssistido';
 
 
 
@@ -121,20 +122,32 @@ function SecretariaInicio(){
             ) }
             { showCadastrarAssistido === true && (
                 <div>                    
-                    <div onClick={() => ( setShowMainSecretaria(true), setShowCadastrarAssistido(false))}> Voltar ao Inicio </div>
-                    <div> Cadastro Oficina </div>
+                     <TelaCrudAssistido
+                        titulo={'Cadastro Assistido'} 
+                        fechar={setShowCadastrarAssistido}  
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar Assistido'} 
+                    />
                 </div>
             ) }
             { showCadastrarTurma === true && (
                 <div>                    
-                    <div onClick={() => ( setShowMainSecretaria(true), setShowCadastrarTurma(false))}> Voltar ao Inicio </div>
-                    <div> Cadastro Oficina </div>
+                     <TelaCrudOficineiro
+                        titulo={'Cadastro Turma'} 
+                        fechar={setShowCadastrarTurma}  
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar Turma'} 
+                    />
                 </div>
             ) }
             { showMatricula === true && (
                 <div>                    
-                    <div onClick={() => ( setShowMainSecretaria(true), setShowMatricula(false))}> Voltar ao Inicio </div>
-                    <div> Cadastro Oficina </div>
+                     <TelaCrudOficineiro
+                        titulo={'Matrícula'} 
+                        fechar={setShowMatricula}  
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar matrícula'} 
+                    />
                 </div>
             ) }
             
