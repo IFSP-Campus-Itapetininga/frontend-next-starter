@@ -1,42 +1,45 @@
-import { Container, Button, OverlayTrigger } from 'react-bootstrap';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { Container, Button } from 'react-bootstrap';
+import { Layout } from 'layout';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { Layout } from 'layout';
-import { Input, Table, Tooltip } from 'components';
+import { Input, Table, Tooltip, Pagination, Loading } from 'components';
 import { Header } from '../components';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { Cadastro } from './Cadastro';
 
-const mockData = [
+const tableHeader = [
   {
-    id: 2,
-    titulo: 'Marmita de frango com batata (P)',
-    preco: 15,
-    criadoEm: '2022-10-22T05:10:37.000Z',
-    alteradoEm: '2022-10-22T05:10:37.000Z',
+    name: '#',
+    acessor: 'id',
   },
   {
-    id: 3,
-    titulo: 'Bife acebolado (G)',
-    preco: 18,
-    criadoEm: '2022-10-22T05:10:37.000Z',
-    alteradoEm: '2022-10-22T05:10:37.000Z',
+    name: 'Produto',
+    acessor: 'titulo',
   },
   {
-    id: 4,
-    titulo: 'Coca-cola 2L',
-    preco: 8,
-    criadoEm: '2022-10-22T05:10:37.000Z',
-    alteradoEm: '2022-10-22T05:10:37.000Z',
+    name: 'Preço',
+    acessor: 'preco',
+  },
+  {
+    name: 'Ações',
+    acessor: 'action',
   },
 ];
 
-export default function MarmitaView() {
-  const [data, setData] = useState([]);
+export default function MarmitaView({
+  products,
+  filter,
+  setFilter,
+  isLoading,
+}) {
+  const [tableData, setTableData] = useState([]);
+  const [showProductModal, setShowProductModal] = useState('');
+
   const methods = useForm();
 
   useEffect(() => {
-    const result = mockData.map(({ id, titulo, preco }) => {
+    const result = products?.data.map(({ id, titulo, preco }) => {
       return {
         id,
         titulo,
@@ -48,6 +51,7 @@ export default function MarmitaView() {
                 <Button
                   className="py-2 px-2 d-flex align-items-center justify-content-center"
                   variant="primary"
+                  onClick={() => setShowProductModal('edit')}
                 >
                   <Image
                     src="/icons/pencil-square.svg"
@@ -76,19 +80,33 @@ export default function MarmitaView() {
       };
     });
 
-    setData(result);
-  }, []);
-
-  console.log(data);
+    setTableData(result);
+  }, [products]);
 
   const onSubmit = async (values) => {
     console.log(values);
   };
 
+  const handlePagination = (type) => {
+    const pagination = {
+      first: 1,
+      prev: filter.page - 1,
+      next: filter.page + 1,
+    }[type];
+
+    setFilter({
+      ...filter,
+      page: pagination || 1,
+    });
+  };
+
   return (
     <Layout session="Marmitas">
       <Container className="py-4">
-        <Header />
+        <Header
+          route="/marmitas"
+          action={() => setShowProductModal('create')}
+        />
 
         <div className="mt-4">
           <FormProvider {...methods}>
@@ -109,29 +127,22 @@ export default function MarmitaView() {
           </FormProvider>
         </div>
         <div className="mt-4">
-          <Table
-            header={[
-              {
-                name: '#',
-                acessor: 'id',
-              },
-              {
-                name: 'Produto',
-                acessor: 'titulo',
-              },
-              {
-                name: 'Preço',
-                acessor: 'preco',
-              },
-              {
-                name: 'Ações',
-                acessor: 'action',
-              },
-            ]}
-            data={data}
+          <Table header={tableHeader} data={tableData} />
+
+          <Pagination
+            page={products?.page}
+            end={products?.page === products?.totalPage}
+            handlePaginate={handlePagination}
           />
         </div>
       </Container>
+
+      <Cadastro
+        showModal={showProductModal}
+        setShowModal={setShowProductModal}
+      />
+
+      <Loading show={isLoading} />
     </Layout>
   );
 }
