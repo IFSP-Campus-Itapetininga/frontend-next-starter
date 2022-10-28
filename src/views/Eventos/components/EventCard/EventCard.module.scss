@@ -1,0 +1,32 @@
+.cardBody {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: 960px) {
+    flex-direction: column;
+  }
+}
+
+.buttonActions {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+
+  button {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: 960px) {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 960px) {
+    width: 100%;
+  }
+}

@@ -1,0 +1,18 @@
+﻿.wrapper > div:not(:last-of-type) {
+  margin-bottom: 16px;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  button {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
