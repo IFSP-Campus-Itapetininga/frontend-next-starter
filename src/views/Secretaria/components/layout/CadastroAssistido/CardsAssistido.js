@@ -1,43 +1,36 @@
 import styles from '../CadastroOficina/CardsOficina.module.scss'
 import React, { useState, useEffect } from 'react';
 
-//LAYOUT
+/* IMPORT LAYOUT */
 import CadastroAssistidoModal from './CadastroAssistidoModal';
 
-function CardsAssistido({ id, titulo, paragrafo, pesquisa, oficina, metodoAtualizaOficina }) {
+function CardsAssistido({ pesquisa, propsDados, metodoAtualizaDados }) {
 
     const remove = (e) => {
         e.preventDefault()
-        pesquisa(id)
-        setOficina2({})
-
-        
+        pesquisa(propsDados.id)
+        setDadosLocal({})        
       }
 
       // Oficina
-        const [oficina2, setOficina2 ] = useState(oficina || {})
-
-
-
+        const [dadosLocal, setDadosLocal] = useState(propsDados || {})
 
     return (
         <div className={styles.container}>
             <div className={styles.cards}>
                 <div className="card">
                     <div className="card-body">
-                        <h5 className="card-title">{oficina.id} | {oficina.nome}</h5>
-                        <p className="card-text">{oficina.requisitos}</p>
+                        <h5 className="card-title">{dadosLocal.id} | {dadosLocal.nome}</h5>
+                        <p className="card-text">{dadosLocal.cpf}</p>
+                        <p className="card-text"><b>Nascimento: </b>{dadosLocal.nascimento}</p>
                         <div className={styles.buttons}>
                             <button className="btn btn-outline-danger" onClick={remove}>Excluir</button>
 
                             <CadastroAssistidoModal 
-                            textbtn={'Editar'} 
-                            titulo={'Editar Oficina'} 
-                            nome={titulo} 
-                            id={id} 
-                            requesitos={paragrafo} 
-                            propOficina={oficina2} 
-                            metodoAtualizaOficina={metodoAtualizaOficina}
+                                textbtn={'Editar'} 
+                                titulo={'Editar Dados'} 
+                                propsDados={dadosLocal} 
+                                metodoAtualizaDados={metodoAtualizaDados}
                             />
 
                         </div>

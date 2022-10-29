@@ -3,26 +3,27 @@ import React, { useState, useEffect } from 'react';
 
 
 
-//Layout
-import CardsTurmas from './CardsTurma';
+// Import Layout
+
 import CadastroTurmaModal from './CadastroTurmaModal';
-
-
+import CardsTurma from './CardsTurma';
 
 /*
-    Props   
+    Props
         titulo      = título da página
         abrir       = tela que deve ser aberta
         fechar      = tela que deve ser fechada
-        placeholder = texto dentro do input
-    
+        placeholder = texto dentro do input    
 
 */
 
 function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
 
-    //Salvar o Projeto
-    const [projects, setProjects] = useState([])
+    //CRUD referente ao dado
+    const dado = 'turma'
+
+    //Salvar os dados
+    const [dados, setDados] = useState([])
 
     //palavra de busca
     const [palavra, setPalavra] = useState()
@@ -31,7 +32,7 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
     const [mensagem, setMensagem] = useState(false)
 
     //URL API
-    const urlAPI = "http://localhost:5000/"
+    const urlAPI = `http://localhost:5000/${dado}`
 
     //Apagar o campo de busca após resultado for verdadeiro
     const [consulta, setConsulta] = useState()
@@ -44,36 +45,26 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
 
     //Carregamento Inicial ao abrir o componente
     useEffect(() => {
-
-        fetch(`${urlAPI}projetos`, {
+        fetch(`${urlAPI}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         }).then(
-
             resp => resp.json()
-
-
         ).then(
-
-            data => {
-
-                console.log(data)
-
-                setProjects(data)
+            data => {                
+                setMensagem(true),
+                setDados(data)
             }
-
         ).catch(
-
             err => console.log(err)
-
         )
     }, [])
 
     //recarrega página
     function recarregaPagina() {
-        fetch(`${urlAPI}projetos`, {
+        fetch(`${urlAPI}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -88,7 +79,7 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
             data => {
 
                 console.log(data)
-                setProjects(data)
+                setDados(data)
             }
 
         ).catch(
@@ -99,10 +90,10 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
     }
 
 
-    //Carrega as oficinas pesquisadas    
-    function carregaOficinas(palavra) {
-        let oficina = RegExp(`${palavra}`, 'gi')
-        fetch(`${urlAPI}projetos`, {
+    //Carrega as palavras pesquisadas    
+    function carregaPesquisa(palavra) {
+        let dados = RegExp(`${palavra}`, 'gi')
+        fetch(`${urlAPI}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -112,8 +103,8 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
         ).then(
             data => {
 
-                function busca(projeto) {
-                    let teste = projeto.search(oficina) > -1 ? true : false
+                function busca(dado) {
+                    let teste = dado.search(dados) > -1 ? true : false
                     //console.log(teste) verdadeiro ou falso
 
                     if (teste) {
@@ -126,8 +117,8 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
                     }
                 }
                 
-                setProjects(data.filter((project) =>
-                    busca(project.nome),
+                setDados(data.filter((dado) =>
+                    busca(dado.nome),
                     setMensagem(false)
                 ))
             },
@@ -139,29 +130,26 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
     //não deixa a págian dar reload
     const submit = (e) => {
         e.preventDefault()
-        carregaOficinas(palavra)
-
+        carregaPesquisa(palavra)
     }
 
     //Pega valor dos inputs do formulário
     function buscaInput(e) {
         let texto = e.target.value
-        //console.log(texto)
-        carregaOficinas(texto)
+        carregaPesquisa(texto)
         setPalavra(texto)
         setConsulta(texto)
     }
 
-    //Cadastrar nova oficina
-    function cadastrarOficina(oficina) {
-
-        fetch(`${urlAPI}projetos`,
+    //Cadastrar nova oficineiro
+    function cadastraDados(dados) {
+        fetch(`${urlAPI}`,
             {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
                 },
-                body: JSON.stringify(oficina) // vai receber a nova oficina
+                body: JSON.stringify(dados) // vai receber a nova oficina
             })
             .then(
 
@@ -170,7 +158,7 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
             .then(
                 (data) => { console.log(data) },
                 // adicionar mensagem
-                carregaOficinas(oficina.nome),
+                carregaPesquisa(dados.nome),
                 timeOut()
             )
             .catch(
@@ -179,8 +167,8 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
     }
 
     //Remover oficina pelo ID
-    function removerOficinaID(id) {
-        fetch(`${urlAPI}projetos/${id}`, {
+    function removeDadosID(id) {
+        fetch(`${urlAPI}/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -199,13 +187,13 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
         )
     }
 
-    //Limpa variaveis e atualiza as oficinas
+    //Limpa variaveis e atualiza
     function timeOut() {
         setTimeout(() => {
             setPalavra(''),
-            setProjects({}),
+            setDados({}),
             recarregaPagina()
-        }, "3000")
+        }, "4000")
     }
 
     //Apagar o campo após um tempo sem interação
@@ -216,16 +204,15 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
         }, "5000")
     }
 
-    //atualizar nova oficina
-    function atualizarOficina(oficina) {
-
-        fetch(`${urlAPI}projetos/${oficina.id}`,
+    //atualizar os dados
+    function atualizaDados(dados) {
+        fetch(`${urlAPI}/${dados.id}`,
             {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json'
                 },
-                body: JSON.stringify(oficina) // vai receber a nova oficina
+                body: JSON.stringify(dados) // vai receber a nova oficina
             })
             .then(
 
@@ -234,7 +221,7 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
             .then(
                 (data) => { console.log(data) },
                 // adicionar mensagem
-                carregaOficinas(oficina.nome),
+                carregaPesquisa(dados.nome),
                 timeOut()
             )
             .catch(
@@ -268,7 +255,7 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
 
                     <button
                         className='btn btn-primary'
-                        onClick={carregaOficinas}
+                        onClick={carregaPesquisa}
                         
                     >Consultar
                     </button>
@@ -280,8 +267,8 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
                     <CadastroTurmaModal
 
                         textbtn={'Cadastrar'}
-                        titulo={'Cadastrar Oficina'}
-                        metodoCadastrarOfinca={cadastrarOficina}
+                        titulo={'Cadastrar Dados'}
+                        metodoCadastraDados={cadastraDados}
 
                     />
 
@@ -289,34 +276,22 @@ function TelaCrudTurma({ titulo, abrir, fechar, placeholder }) {
             </div>
 
             <section className={styles.mainSection}>
-                {projects.length <= 0 && mensagem === true && (
-                    <p>Não há <s>{titulo}</s> referente ao termo digitado!</p>
+                {dados.length <= 0 && mensagem === true && (
+                    <p>Não foram encontradas referências para o termo: {palavra}!</p>
                 )}
-                {projects.length > 0 &&
-                    projects.map((project) => (
-
-
-                        <CardsTurmas
-
-                            id={project.id}
-
-                            titulo={project.nome}
-                            paragrafo={project.requisitos}
-                            link={project.id}
-                            pesquisa={removerOficinaID}
-                            key={project.id}
-                            oficina={project}
-                            metodoAtualizaOficina={atualizarOficina}
-
-
+                {dados.length > 0 &&
+                    dados.map((dado) => (
+                        <CardsTurma
+                            key={dado.id}
+                            propsDados={dado}                            
+                            pesquisa={removeDadosID}                            
+                            metodoAtualizaDados={atualizaDados}
                         />
-
-
                     ))
 
                 }
-                {projects.length <= 0 && mensagem !== true && (
-                    <p>Nenhuma oficina foi cadastrada!</p>
+                {dados.length <= 0 && mensagem !== true && (
+                    <p>Não há nenhum dado cadastrado!</p>
                 )}
 
 

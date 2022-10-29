@@ -6,6 +6,8 @@ import styles from './SecretariaInicio.module.scss'
 import TelaCrudOficina from '../layout/CadastroOficina/TelaCrudOficina';
 import TelaCrudOficineiro from '../layout/CadastroOficineiro/TelaCrudOficineiro';
 import TelaCrudAssistido from '../layout/CadastroAssistido/TelaCrudAssistido';
+import TelaCrudTurma from '../layout/CadastroTurma/TelaCrudTurma';
+import TelaCrudMatricula from '../layout/CadastroMatricula/TelaCrudMatricula';
 
 
 
@@ -132,7 +134,7 @@ function SecretariaInicio(){
             ) }
             { showCadastrarTurma === true && (
                 <div>                    
-                     <TelaCrudOficineiro
+                     <TelaCrudTurma
                         titulo={'Cadastro Turma'} 
                         fechar={setShowCadastrarTurma}  
                         abrir={setShowMainSecretaria} 
@@ -142,7 +144,7 @@ function SecretariaInicio(){
             ) }
             { showMatricula === true && (
                 <div>                    
-                     <TelaCrudOficineiro
+                     <TelaCrudMatricula
                         titulo={'Matrícula'} 
                         fechar={setShowMatricula}  
                         abrir={setShowMainSecretaria} 

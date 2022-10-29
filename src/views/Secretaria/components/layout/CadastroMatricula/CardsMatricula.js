@@ -1,43 +1,36 @@
 import styles from '../CadastroOficina/CardsOficina.module.scss'
 import React, { useState, useEffect } from 'react';
 
-//LAYOUT
-import CadastroTurmaModal from './CadastroMatriculaModal';
+/* IMPORT LAYOUT */
+import CadastroMatriculaModal from './CadastroMatriculaModal';
 
-function CardsAssistido({ id, titulo, paragrafo, pesquisa, oficina, metodoAtualizaOficina }) {
+function CardsMatricula({ pesquisa, propsDados, metodoAtualizaDados }) {
 
     const remove = (e) => {
         e.preventDefault()
-        pesquisa(id)
-        setOficina2({})
-
-        
+        pesquisa(propsDados.id)
+        setDadosLocal({})        
       }
 
       // Oficina
-        const [oficina2, setOficina2 ] = useState(oficina || {})
-
-
-
+        const [dadosLocal, setDadosLocal] = useState(propsDados || {})
 
     return (
         <div className={styles.container}>
             <div className={styles.cards}>
                 <div className="card">
                     <div className="card-body">
-                        <h5 className="card-title">{oficina.id} | {oficina.nome}</h5>
-                        <p className="card-text">{oficina.requisitos}</p>
+                        <h5 className="card-title">{dadosLocal.id} | {dadosLocal.oficina}</h5>
+                        <p className="card-text"><b>Oficineiro: </b>{dadosLocal.oficineiro}</p>
+                        <p className="card-text"><b>Horário: </b>{dadosLocal.horario}</p>
                         <div className={styles.buttons}>
                             <button className="btn btn-outline-danger" onClick={remove}>Excluir</button>
 
-                            <CadastroTurmaModal 
-                            textbtn={'Editar'} 
-                            titulo={'Editar Oficina'} 
-                            nome={titulo} 
-                            id={id} 
-                            requesitos={paragrafo} 
-                            propOficina={oficina2} 
-                            metodoAtualizaOficina={metodoAtualizaOficina}
+                            <CadastroMatriculaModal 
+                                textbtn={'Editar'} 
+                                titulo={'Editar Dados'} 
+                                propsDados={dadosLocal} 
+                                metodoAtualizaDados={metodoAtualizaDados}
                             />
 
                         </div>
@@ -52,4 +45,4 @@ function CardsAssistido({ id, titulo, paragrafo, pesquisa, oficina, metodoAtuali
     )
 }
 
-export default CardsAssistido
+export default CardsMatricula
