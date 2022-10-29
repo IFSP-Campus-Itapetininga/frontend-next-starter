@@ -1,1 +1,1 @@
-export { MarmitaHome, MarmitaProduto } from './Marmitas';
+export { MarmitaHome, MarmitaProduto, MarmitaCliente } from './Marmitas';

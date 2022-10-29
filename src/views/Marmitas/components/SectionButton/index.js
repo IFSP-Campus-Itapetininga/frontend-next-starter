@@ -1,14 +1,10 @@
-import { Slot } from '@radix-ui/react-slot';
+import Link from 'next/link';
 import styled from './SectionButton.module.scss';
 
-export default function Button({ asChild, color, buttonAction, ...rest }) {
-  const Comp = asChild ? Slot : 'button';
-
+export default function Button({ color, goto, text }) {
   return (
-    <Comp
-      onClick={buttonAction}
-      className={`${styled.slotContent} ${styled[color]}`}
-      {...rest}
-    />
+    <Link href={goto}>
+      <a className={`${styled.slotContent} ${styled[color]}`}>{text}</a>
+    </Link>
   );
 }
