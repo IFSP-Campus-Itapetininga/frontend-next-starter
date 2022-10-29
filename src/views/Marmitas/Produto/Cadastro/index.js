@@ -10,8 +10,12 @@ import {
 } from 'services';
 import { convertMonetaryToDecimal, convertMonetary } from 'utils';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import schema from './validation';
+
 export function Cadastro({ showModal, setShowModal }) {
-  const methods = useForm();
+  const methods = useForm({ resolver: yupResolver(schema) });
   const queryClient = useQueryClient();
   const enableModal = showModal.split(' ');
 
