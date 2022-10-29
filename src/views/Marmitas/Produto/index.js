@@ -7,6 +7,9 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { Input, Table, Tooltip, Pagination, Loading } from 'components';
 import { Header } from '../components';
 import { Cadastro } from './Cadastro';
+import { DeleteProduct } from './Delete';
+
+import { convertMonetary } from 'utils';
 
 const tableHeader = [
   {
@@ -35,6 +38,7 @@ export default function MarmitaView({
 }) {
   const [tableData, setTableData] = useState([]);
   const [showProductModal, setShowProductModal] = useState('');
+  const [showDeletModal, setShowDeleteModal] = useState('');
 
   const methods = useForm();
 
@@ -43,7 +47,7 @@ export default function MarmitaView({
       return {
         id,
         titulo,
-        preco,
+        preco: convertMonetary(preco),
         action: () => {
           return (
             <div className="d-flex align-items-center justify-content-center gap-4">
@@ -51,7 +55,7 @@ export default function MarmitaView({
                 <Button
                   className="py-2 px-2 d-flex align-items-center justify-content-center"
                   variant="primary"
-                  onClick={() => setShowProductModal('edit')}
+                  onClick={() => setShowProductModal(`edit ${id}`)}
                 >
                   <Image
                     src="/icons/pencil-square.svg"
@@ -65,6 +69,7 @@ export default function MarmitaView({
                 <Button
                   className="py-2 px-2 d-flex align-items-center justify-content-center"
                   variant="danger"
+                  onClick={() => setShowDeleteModal(id)}
                 >
                   <Image
                     src="/icons/trash-fill.svg"
@@ -83,8 +88,11 @@ export default function MarmitaView({
     setTableData(result);
   }, [products]);
 
-  const onSubmit = async (values) => {
-    console.log(values);
+  const onSubmit = async ({ titulo }) => {
+    setFilter({
+      ...filter,
+      search: titulo,
+    });
   };
 
   const handlePagination = (type) => {
@@ -123,6 +131,19 @@ export default function MarmitaView({
               <Button variant="primary" type="submit">
                 Buscar
               </Button>
+
+              {!!filter.search && (
+                <Button
+                  variant="secondary"
+                  type="button"
+                  onClick={() => {
+                    setFilter({ ...filter, search: '' });
+                    methods.reset('');
+                  }}
+                >
+                  Limpar
+                </Button>
+              )}
             </form>
           </FormProvider>
         </div>
@@ -140,6 +161,11 @@ export default function MarmitaView({
       <Cadastro
         showModal={showProductModal}
         setShowModal={setShowProductModal}
+      />
+
+      <DeleteProduct
+        showModal={showDeletModal}
+        setShowModal={setShowDeleteModal}
       />
 
       <Loading show={isLoading} />
