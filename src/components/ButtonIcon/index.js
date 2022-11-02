@@ -1,4 +1,4 @@
-import { Container, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { Tooltip } from 'components';
 
 export default function ButtonIcon({ action = 'primary', icon, variant, tip }) {

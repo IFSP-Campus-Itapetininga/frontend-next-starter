@@ -85,7 +85,7 @@ export default function MarmitaView() {
     <Layout session="Marmitas">
       <Container className="py-5">
         <div className={styles.sectionWrapper}>
-          <SectionButton goto="/marmitas/produto" text="Pedidos" />
+          <SectionButton goto="/marmitas/pedidos" text="Pedidos" />
           <SectionButton
             color="yellow"
             goto="/marmitas/produto"
