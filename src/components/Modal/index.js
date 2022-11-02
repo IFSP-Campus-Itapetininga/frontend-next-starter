@@ -12,7 +12,7 @@ export default function ModalComponent({
   btnVariant = 'primary',
 }) {
   return (
-    <Modal show={show} onHide={setShow}>
+    <Modal show={show} onHide={setShow} centered>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

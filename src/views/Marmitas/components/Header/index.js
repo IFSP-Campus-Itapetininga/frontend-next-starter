@@ -16,10 +16,10 @@ const CustomButton = ({ variant, icon, action, asChild, ...rest }) => {
   );
 };
 
-export default function Headers({ route, action }) {
+export default function Headers({ route, action, sectionTitle }) {
   return (
     <div className={styles.contentWrapper}>
-      <h1>Produtos</h1>
+      <h1>{sectionTitle}</h1>
       <div className="d-flex flex-row align-items-center gap-3 mt-3">
         <Link href={route}>
           <div
