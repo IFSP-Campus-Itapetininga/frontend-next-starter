@@ -1,7 +1,2 @@
-export {
-  MarmitaHome,
-  MarmitaProduto,
-  MarmitaCliente,
-  MarmitaPedidos,
-} from './Marmitas';
+export * from './Marmitas';
 export { default as Eventos } from './Eventos';

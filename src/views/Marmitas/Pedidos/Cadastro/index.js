@@ -1,68 +1,36 @@
-import { Modal, Input, Loading, ButtonIcon } from 'components';
+import { useState } from 'react';
+import { Modal, Input, Loading, ButtonIcon, AsyncSelect } from 'components';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import {
-  createMarmitaProduct,
-  getMarmitaProduct,
-  editMarmitaProduct,
-} from 'services';
-import { convertMonetaryToDecimal, convertMonetary } from 'utils';
-
+import { getAllMarmitaProducts } from 'services';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import schema from './validation';
 
 export function Cadastro({ showModal, setShowModal }) {
   const methods = useForm({ resolver: yupResolver(schema) });
-  const queryClient = useQueryClient();
+
+  const [search, setSearch] = useState('');
   const enableModal = showModal.split(' ');
 
-  const { isLoading: isLoadingEdit, isFetching } = useQuery(
-    ['fetchProductInfo', enableModal[1]],
-    () => getMarmitaProduct(enableModal[1]),
+  const { data, isLoading } = useQuery(
+    ['getProductsToSeatch', search],
+    () => getAllMarmitaProducts({ search }),
     {
-      enabled: enableModal[0] === 'edit',
-      onSuccess: (data) => {
-        methods.setValue('titulo', data.titulo);
-        methods.setValue('preco', convertMonetary(data.preco, 'decimal'));
-      },
-    }
-  );
-
-  const { mutate: createMamita, isLoading } = useMutation(
-    createMarmitaProduct,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['getAllMarmitaProducts']);
-        handleCloseModal();
-      },
-    }
-  );
-
-  const { mutate: editMamita, isLoading: isEditLoading } = useMutation(
-    editMarmitaProduct,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['getAllMarmitaProducts']);
-        handleCloseModal();
-      },
+      select: ({ data }) =>
+        data?.map((el) => {
+          return {
+            value: el.id,
+            label: el.titulo,
+          };
+        }),
     }
   );
 
   const onSubmit = methods.handleSubmit(async (values) => {
-    const data = {
-      ...values,
-      preco: convertMonetaryToDecimal(values.preco),
-    };
-
-    if (enableModal[0] === 'edit') {
-      editMamita({ id: enableModal[1], data });
-      return;
-    }
-
-    createMamita(data);
+    console.log('data', values);
   });
 
   const handleCloseModal = () => {
@@ -81,7 +49,7 @@ export function Cadastro({ showModal, setShowModal }) {
       >
         <FormProvider {...methods}>
           <form className="py-2" onSubmit={onSubmit}>
-            <div className="mb-3 d-flex align-items-end gap-3 w-100">
+            <div className="mb-3 d-flex align-items-center gap-3">
               <div className="w-100">
                 <Input
                   name="telefone"
@@ -98,12 +66,23 @@ export function Cadastro({ showModal, setShowModal }) {
                 action={() => console.log('abriu')}
               />
             </div>
+            <div className="mb-3 d-flex align-items-end gap-3">
+              <div className="w-100">
+                <AsyncSelect
+                  name="produto"
+                  label="Produto"
+                  placeholder="Selecione um produto"
+                  options={data}
+                  search={search}
+                  findNewData={setSearch}
+                  isRequired
+                />
+              </div>
+            </div>
           </form>
         </FormProvider>
       </Modal>
-      <Loading
-        show={(isLoadingEdit && isFetching) || isLoading || isEditLoading}
-      />
+      <Loading show={isLoading} />
     </>
   );
 }
