@@ -9,15 +9,16 @@ export default function ModalComponent({
   handleButton,
   buttonText,
   children,
+  btnVariant = 'primary',
 }) {
   return (
-    <Modal show={show} onHide={setShow}>
+    <Modal show={show} onHide={setShow} centered>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>{children}</Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleButton}>
+        <Button variant={btnVariant} onClick={handleButton}>
           {buttonText}
         </Button>
       </Modal.Footer>

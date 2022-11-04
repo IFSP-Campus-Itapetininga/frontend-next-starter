@@ -10,6 +10,7 @@
     "generate": "plop --plopfile ./generators/plopGenerateComponentPage.js"
   },
   "dependencies": {
+    "@hookform/resolvers": "^2.9.10",
     "@radix-ui/react-slot": "^1.0.1",
     "@tanstack/react-query": "^4.13.0",
     "@tanstack/react-query-devtools": "^4.13.0",
@@ -21,7 +22,6 @@
     "react-bootstrap": "^2.5.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.37.0",
-    "react-imask": "^6.4.3",
     "sass": "^1.55.0",
     "yup": "^0.32.11"
   },

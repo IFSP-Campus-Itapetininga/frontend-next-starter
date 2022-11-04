@@ -1,6 +1,5 @@
 import Form from 'react-bootstrap/Form';
 import { useFormContext, Controller } from 'react-hook-form';
-import { IMaskInput } from 'react-imask';
 
 import { chooseMask } from './mask';
 
@@ -47,6 +46,7 @@ export default function Input({
               inputMode={inputMode || 'text'}
               value={field.value || ''}
               placeholder={placeholeder || label}
+              isInvalid={!!errors[name]}
               onChange={(evt) => {
                 handleChande(evt);
                 field.onChange(evt);
@@ -55,9 +55,8 @@ export default function Input({
           );
         }}
       />
-
       <Form.Control.Feedback type="invalid">
-        {errors && errors[name]}
+        {Object.keys(errors).length > 0 && errors[name]?.message}
       </Form.Control.Feedback>
     </Form.Group>
   );

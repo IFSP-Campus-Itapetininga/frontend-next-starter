@@ -1,22 +1,14 @@
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { Layout } from 'layout';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import {
-  Input,
-  Table,
-  Tooltip,
-  Pagination,
-  Loading,
-  ButtonIcon,
-} from 'components';
+import { Input, Table, Pagination, Loading, ButtonIcon } from 'components';
 import { Header } from '../components';
 import { Cadastro } from './Cadastro';
 import { DeleteProduct } from './Delete';
 
-import { convertMonetary } from 'utils';
+import { formatCelphoneNumber } from 'utils';
 
 const tableHeader = [
   {
@@ -24,12 +16,24 @@ const tableHeader = [
     acessor: 'id',
   },
   {
-    name: 'Produto',
-    acessor: 'titulo',
+    name: 'Nome',
+    acessor: 'nome',
   },
   {
-    name: 'Preço',
-    acessor: 'preco',
+    name: 'Celular',
+    acessor: 'telefone',
+  },
+  {
+    name: 'Rua',
+    acessor: 'rua',
+  },
+  {
+    name: 'Bairro',
+    acessor: 'bairro',
+  },
+  {
+    name: 'Número',
+    acessor: 'numero',
   },
   {
     name: 'Ações',
@@ -37,8 +41,8 @@ const tableHeader = [
   },
 ];
 
-export default function MarmitaView({
-  products,
+export default function ClientesView({
+  clients,
   filter,
   setFilter,
   isLoading,
@@ -50,28 +54,29 @@ export default function MarmitaView({
   const methods = useForm();
 
   useEffect(() => {
-    const result = products?.data.map(({ id, titulo, preco }) => {
+    const result = clients?.data.map((client) => {
       return {
-        id,
-        titulo,
-        preco: convertMonetary(preco),
+        id: client.id,
+        nome: client.nome,
+        telefone: formatCelphoneNumber(client.telefone),
+        rua: client.rua,
+        numero: client.numero,
+        bairro: client.bairro,
         action: () => {
           return (
             <div className="d-flex align-items-center justify-content-center gap-4">
-              <div className="d-flex align-items-center justify-content-center gap-4">
-                <ButtonIcon
-                  icon="/icons/pencil-square.svg"
-                  tip="Editar produto"
-                  variant="primary"
-                  action={() => setShowProductModal(`edit ${id}`)}
-                />
-                <ButtonIcon
-                  icon="/icons/trash-fill.svg"
-                  tip="Remover produto"
-                  variant="danger"
-                  action={() => setShowDeleteModal(id)}
-                />
-              </div>
+              <ButtonIcon
+                icon="/icons/pencil-square.svg"
+                tip="Editar cliente"
+                variant="primary"
+                action={() => setShowProductModal(`edit ${client.id}`)}
+              />
+              <ButtonIcon
+                icon="/icons/trash-fill.svg"
+                tip="Remover cliente"
+                variant="danger"
+                action={() => setShowDeleteModal(client.id)}
+              />
             </div>
           );
         },
@@ -79,7 +84,7 @@ export default function MarmitaView({
     });
 
     setTableData(result);
-  }, [products]);
+  }, [clients]);
 
   const onSubmit = async ({ titulo }) => {
     setFilter({
@@ -106,7 +111,7 @@ export default function MarmitaView({
       <Container className="py-4">
         <Header
           route="/marmitas"
-          sectionTitle="Produtos"
+          sectionTitle="Clientes"
           action={() => setShowProductModal('create')}
         />
 
@@ -118,8 +123,8 @@ export default function MarmitaView({
             >
               <Input
                 name="titulo"
-                placeholeder="Buscar produtos"
-                label="Produtos"
+                placeholeder="Buscar clientes"
+                label="Clientes"
               />
 
               <Button variant="primary" type="submit">
@@ -145,8 +150,8 @@ export default function MarmitaView({
           <Table header={tableHeader} data={tableData} />
 
           <Pagination
-            page={products?.page}
-            end={products?.page === products?.totalPage}
+            page={clients?.page}
+            end={clients?.page === clients?.totalPage}
             handlePaginate={handlePagination}
           />
         </div>

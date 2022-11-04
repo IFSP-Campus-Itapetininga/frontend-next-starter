@@ -1,7 +1,7 @@
-export function convertMonetary(money) {
+export function convertMonetary(money, style = 'currency') {
   if (!isNaN(money)) {
     const brl = money.toLocaleString('pt-br', {
-      style: 'currency',
+      style,
       currency: 'BRL',
     });
 

@@ -1,8 +1,8 @@
 import api from 'services';
 
-export const getAllMarmitaProducts = async (filter) => {
+export const getAllMarmitaClients = async (filter) => {
   try {
-    const response = await api.get('/lunchs/products', { params: filter });
+    const response = await api.get('/lunchs/clients', { params: filter });
 
     return response.data;
   } catch (error) {
@@ -10,9 +10,9 @@ export const getAllMarmitaProducts = async (filter) => {
   }
 };
 
-export const getMarmitaProduct = async (id) => {
+export const getMarmitaClient = async (id) => {
   try {
-    const response = await api.get(`/lunchs/products/${id}`);
+    const response = await api.get(`/lunchs/clients/${id}`);
 
     return response.data;
   } catch (error) {
@@ -20,9 +20,9 @@ export const getMarmitaProduct = async (id) => {
   }
 };
 
-export const createMarmitaProduct = async (data) => {
+export const createMarmitaClient = async (data) => {
   try {
-    const response = await api.post('/lunchs/products', data);
+    const response = await api.post('/lunchs/clients', data);
 
     return response.data;
   } catch (error) {
@@ -30,18 +30,18 @@ export const createMarmitaProduct = async (data) => {
   }
 };
 
-export const editMarmitaProduct = async ({ id, data }) => {
+export const editMarmitaClient = async ({ id, data }) => {
   try {
-    const response = await api.put(`/lunchs/products/${id}`, data);
+    const response = await api.put(`/lunchs/clients/${id}`, data);
 
     return response.data;
   } catch (error) {
     throw new Error('Ouve um problema com a chamada ');
   }
 };
-export const deleteMarmitaProduct = async (id) => {
+export const deleteMarmitaClient = async (id) => {
   try {
-    const response = await api.delete(`/lunchs/products/${id}`);
+    const response = await api.delete(`/lunchs/clients/${id}`);
 
     return response.data;
   } catch (error) {
