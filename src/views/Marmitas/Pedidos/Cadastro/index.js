@@ -15,6 +15,8 @@ export function Cadastro({ showModal, setShowModal }) {
     // methods.reset('');
   };
 
+  console.log('teste', formData);
+
   return (
     <>
       <Modal

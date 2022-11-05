@@ -20,6 +20,16 @@ export const getMarmitaClient = async (id) => {
   }
 };
 
+export const getMarmitaClientByPhone = async (filter) => {
+  try {
+    const response = await api.get(`/lunchs/clients/phone`, { params: filter });
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Ouve um problema com a chamada ');
+  }
+};
+
 export const createMarmitaClient = async (data) => {
   try {
     const response = await api.post('/lunchs/clients', data);

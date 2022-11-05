@@ -15,6 +15,7 @@ export default function Input({
   isRequired,
   mask,
   size,
+  disabled,
 }) {
   const {
     control,
@@ -47,6 +48,7 @@ export default function Input({
               value={field.value || ''}
               placeholder={placeholeder || label}
               isInvalid={!!errors[name]}
+              disabled={disabled}
               onChange={(evt) => {
                 handleChande(evt);
                 field.onChange(evt);
