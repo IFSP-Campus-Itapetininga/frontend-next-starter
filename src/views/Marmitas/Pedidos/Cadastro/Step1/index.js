@@ -55,7 +55,6 @@ const ClientForm = ({ hasData }) => {
 export function Step1({ nextStep, setFormData }) {
   const [search, setSearch] = useState(false);
   const [hasClient, setHasClient] = useState(true);
-
   const methods = useForm({ resolver: yupResolver(schema) });
   const {
     formState: { errors },
@@ -73,9 +72,14 @@ export function Step1({ nextStep, setFormData }) {
 
         if (!data) {
           setHasClient(false);
+          methods.resetField('nome');
+          methods.resetField('numero');
+          methods.resetField('rua');
+          methods.resetField('bairro');
           return;
         }
 
+        setHasClient(true);
         methods.setValue('nome', data.nome);
         methods.setValue('numero', data.numero);
         methods.setValue('rua', data.rua);
@@ -89,26 +93,42 @@ export function Step1({ nextStep, setFormData }) {
     }
   );
 
-  const { mutate, isLoading: isClientLoading } =
-    useMutation(createMarmitaClient);
+  const { mutate, isLoading: isClientLoading } = useMutation(
+    createMarmitaClient,
+    {
+      onSuccess: (data, sended) => {
+        const response = {
+          ...data,
+          ...sended,
+        };
+
+        setFormData((state) => {
+          return { ...state, cliente: response };
+        });
+
+        nextStep();
+      },
+    }
+  );
 
   const onSubmit = methods.handleSubmit(async (values) => {
-    const data = {
+    const clients = {
       ...values,
-      telefone: values.telefone.replace(/[^\w]/g, ''),
+      telefone: values.telefone?.replace(/[^\w]/g, ''),
     };
 
     if (!hasClient) {
-      mutate(data);
+      mutate(clients);
+
+      return;
     }
 
     setFormData((state) => {
-      return { ...state, cliente: data };
+      return { ...state, cliente: { id: data.id, ...clients } };
     });
+
     nextStep();
   });
-
-  console.log('isLoading', isLoading, isFetching);
 
   return (
     <FormProvider {...methods}>
@@ -131,7 +151,6 @@ export function Step1({ nextStep, setFormData }) {
               label="Celular"
               mask="phone"
               inputMode="numeric"
-              disabled={!!data}
             />
           </div>
           <ButtonIcon

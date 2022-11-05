@@ -22,7 +22,7 @@ export function Cadastro({ showModal, setShowModal }) {
       <Modal
         show={!!showModal}
         setShow={handleCloseModal}
-        title="Cadastro de Produto"
+        title="Craição de Pedido"
         buttonText={enableModal[0] === 'edit' ? 'Editar' : 'Cadastrar'}
         disableButton={true}
         // handleButton={onSubmit}

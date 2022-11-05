@@ -16,6 +16,7 @@ export default function Input({
   mask,
   size,
   disabled,
+  ...rest
 }) {
   const {
     control,
@@ -42,6 +43,7 @@ export default function Input({
           return (
             <Form.Control
               {...field}
+              {...rest}
               type={type || 'text'}
               size={size}
               inputMode={inputMode || 'text'}
