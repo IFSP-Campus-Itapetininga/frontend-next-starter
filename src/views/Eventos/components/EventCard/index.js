@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Button, Card, Image } from 'react-bootstrap';
+import { parseISO, format } from 'date-fns';
 import ConfirmationModal from '../ConfirmationModal';
 import UpdateEventModal from '../UpdateEventModal';
 import styles from './EventCard.module.scss';
 
 const formatDateToBrazilianStandard = (_date) => {
-  return new Date(_date).toLocaleString('pt-BR');
+  const date = parseISO(_date.split('.')[0]);
+  return format(date, "dd'/'MM'/'yyyy HH':'mm");
 };
 
 const EventCard = (props) => {
