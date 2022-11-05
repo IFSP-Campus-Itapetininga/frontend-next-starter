@@ -9,25 +9,27 @@ export default function Input({
   placeholder,
   findNewData,
   isRequired,
+  isLoading,
 }) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
 
-  const filterColors = async (inputValue) => {
-    findNewData(inputValue);
-    return await options.filter((i) =>
+  const filterTypedOptions = async (inputValue) => {
+    return await options?.filter((i) =>
       i.label.toLowerCase().includes(inputValue.toLowerCase())
     );
   };
 
-  console.log(isRequired, errors);
-
-  const promiseOptions = (inputValue) =>
-    new Promise(async (resolve) => {
-      resolve(filterColors(inputValue));
+  const loadTypedOptions = (inputValue) =>
+    new Promise((resolve) => {
+      resolve(filterTypedOptions(inputValue));
     });
+
+  const filterLoadOptions = async (text) => {
+    findNewData(text);
+  };
 
   const customStyles = {
     control: (base) => {
@@ -62,19 +64,22 @@ export default function Input({
       <Controller
         name={name}
         control={control}
-        rules={{ required: true }}
+        rules={{ required: isRequired }}
         render={({ field }) => (
           <AsyncSelect
             {...field}
             name={name}
             id={name}
-            defaultOptions
-            cacheOptions
             isClearable
-            loadOptions={promiseOptions}
             value={field.value}
+            loadOptions={loadTypedOptions}
+            defaultOptions={options}
+            isLoading={isLoading}
             placeholder={placeholder || label}
             styles={customStyles}
+            onInputChange={filterLoadOptions}
+            loadingMessage={() => 'Carregando...'}
+            noOptionsMessage={() => 'Item não encontrado!'}
           />
         )}
       />
