@@ -11,6 +11,7 @@ const links = [
     name: 'Início',
     route: '/',
   },
+  {name: 'Waitlist',route: '/waitlist'},
   { name: 'Eventos', route: '/eventos' },
   {
     name: 'Marmitas',
