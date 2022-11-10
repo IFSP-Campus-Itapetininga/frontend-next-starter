@@ -266,8 +266,8 @@ function TelaCrudMatricula({ titulo, abrir, fechar, placeholder }) {
 
                     <CadastroMatriculaModal
 
-                        textbtn={'Cadastrar'}
-                        titulo={'Cadastrar Dados'}
+                        textbtn={'Matricular Alunos por Turma'}
+                        titulo={'Matrícula Alunos por Turma'}
                         metodoCadastraDados={cadastraDados}
 
                     />
@@ -291,7 +291,8 @@ function TelaCrudMatricula({ titulo, abrir, fechar, placeholder }) {
 
                 }
                 {dados.length <= 0 && mensagem !== true && (
-                    <p>Não há nenhum dado cadastrado!</p>
+                     <div className={styles.loader}><img src='/loader.svg' alt='Cadastro Oficina' /></div>
+                    
                 )}
 
 

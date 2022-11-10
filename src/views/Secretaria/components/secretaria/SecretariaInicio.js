@@ -8,6 +8,7 @@ import TelaCrudOficineiro from '../layout/CadastroOficineiro/TelaCrudOficineiro'
 import TelaCrudAssistido from '../layout/CadastroAssistido/TelaCrudAssistido';
 import TelaCrudTurma from '../layout/CadastroTurma/TelaCrudTurma';
 import TelaCrudMatricula from '../layout/CadastroMatricula/TelaCrudMatricula';
+import TelaCrudAtividade from '../layout/CadastroAtividade/TelaCrudAtividade';
 
 
 
@@ -54,6 +55,14 @@ function SecretariaInicio(){
     }
 
 
+    const [showAtividade, setShowAtividade] = useState(false);
+    function mostrarAtividade(){
+        setShowMainSecretaria(false)
+        setShowCadastrarOficina(false)
+        setShowAtividade(true)
+    }
+
+
     
     
 
@@ -61,30 +70,31 @@ function SecretariaInicio(){
 
     return(
         <>
-
+            
             { showMainSecretaria === true  && (
 
 
-
+                
 
                 <div className='container' >
-
+                    
+                    
                     
                     <h1>Secretaria Institucional</h1>
                     <hr/>
-
+                    
                     <div className={styles.containerCards}>
                         <div className={styles.cardContainer} onClick={mostrarCadastroOficina}>
                             <img src='/asset/imgCadastrarOficina.svg' alt='Cadastro Oficina' className='card-img-top'/>
-                            <p >Cadastrar Oficina </p>
+                            <p>Cadastrar Oficina </p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarCadastroOficineiro}>
                             <img src='/asset/imgOficineiro.svg' alt='Cadastro Oficina' className='card-img-top'/>
-                            <p >Cadastrar Oficineiro </p>
+                            <p >Profissional </p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarCadastroAssistido}>
                             <img src='/asset/imgAssistido.svg' alt='Cadastro Oficina' className='card-img-top'/>
-                            <p >Cadastrar Assistido </p>
+                            <p >Assitido / Aluno </p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarCadastroTurma}>
                             <img src='/asset/imgTurma.svg' alt='Cadastro Oficina' className='card-img-top'/>
@@ -94,6 +104,29 @@ function SecretariaInicio(){
                             <img src='/asset/imgMatricula.svg' alt='Cadastro Oficina' className='card-img-top'/>
                             <p >Matrícula</p>
                         </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <img src='/asset/imgResponsavel.svg' alt='Responsável' className='card-img-top'/>
+                            <p >Responsável</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <img src='/asset/imgAtividades.svg' alt='Responsável' className='card-img-top'/>
+                            <p >Atividades</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <img src='/asset/imgFrequencia.svg' alt='Frequência' className='card-img-top'/>
+                            <p >Frequência</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <img src='/asset/imgFilaEspera.svg' alt='Fila de Espera' className='card-img-top'/>
+                            <p >Fila de Espera</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <img src='/asset/imgAula.svg' alt='Aula' className='card-img-top'/>
+                            <p >Evento / Aula</p>
+                        </div>
+
+                        
+
                     </div>
 
                 </div>
@@ -108,6 +141,7 @@ function SecretariaInicio(){
                         titulo={'Cadastro Oficina'} 
                         fechar={setShowCadastrarOficina}  
                         abrir={setShowMainSecretaria} 
+                        metodoShowAtividade={mostrarAtividade}
                         placeholder={'Consultar Oficina'}   
                     />
                 </div>
@@ -152,6 +186,18 @@ function SecretariaInicio(){
                     />
                 </div>
             ) }
+            { showAtividade === true && (
+                <div>                    
+                     <TelaCrudAtividade
+                        titulo={'Atividade'} 
+                        fechar={setShowAtividade}  
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar Atividade'} 
+                    />
+                </div>
+            ) }
+
+
             
         </>
     )

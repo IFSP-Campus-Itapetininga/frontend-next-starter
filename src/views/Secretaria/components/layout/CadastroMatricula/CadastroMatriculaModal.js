@@ -1,33 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import Selects from 'react-select'
+import makeAnimated from "react-select/animated";
+import Select from "../CadastroTurma/Select"
 
-function CadastroTurmaModal({textbtn, titulo, metodoCadastraDados, propsDados, metodoAtualizaDados}) {
+function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados, metodoAtualizaDados }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const animatedComponents = makeAnimated();//Select Animated
+
   // dados locais
   const [dadosLocal, setDadosLocal] = useState(propsDados || {})
 
+  // Setar Aluno options campo select
+  const [options, setOptions] = useState([])
+
   //Pega valor dos inputs do formulário
-  function handleChange(e){
-    setDadosLocal({ ...dadosLocal, [e.target.name] : e.target.value })
-    let texto =  {[e.target.name] : e.target.value}
-  } 
+  function handleChange(e) {
+    setDadosLocal({ ...dadosLocal, [e.target.name]: e.target.value })
+    let texto = { [e.target.name]: e.target.value }
+  }
 
   //Passa para o componente pai(TelaCrud/método cadastrarOficina) os valores de oficina.
   const enviaDados = (e) => {
     e.preventDefault()//não deixa a págian dar reload
     console.log(dadosLocal)
-    if(titulo === `Editar Dados`){
+    if (titulo === `Editar Dados`) {
       metodoAtualizaDados(dadosLocal)
-    }else if(titulo === "Cadastrar Dados"){
+    } else if (titulo === "Cadastrar Dados") {
       metodoCadastraDados(dadosLocal)
-    }    
+    }
     setDadosLocal({})//esvazia set oficineiro
     setShow(false)
+  }
+
+
+  //Carrega assistido / aluno
+  useEffect(() => {
+    fetch('http://localhost:5000/assistido', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        let option = []
+        data.forEach((dado) => {
+          option = [...option, { value: dado.id, label: ' ' + dado.id + ' | ' + dado.cpf + ' | ' + dado.nome }]
+
+        })
+        // console.log(option)
+        setOptions(option)
+      })
+      .catch((err) => console.log(err))
+  }, [])
+
+  //Pega valor dos selection do formulário
+  function handleCategory(e) {
+    setDadosLocal({ ...dadosLocal, oficina: e })
+    //console.log(dadosLocal)
   }
 
   //Render
@@ -42,48 +78,41 @@ function CadastroTurmaModal({textbtn, titulo, metodoCadastraDados, propsDados, m
         </Modal.Header>
         <Modal.Body>
           <Form >
+
+
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
-              <Form.Label>Oficina:</Form.Label>
-              <Form.Control
+              <Form.Label>Turma:</Form.Label>
+              <Select
                 type="text"
-                name="oficina"
-                placeholder="Capoeira"
+                name="aluno"
+                placeholder="Fulano de talss"
                 autoFocus
                 onChange={handleChange}
-                value = {dadosLocal.oficina ? dadosLocal.oficina : ''}
+                propsDados={dadosLocal}
+                valor={dadosLocal.oficina ? dadosLocal.oficina : ''}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
-              <Form.Label>Oficineiro:</Form.Label>
-              <Form.Control
-                type="text"
-                name="oficineiro"
-                placeholder="Oficineiro"
-                autoFocus
-                onChange={handleChange}
-                value = {dadosLocal.oficineiro ? dadosLocal.oficineiro : ''}
+              <Form.Label>Alunos:</Form.Label>
+
+              <Selects
+                defaultValue={dadosLocal.oficina ? dadosLocal.oficina : ''}
+                components={animatedComponents}
+                isMulti
+                options={options}
+                onChange={(item) => handleCategory(item)}
+                className="select"
+                isClearable={true}
+                isSearchable={true}
+                isDisabled={false}
+                isLoading={false}
+                isRtl={false}
+                closeMenuOnSelect={false}
               />
+
             </Form.Group>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
-              <Form.Label>Horário:</Form.Label>
-              <Form.Control
-                type="time"
-                name="horarioInicio"
-                placeholder="horário que ocorre a oficina."
-                autoFocus
-                onChange={handleChange}
-                value = {dadosLocal.horario ? dadosLocal.horario : ''}
-              />
-              <Form.Control
-                type="time"
-                name="horarioFim"
-                placeholder="horário que ocorre a oficina."
-                autoFocus
-                onChange={handleChange}
-                value = {dadosLocal.horario ? dadosLocal.horario : ''}  
-              />
-            </Form.Group>
-            
+           
+
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -99,4 +128,4 @@ function CadastroTurmaModal({textbtn, titulo, metodoCadastraDados, propsDados, m
   );
 }
 
-export default CadastroTurmaModal
+export default CadastroOficinaModal

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import Select from './Select'
+import Select from 'react-select'
+import makeAnimated from "react-select/animated";
 
 //CSS
 import styles from './CadastroTurmaModal.module.scss'
@@ -12,16 +13,22 @@ function CadastroTurmaModal({ textbtn, titulo, metodoCadastraDados, propsDados, 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const animatedComponents = makeAnimated();//Select Animated
+
   // dados locais
   const [dadosLocal, setDadosLocal] = useState(propsDados || {})
 
-  // oficina
-  const [oficina, setOficina] = useState([])
+  // dados locais
+  const [options, setOptions] = useState([] || '')
 
+  // oficina
+  const [oficina, setOficina] = useState({})
   //Pega valor dos inputs do formulário
   function handleChange(e) {
     setDadosLocal({ ...dadosLocal, [e.target.name]: e.target.value })
     let texto = { [e.target.name]: e.target.value }
+    
+    console.log(options)
   }
 
   //Passa para o componente pai(TelaCrud/método cadastrarOficina) os valores de oficina.
@@ -36,22 +43,48 @@ function CadastroTurmaModal({ textbtn, titulo, metodoCadastraDados, propsDados, 
     setDadosLocal({})//esvazia set oficineiro
     setShow(false)
   }
+/*
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
+  */
 
-  //Carrega Oficina
-  useEffect(() => {
-    fetch('http://localhost:5000/projetos', {
-        method: 'GET',
-        headers:{
-            'Content-Type': 'application/json'
-        },
+ 
+
+
+
+//Carrega assistido / aluno
+useEffect(() => {
+    
+  fetch('http://localhost:5000/assistido', {
+    
+      method: 'GET',
+      headers:{
+          'Content-Type': 'application/json'
+      },
+  })
+  .then((resp) => resp.json())
+  .then((data) => {
+    let option = []
+    
+    data.forEach((dado)=> {
+        option = [...option,  {value : dado.id, label : ' ' + dado.id + ' | ' +  dado.cpf + ' | ' + dado.nome}]
+        
+      })
+     // console.log(option)
+      setOptions(option)
     })
-    .then((resp) => resp.json())
-    .then((data) => {
-      setOficina(data),
-      console.log(data)
-    })
-    .catch((err) => console.log(err))
+  
+  .catch((err) => console.log(err))
 },[])
+
+  //Pega valor dos selection do formulário
+  function handleCategory(e) {    
+    setDadosLocal({ ...dadosLocal, oficina:e} )    
+    //console.log(dadosLocal)
+  }
 
   //Render
   return (
@@ -68,8 +101,18 @@ function CadastroTurmaModal({ textbtn, titulo, metodoCadastraDados, propsDados, 
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
               <Form.Label>Oficina:</Form.Label>
               <Select
-                propsDados={oficina}
-
+                defaultValue={dadosLocal.oficina ? dadosLocal.oficina : ''}
+                components={animatedComponents}
+                isMulti
+                options={options}
+                onChange={(item) => handleCategory(item)}
+                className="select"
+                isClearable={true}
+                isSearchable={true}
+                isDisabled={false}
+                isLoading={false}
+                isRtl={false}
+                closeMenuOnSelect={false}
               />
               
                 
