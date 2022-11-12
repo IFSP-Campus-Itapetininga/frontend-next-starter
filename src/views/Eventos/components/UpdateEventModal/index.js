@@ -1,3 +1,4 @@
+import 'date-fns/locale/pt-BR';
 import { Input } from 'components';
 import { useRouter } from 'next/router';
 import {
@@ -12,6 +13,7 @@ import {
 } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { update as updateEvent } from 'services/eventos';
+import { parseISO, format } from 'date-fns';
 
 const UpdateEventModal = ({ isOpen, onClose, data }) => {
   const { id, titulo, local, dataInicio, dataTermino, descricao } = data;
@@ -29,13 +31,9 @@ const UpdateEventModal = ({ isOpen, onClose, data }) => {
   };
 
   const getDatetimeLocalFormat = (_date) => {
-    const date = new Date(_date);
+    const date = format(parseISO(_date.split('.')[0]), "yyyy-MM-dd'T'HH:mm:ss");
 
-    return `${date.getFullYear()}-${
-      date.getMonth() + 1 <= 9 ? '0' + date.getMonth() + 1 : date.getMonth() + 1
-    }-${date.getDate() <= 9 ? '0' + date.getDate() : date.getDate()}T${
-      date.getHours() + 3 <= 9 ? '0' + date.getHours() + 3 : date.getHours() + 3
-    }:${date.getMinutes() <= 9 ? '0' + date.getMinutes() : date.getMinutes()}`;
+    return date;
   };
 
   return (
