@@ -52,7 +52,7 @@ const ClientForm = ({ hasData }) => {
   );
 };
 
-export function Step1({ nextStep, setFormData }) {
+export function Step1({ nextStep, setFormData, ...porps }) {
   const [search, setSearch] = useState(false);
   const [hasClient, setHasClient] = useState(true);
   const methods = useForm({ resolver: yupResolver(schema) });
