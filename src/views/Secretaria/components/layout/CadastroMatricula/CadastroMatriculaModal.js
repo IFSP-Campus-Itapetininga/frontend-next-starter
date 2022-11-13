@@ -13,11 +13,28 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
 
   const animatedComponents = makeAnimated();//Select Animated
 
-  // dados locais
+  // dados locais | recebe valores dos props ou dos campos
   const [dadosLocal, setDadosLocal] = useState(propsDados || {})
 
   // Setar Aluno options campo select
   const [options, setOptions] = useState([])
+
+  // Carrega Dados de Turma
+  const [turma, setTurma] = useState([])
+  useEffect(() => {
+    fetch('http://localhost:5000/turma', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        setTurma(data)
+        //console.log(data)
+      })
+      .catch((err) => console.log(err))
+  }, [])
 
   //Pega valor dos inputs do formulário
   function handleChange(e) {
@@ -25,10 +42,16 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
     let texto = { [e.target.name]: e.target.value }
   }
 
+  //Pega valor dos selection do formulário
+  function handleCategory(e) {
+    setDadosLocal({ ...dadosLocal, oficina: e })
+    //console.log(dadosLocal)
+  }
+
   //Passa para o componente pai(TelaCrud/método cadastrarOficina) os valores de oficina.
   const enviaDados = (e) => {
     e.preventDefault()//não deixa a págian dar reload
-    console.log(dadosLocal)
+    //console.log(dadosLocal)
     if (titulo === `Editar Dados`) {
       metodoAtualizaDados(dadosLocal)
     } else if (titulo === "Cadastrar Dados") {
@@ -37,7 +60,6 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
     setDadosLocal({})//esvazia set oficineiro
     setShow(false)
   }
-
 
   //Carrega assistido / aluno
   useEffect(() => {
@@ -54,17 +76,11 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
           option = [...option, { value: dado.id, label: ' ' + dado.id + ' | ' + dado.cpf + ' | ' + dado.nome }]
 
         })
-        // console.log(option)
-        setOptions(option)
+        console.log(option)
+        setOptions(options)
       })
       .catch((err) => console.log(err))
   }, [])
-
-  //Pega valor dos selection do formulário
-  function handleCategory(e) {
-    setDadosLocal({ ...dadosLocal, oficina: e })
-    //console.log(dadosLocal)
-  }
 
   //Render
   return (
@@ -83,20 +99,17 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
               <Form.Label>Turma:</Form.Label>
               <Select
-                type="text"
-                name="aluno"
-                placeholder="Fulano de talss"
-                autoFocus
-                onChange={handleChange}
-                propsDados={dadosLocal}
-                valor={dadosLocal.oficina ? dadosLocal.oficina : ''}
+                propsDados={turma}
+                
               />
             </Form.Group>
+            
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
+
               <Form.Label>Alunos:</Form.Label>
 
               <Selects
-                defaultValue={dadosLocal.oficina ? dadosLocal.oficina : ''}
+                defaultValue={dadosLocal.nome ? dadosLocal.id : ''}
                 components={animatedComponents}
                 isMulti
                 options={options}
@@ -111,7 +124,7 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
               />
 
             </Form.Group>
-           
+
 
           </Form>
         </Modal.Body>
