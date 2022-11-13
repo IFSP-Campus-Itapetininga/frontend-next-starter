@@ -12,7 +12,7 @@ const formatDateToBrazilianStandard = (_date) => {
 
 const EventCard = (props) => {
   const { data } = props;
-  const { id, titulo, local, dataInicio, descricao, dataTermino } = data;
+  const { id, titulo, responsavel, local, dataInicio, descricao, dataTermino } = data;
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
@@ -24,7 +24,7 @@ const EventCard = (props) => {
             #{id} {titulo} | {formatDateToBrazilianStandard(dataInicio)} -{' '}
             {formatDateToBrazilianStandard(dataTermino)}
           </h5>
-          <p>{local}</p>
+          <p><b>Responsável:</b> {responsavel} - <b>Local:</b> {local}</p>
           <p>{descricao}</p>
         </div>
         <div className={styles.buttonActions}>
