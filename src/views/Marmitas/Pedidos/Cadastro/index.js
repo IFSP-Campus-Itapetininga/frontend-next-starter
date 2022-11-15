@@ -1,7 +1,7 @@
 import StepWizard from 'react-step-wizard';
 
 import { Modal, Loading } from 'components';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Step1 } from './Step1';
 import { Step2 } from './Step2';
@@ -11,18 +11,19 @@ import { createMarmitaOrder } from 'services';
 
 export function Cadastro({ showModal, setShowModal }) {
   const enableModal = showModal.split(' ');
+  const queryClient = useQueryClient();
   const [formData, setFormData] = useState({});
   const [isButtonDisabled, setIsButtonIsDisabled] = useState(true);
 
   const { mutate, isLoading } = useMutation(createMarmitaOrder, {
     onSuccess: () => {
+      queryClient.invalidateQueries(['getAllMarmitaOrders']);
       handleCloseModal();
     },
   });
 
   const handleCloseModal = () => {
     setShowModal('');
-    // methods.reset('');
   };
 
   const handleSubmitForm = () => {
@@ -61,7 +62,7 @@ export function Cadastro({ showModal, setShowModal }) {
           />
         </StepWizard>
       </Modal>
-      <Loading show={false} />
+      <Loading show={isLoading} />
     </>
   );
 }

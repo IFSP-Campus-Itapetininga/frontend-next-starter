@@ -13,7 +13,7 @@ const filterProps = {
 export default function MarmitaPedidosPage() {
   const [filter, setFilter] = useState(filterProps);
 
-  const { data: products, isLoading } = useQuery(
+  const { data: orders, isLoading } = useQuery(
     ['getAllMarmitaOrders', filter],
     () => getAllMarmitaOrders(filter)
   );
@@ -22,7 +22,7 @@ export default function MarmitaPedidosPage() {
     <MarmitaPedidos
       filter={filter}
       setFilter={setFilter}
-      products={products}
+      orders={orders}
       isLoading={isLoading}
     />
   );

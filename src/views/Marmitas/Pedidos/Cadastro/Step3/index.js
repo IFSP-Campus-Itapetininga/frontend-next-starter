@@ -65,7 +65,7 @@ export function Step3({
               <Image
                 src={
                   el.quantidade > 1
-                    ? '/icons/plus-lg.svg'
+                    ? '/icons/dash-lg.svg'
                     : '/icons/trash-fill.svg'
                 }
                 width="14px"

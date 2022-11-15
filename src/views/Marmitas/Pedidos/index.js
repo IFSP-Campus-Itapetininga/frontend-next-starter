@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { Layout } from 'layout';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -7,7 +7,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { Input, Table, Pagination, Loading, ButtonIcon } from 'components';
 import { Header } from '../components';
 import { Cadastro } from './Cadastro';
-import { DeleteProduct } from './Delete';
+import { EditStatus } from './EditStatus';
 
 import { convertMonetary } from 'utils';
 
@@ -17,12 +17,20 @@ const tableHeader = [
     acessor: 'id',
   },
   {
-    name: 'Produto',
-    acessor: 'titulo',
+    name: 'produto',
+    acessor: 'produto',
   },
   {
-    name: 'Preço',
-    acessor: 'preco',
+    name: 'Cliente',
+    acessor: 'client',
+  },
+  {
+    name: 'Valor',
+    acessor: 'valor',
+  },
+  {
+    name: 'Status',
+    acessor: 'status',
   },
   {
     name: 'Ações',
@@ -30,49 +38,58 @@ const tableHeader = [
   },
 ];
 
-export default function MarmitaView({
-  products,
-  filter,
-  setFilter,
-  isLoading,
-}) {
+const orderStatusEnun = {
+  started: 'Iniciado',
+  finalized: 'Completo',
+  canceled: 'Cancelado',
+};
+
+export default function MarmitaView({ orders, filter, setFilter, isLoading }) {
   const [tableData, setTableData] = useState([]);
   const [showProductModal, setShowProductModal] = useState('');
-  const [showDeletModal, setShowDeleteModal] = useState('');
+  const [showEditModal, setShowEditModal] = useState('');
 
   const methods = useForm();
 
   useEffect(() => {
-    const result = products?.data.map(({ id, titulo, preco }) => {
-      return {
-        id,
-        titulo,
-        preco: convertMonetary(preco),
-        action: () => {
-          return (
-            <div className="d-flex align-items-center justify-content-center gap-4">
+    const result = orders?.data.map(
+      ({ id, status, cliente, valor_total, produtos }) => {
+        return {
+          id,
+          produto: () =>
+            produtos?.map((el, id) => (
+              <Fragment key={id}>
+                <span>
+                  {el.quantidade}x {el.titulo}
+                </span>
+                <br />
+              </Fragment>
+            )),
+          client: cliente?.nome,
+          status: orderStatusEnun[status],
+          valor: convertMonetary(valor_total),
+          action: () => {
+            return (
               <div className="d-flex align-items-center justify-content-center gap-4">
-                <ButtonIcon
-                  icon="/icons/pencil-square.svg"
-                  tip="Editar produto"
-                  variant="primary"
-                  action={() => setShowProductModal(`edit ${id}`)}
-                />
-                <ButtonIcon
-                  icon="/icons/trash-fill.svg"
-                  tip="Remover produto"
-                  variant="danger"
-                  action={() => setShowDeleteModal(id)}
-                />
+                {status === 'started' && (
+                  <div className="d-flex align-items-center justify-content-center gap-4">
+                    <ButtonIcon
+                      icon="/icons/pencil-square.svg"
+                      tip="Alterar status"
+                      variant="primary"
+                      action={() => setShowEditModal(id)}
+                    />
+                  </div>
+                )}
               </div>
-            </div>
-          );
-        },
-      };
-    });
+            );
+          },
+        };
+      }
+    );
 
     setTableData(result);
-  }, [products]);
+  }, [orders]);
 
   const onSubmit = async ({ titulo }) => {
     setFilter({
@@ -104,42 +121,11 @@ export default function MarmitaView({
         />
 
         <div className="mt-4">
-          <FormProvider {...methods}>
-            <form
-              className="d-flex rounded-1 flex-row align-items-end gap-3 justify-content-end"
-              onSubmit={methods.handleSubmit(onSubmit)}
-            >
-              <Input
-                name="titulo"
-                placeholeder="Buscar pedidos"
-                label="Pedidos"
-              />
-
-              <Button variant="primary" type="submit">
-                Buscar
-              </Button>
-
-              {!!filter.search && (
-                <Button
-                  variant="secondary"
-                  type="button"
-                  onClick={() => {
-                    setFilter({ ...filter, search: '' });
-                    methods.reset('');
-                  }}
-                >
-                  Limpar
-                </Button>
-              )}
-            </form>
-          </FormProvider>
-        </div>
-        <div className="mt-4">
           <Table header={tableHeader} data={tableData} />
 
           <Pagination
-            page={products?.page}
-            end={products?.page === products?.totalPage}
+            page={orders?.page}
+            end={orders?.page === orders?.totalPage}
             handlePaginate={handlePagination}
           />
         </div>
@@ -150,10 +136,7 @@ export default function MarmitaView({
         setShowModal={setShowProductModal}
       />
 
-      <DeleteProduct
-        showModal={showDeletModal}
-        setShowModal={setShowDeleteModal}
-      />
+      <EditStatus showModal={showEditModal} setShowModal={setShowEditModal} />
 
       <Loading show={isLoading} />
     </Layout>

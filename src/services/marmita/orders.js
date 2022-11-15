@@ -30,9 +30,9 @@ export const createMarmitaOrder = async (data) => {
   }
 };
 
-export const editMarmitaOrder = async ({ id, data }) => {
+export const editMarmitaOrderStatus = async ({ id, data }) => {
   try {
-    const response = await api.put(`/lunchs/orders/${id}`, data);
+    const response = await api.put(`/lunchs/orders/status/${id}`, data);
 
     return response.data;
   } catch (error) {
@@ -48,3 +48,4 @@ export const deleteMarmitaOrder = async (id) => {
     throw new Error('Ouve um problema com a chamada ');
   }
 };
+// /orders/status/:id
