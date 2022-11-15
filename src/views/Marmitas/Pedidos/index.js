@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import { Fragment, useEffect, useState } from 'react';
-import { Container, Button } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { Layout } from 'layout';
-import { useForm, FormProvider } from 'react-hook-form';
 
-import { Input, Table, Pagination, Loading, ButtonIcon } from 'components';
+import { Table, Pagination, Loading, ButtonIcon } from 'components';
 import { Header } from '../components';
 import { Cadastro } from './Cadastro';
 import { EditStatus } from './EditStatus';
@@ -49,8 +48,6 @@ export default function MarmitaView({ orders, filter, setFilter, isLoading }) {
   const [showProductModal, setShowProductModal] = useState('');
   const [showEditModal, setShowEditModal] = useState('');
 
-  const methods = useForm();
-
   useEffect(() => {
     const result = orders?.data.map(
       ({ id, status, cliente, valor_total, produtos }) => {
@@ -90,13 +87,6 @@ export default function MarmitaView({ orders, filter, setFilter, isLoading }) {
 
     setTableData(result);
   }, [orders]);
-
-  const onSubmit = async ({ titulo }) => {
-    setFilter({
-      ...filter,
-      search: titulo,
-    });
-  };
 
   const handlePagination = (type) => {
     const pagination = {

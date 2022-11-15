@@ -7,7 +7,6 @@ import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 const filterProps = {
   page: 1,
   limit: 8,
-  search: '',
 };
 
 export default function MarmitaPedidosPage() {

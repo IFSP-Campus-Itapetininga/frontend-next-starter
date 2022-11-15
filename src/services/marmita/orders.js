@@ -48,4 +48,3 @@ export const deleteMarmitaOrder = async (id) => {
     throw new Error('Ouve um problema com a chamada ');
   }
 };
-// /orders/status/:id
