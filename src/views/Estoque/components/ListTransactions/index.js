@@ -1,7 +1,8 @@
-import { Modal } from "components";
+
 import { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import api from "../../../../services";
+import StockModal from "../StockModal";
 import TransactionForm from "../TransactionForm";
 
 
@@ -57,15 +58,13 @@ const ListTransactions = ({ itemid, getItem }) => {
       <Button variant={"primary"} type="submit" onClick={handleNewTransaction} className="my-3">
         Nova transação
       </Button>
-      <Modal
+      <StockModal
         show={newTransaction}
         setShow={() => setNewTransaction(false)}
         title="Nova transação"
-        buttonText="Fechar"
-        handleButton={() => setNewTransaction(false)}
       >
         <TransactionForm itemid={itemid} getTransactions={getTransactions} getItem={getItem} setShowTransactionForm={() => setNewTransaction(false)} />
-      </Modal>
+      </StockModal>
     </>
 
   )

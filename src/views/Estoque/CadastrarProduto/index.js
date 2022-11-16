@@ -1,17 +1,22 @@
 import { Button, Form, Container } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import api from "../../../services";
-import { formatDate } from "utils";
-import { Input } from "components";
+import { AlertModal } from "../components/AlertModal";
+import { useState } from "react";
 
 
 const CadastrarProduto = () => {
+  const [showAlertModal, setShowAlertModal] = useState(false);
+
+  function hideAlert() {
+    setTimeout(() => {
+      setShowAlertModal(false);
+    }, 2000);
+  }
   const {
     register,
     handleSubmit,
-    getValues,
-    watch,
     reset,
     formState: { errors }
   } = useForm();
@@ -28,10 +33,9 @@ const CadastrarProduto = () => {
       headers: {
         'Content-Type': 'application/json',
       }
-    })
-      .then(res => {
-        alert("Item cadastrado!");
-      });
+    });
+    if (response.status === 201) setShowAlertModal(true);
+    hideAlert();
   }
 
   const onSubmit = async data => {
@@ -48,8 +52,6 @@ const CadastrarProduto = () => {
     })
       .then(res => {
         handleFirstTransaction(res.data.itemid, data.saldo);
-        console.log(newItem, res.data)
-        reset();
       }).finally(() => reset());
   };
 
@@ -77,6 +79,7 @@ const CadastrarProduto = () => {
           Cadastrar
         </Button>
       </Form>
+      <AlertModal title="Sucesso" text="Produto cadastrado com sucesso!" showAlertModal={showAlertModal} />
     </Container>
   )
 }

@@ -9,6 +9,7 @@ import { Layout } from "layout";
 import { getProduct } from "services/estoque";
 import ListVendors from "../components/ListVendors";
 import { Modal } from "components";
+import StockModal from "../components/StockModal";
 
 const Produto = () => {
   const [item, setItem] = useState({});
@@ -91,15 +92,13 @@ const Produto = () => {
             <Button variant="primary" onClick={handleNewVendor}>
               Adicionar fornecedor
             </Button>
-            <Modal
+            <StockModal
               show={newVendor}
               setShow={() => setNewVendor(false)}
               title="Novo contato"
-              buttonText="Fechar"
-              handleButton={() => setNewVendor(false)}
             >
               <ListVendors itemid={id} setNewVendor={handleNewVendor}/>
-            </Modal>
+            </StockModal>
           </Tab>
         </Tabs>
       </StockLayout>

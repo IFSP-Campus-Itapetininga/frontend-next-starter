@@ -8,7 +8,7 @@ import api from "../../../services";
 import VendorContacts from "../components/VendorContacts";
 import ContactForm from "../components/ContactForm";
 import ListItems from "../components/ListItems";
-import { Modal } from "components";
+import StockModal from "../components/StockModal";
 
 const Fornecedor = () => {
   const [vendor, setVendor] = useState({});
@@ -220,30 +220,26 @@ const Fornecedor = () => {
             <Button variant={"primary"} onClick={handleNewContact} className="mb-5">
               Adicionar contato
             </Button>
-            <Modal
+            <StockModal
               show={newContact}
               setShow={() => setNewContact(false)}
               title="Novo contato"
-              buttonText="Fechar"
-              handleButton={() => setNewContact(false)}
             >
               <ContactForm fornecedorid={id} getContacts={getVendor} setShowContactForm={() => setNewContact(false)} />
-            </Modal>
+            </StockModal>
           </Tab>
           <Tab eventKey="products" title="Produtos">
             <ListItems fornecedorid={id} justList />
             <Button variant={"primary"} onClick={handleNewItem} className="mb-5">
               Adicionar produto
             </Button>
-            <Modal
+            <StockModal
               show={newItem}
               setShow={() => setNewItem(false)}
               title="Adicionar produto ao fornecedor"
-              buttonText="Fechar"
-              handleButton={() => setNewItem(false)}
             >
               <ListItems fornecedorid={id} justList={false} setNewItem={handleNewItem} />
-            </Modal>
+            </StockModal>
           </Tab>
         </Tabs>
       </StockLayout>

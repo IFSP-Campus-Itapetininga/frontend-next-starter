@@ -21,11 +21,6 @@ const Sidebar = () => {
                 <a className="nav-link">Buscar item</a>
               </Link>
             </li>
-            <li>
-              <Link href={'/estoque/consultar'}>
-                <a className="nav-link">Estoque</a>
-              </Link>
-            </li>
           </ul>
         </li>
         <li>
@@ -47,7 +42,7 @@ const Sidebar = () => {
           <h3 className={styles.subtitle}>Relatórios</h3>
           <ul>
             <li>
-              <Link href={'/estoque/lista-transacoes'}>
+              <Link href={'/estoque/movimentacoes'}>
                 <a className="nav-link">Movimentação de estoque</a>
               </Link>
             </li>

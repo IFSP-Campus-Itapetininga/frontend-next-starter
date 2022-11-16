@@ -2,32 +2,33 @@ import { StockLayout } from "../layout";
 import { Layout } from "layout";
 import { useRouter } from "next/router";
 import { getVendors } from "services/estoque";
-import { useState, useEffect } from "react";
-import { Container, Table } from "react-bootstrap";
+import { useState } from "react";
+import { Table } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import DeleteModal from "../components/DeleteModal";
+import { useQuery } from "@tanstack/react-query";
 
 const BuscarFornecedor = () => {
 
   const router = useRouter();
-  const [vendors, setVendors] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState('');
-  async function getData() {
-    const data = await getVendors();
-    setVendors(data);
-  }
+  const [page, setPage] = useState(0);
 
-  useEffect(() => {
-    getData();
-  }, [])
+  const { isLoading, error, data: vendors } = useQuery(['stockVendors'],
+    () => getVendors().then(res => {return res}));
 
   function handleShowDeleteModal(id) {
     setSelectedItem(id);
     setShowDeleteModal(true);
   }
+
+  if (isLoading) return "Carregando..."
+
+  if (error) return 'Ocorreu um erro: ' + error.message;
 
   return (
     <Layout session="Buscar fornecedor">
@@ -38,10 +39,8 @@ const BuscarFornecedor = () => {
             placeholder="Procure um item..."
             aria-label="Procure um item..."
             aria-describedby="basic-addon2"
+            onChange={(event) => { setSearchTerm(event.target.value) }}
           />
-          <Button variant="outline-secondary" id="button-addon2">
-            Buscar
-          </Button>
         </InputGroup>
         <section>
           <Table striped bordered hover>
@@ -55,24 +54,41 @@ const BuscarFornecedor = () => {
             </thead>
             <tbody>
               {
-                vendors.map(vendor => {
-                  return (
-                    <tr key={vendor.fornecedorid}>
-                      <td className="text-center">{vendor.fornecedorid}</td>
-                      <td>{vendor.fornecedor}</td>
-                      <td>{vendor.descricao}</td>
-                      <td>
-                        <div className="text-center">
-                          <Button variant="success" onClick={() => router.push(`/estoque/fornecedor/${vendor.fornecedorid}`)} style={{ "marginRight": "20px" }}>Editar</Button>
-                          <Button variant="danger" onClick={() => handleShowDeleteModal(vendor.fornecedorid)}>Excluir</Button>
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                })
+                vendors
+                  .filter(val => {
+                    if (searchTerm == "") {
+                      return val;
+                    } else if (val.fornecedor.toLowerCase().includes(searchTerm.toLowerCase()) || val.descricao.toLowerCase().includes(searchTerm.toLowerCase())) {
+                      return val;
+                    }
+                  })
+                  .slice(page, page + 10)
+                  .map(vendor => {
+                    return (
+                      <tr key={vendor.fornecedorid}>
+                        <td className="text-center">{vendor.fornecedorid}</td>
+                        <td>{vendor.fornecedor}</td>
+                        <td>{vendor.descricao}</td>
+                        <td>
+                          <div className="text-center">
+                            <Button variant="success" onClick={() => router.push(`/estoque/fornecedor/${vendor.fornecedorid}`)} style={{ "marginRight": "20px" }}>Editar</Button>
+                            <Button variant="danger" onClick={() => handleShowDeleteModal(vendor.fornecedorid)}>Excluir</Button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })
               }
             </tbody>
           </Table>
+          <div className="d-flex justify-content-between">
+            <Button onClick={() => { setPage(page - 10) }} disabled={page === 0}>
+              Anterior
+            </Button>
+            <Button onClick={() => { setPage(page + 10) }} disabled={vendors.length <= page + 10}>
+              Próximo
+            </Button>
+          </div>
         </section>
         <DeleteModal showModal={showDeleteModal} iditem={selectedItem} />
       </StockLayout>

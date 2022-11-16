@@ -1,5 +1,5 @@
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import api from '../../../../services';
 
 const ContactForm = ({fornecedorid, getContacts, setShowContactForm}) => {
@@ -7,8 +7,6 @@ const ContactForm = ({fornecedorid, getContacts, setShowContactForm}) => {
   const {
     register,
     handleSubmit,
-    getValues,
-    watch,
     formState: { errors },
     reset
   } = useForm();
