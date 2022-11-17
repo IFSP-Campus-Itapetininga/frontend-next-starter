@@ -9,6 +9,7 @@ import TelaCrudAssistido from '../layout/CadastroAssistido/TelaCrudAssistido';
 import TelaCrudTurma from '../layout/CadastroTurma/TelaCrudTurma';
 import TelaCrudMatricula from '../layout/CadastroMatricula/TelaCrudMatricula';
 import TelaCrudAtividade from '../layout/CadastroAtividade/TelaCrudAtividade';
+import TelaCrudQuestionario from '../layout/CadastroQuestionario/TelaCrudQuestionario';
 
 
 
@@ -62,6 +63,13 @@ function SecretariaInicio(){
         setShowAtividade(true)
     }
 
+    const [showQuestionario, setShowQuestionario] = useState(false);
+    function mostrarQuestionario(){
+        setShowMainSecretaria(false)
+        setShowCadastrarQuestionario(false)
+        setShowAtividade(true)
+    }
+
 
     
     
@@ -109,7 +117,7 @@ function SecretariaInicio(){
                             <p >Responsável</p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarMatricula}>
-                            <img src='/asset/imgAtividades.svg' alt='Responsável' className='card-img-top'/>
+                            <img src='/asset/imgAtividades.svg' alt='Atividade' className='card-img-top'/>
                             <p >Atividades</p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarMatricula}>
@@ -123,6 +131,10 @@ function SecretariaInicio(){
                         <div className={styles.cardContainer} onClick={mostrarMatricula}>
                             <img src='/asset/imgAula.svg' alt='Aula' className='card-img-top'/>
                             <p >Evento / Aula</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarQuestionario}>
+                            <img src='/asset/imgAula.svg' alt='Questionario' className='card-img-top'/>
+                            <p >Questionário</p>
                         </div>
 
                         
