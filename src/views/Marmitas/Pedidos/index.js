@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import { Fragment, useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Layout } from 'layout';
+import Badge from 'react-bootstrap/Badge';
 
 import { Table, Pagination, Loading, ButtonIcon } from 'components';
 import { Header } from '../components';
@@ -63,7 +63,19 @@ export default function MarmitaView({ orders, filter, setFilter, isLoading }) {
               </Fragment>
             )),
           client: cliente?.nome,
-          status: orderStatusEnun[status],
+          status: () => (
+            <Badge
+              bg={
+                {
+                  started: 'primary',
+                  finalized: 'success',
+                  canceled: 'warning',
+                }[status]
+              }
+            >
+              {orderStatusEnun[status]}
+            </Badge>
+          ),
           valor: convertMonetary(valor_total),
           action: () => {
             return (
