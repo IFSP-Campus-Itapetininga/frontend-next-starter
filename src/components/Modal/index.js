@@ -10,6 +10,7 @@ export default function ModalComponent({
   buttonText,
   children,
   btnVariant = 'primary',
+  disableButton,
 }) {
   return (
     <Modal show={show} onHide={setShow} centered>
@@ -18,7 +19,11 @@ export default function ModalComponent({
       </Modal.Header>
       <Modal.Body>{children}</Modal.Body>
       <Modal.Footer>
-        <Button variant={btnVariant} onClick={handleButton}>
+        <Button
+          variant={btnVariant}
+          onClick={handleButton}
+          disabled={disableButton}
+        >
           {buttonText}
         </Button>
       </Modal.Footer>

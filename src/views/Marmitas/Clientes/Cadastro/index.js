@@ -25,8 +25,6 @@ export function Cadastro({ showModal, setShowModal }) {
     {
       enabled: enableModal[0] === 'edit',
       onSuccess: (data) => {
-        console.log(data);
-
         methods.setValue('nome', data.nome);
         methods.setValue('telefone', data.telefone);
         methods.setValue('rua', data.rua);

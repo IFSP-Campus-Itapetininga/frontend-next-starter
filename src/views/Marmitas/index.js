@@ -1,5 +1,6 @@
 import MarmitaHome from './Home';
 import MarmitaProduto from './Produto';
 import MarmitaCliente from './Clientes';
+import MarmitaPedidos from './Pedidos';
 
-export { MarmitaHome, MarmitaProduto, MarmitaCliente };
+export { MarmitaHome, MarmitaProduto, MarmitaCliente, MarmitaPedidos };

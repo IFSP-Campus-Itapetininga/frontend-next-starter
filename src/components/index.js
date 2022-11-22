@@ -6,10 +6,9 @@ import Pagination from './Pagination';
 import Modal from './Modal';
 import Loading from './Loading';
 import ButtonIcon from './ButtonIcon';
-import { Input } from './Form';
 
+export * from './Form';
 export {
-  Input,
   Table,
   Navbar,
   OffCanvas,

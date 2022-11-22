@@ -22,6 +22,8 @@
     "react-bootstrap": "^2.5.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.37.0",
+    "react-select": "^5.5.9",
+    "react-step-wizard": "^5.3.11",
     "sass": "^1.55.0",
     "yup": "^0.32.11"
   },
