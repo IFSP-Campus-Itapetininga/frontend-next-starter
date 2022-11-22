@@ -15,7 +15,7 @@ export default function TableComponent({ header, data }) {
     ));
 
   return (
-    <Table striped bordered hover>
+    <Table responsive striped bordered hover>
       <thead>
         <tr>
           {header.map((el, id) => (

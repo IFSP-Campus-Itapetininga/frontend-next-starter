@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { MarmitaProduto } from 'views';
+import { MarmitaCliente } from 'views';
 
-import { getAllMarmitaProducts } from 'services';
+import { getAllMarmitaClients } from 'services';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 
 const filterProps = {
@@ -13,16 +13,16 @@ const filterProps = {
 export default function MarmitaProdutoPage() {
   const [filter, setFilter] = useState(filterProps);
 
-  const { data: products, isLoading } = useQuery(
-    ['getAllMarmitaProducts', filter],
-    () => getAllMarmitaProducts(filter)
+  const { data: clients, isLoading } = useQuery(
+    ['getAllMarmitaClients', filter],
+    () => getAllMarmitaClients(filter)
   );
 
   return (
-    <MarmitaProduto
+    <MarmitaCliente
       filter={filter}
       setFilter={setFilter}
-      products={products}
+      clients={clients}
       isLoading={isLoading}
     />
   );
@@ -31,8 +31,8 @@ export default function MarmitaProdutoPage() {
 export async function getServerSideProps() {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(['getAllMarmitaProducts', filterProps], () =>
-    getAllMarmitaProducts(filterProps)
+  await queryClient.prefetchQuery(['getAllMarmitaClients', filterProps], () =>
+    getAllMarmitaClients(filterProps)
   );
 
   return {

@@ -1,4 +1,5 @@
 import { convertMonetary, convertMonetaryToDecimal } from './formatMoney';
-import {formatDate} from './formatDate';
+import { formatDate } from './formatDate';
+import { formatCelphoneNumber } from './stringFormat';
 
-export { convertMonetary, convertMonetaryToDecimal, formatDate };
+export { convertMonetary, convertMonetaryToDecimal, formatCelphoneNumber, formatDate };
