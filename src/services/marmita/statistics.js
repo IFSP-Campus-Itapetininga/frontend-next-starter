@@ -1,8 +1,14 @@
+import { format } from 'date-fns';
 import api from 'services';
 
-export const getMarmitaStatistics = async (filter) => {
+export const getMarmitaStatistics = async ({ initial_date, final_date }) => {
   try {
-    const response = await api.get('/lunchs/statistics', { params: filter });
+    const payload = {
+      initial_date: format(initial_date, 'yyyy-MM-dd'),
+      final_date: format(final_date, 'yyyy-MM-dd'),
+    };
+    console.log('teste', payload);
+    const response = await api.get('/lunchs/statistics', { params: payload });
 
     return response.data;
   } catch (error) {
