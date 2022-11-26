@@ -23,7 +23,7 @@ export default function MarmitaView({ orders }) {
 
           <SectionButton
             color="gray"
-            goto="/marmitas/produto"
+            goto="/marmitas/estatistica"
             text="Faturamento"
           />
         </div>

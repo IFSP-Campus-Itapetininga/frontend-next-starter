@@ -1,0 +1,48 @@
+$green: #20c997;
+$yellow: #ffc107;
+$light-blue: #0dcaf0;
+$gray: #6c757d;
+
+@import '/node_modules/bootstrap/scss/functions';
+@import '/node_modules/bootstrap/scss/variables';
+@import '/node_modules/bootstrap/scss/mixins';
+
+.card {
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  padding: 22px;
+  border-bottom-width: 20px;
+  border-bottom-style: solid;
+
+  display: flex;
+  flex-direction: column;
+
+  &.primary {
+    border-bottom-color: $primary;
+  }
+
+  &.green {
+    border-bottom-color: $green;
+  }
+  &.yellow {
+    border-bottom-color: $yellow;
+  }
+
+  .cardTop {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    font-size: 2.4rem;
+    line-height: 2.4rem;
+    align-self: flex-end;
+    margin-top: 2rem;
+    margin-bottom: 0;
+  }
+}

@@ -39,7 +39,7 @@ export default function NavComponent() {
         <Container>
           <Navbar.Brand>
             <Image
-              src="/vercel.svg"
+              src="/sexta-logo.svg"
               width="80"
               height="30"
               className="d-inline-block align-top"
