@@ -15,11 +15,7 @@ export default function DatePickerComponent({
 }) {
   const [date, setDate] = useState(defaultDate);
 
-  const {
-    control,
-    setValue,
-    formState: { errors },
-  } = useFormContext();
+  const { control, setValue } = useFormContext();
 
   const handleChange = (dateChange) => {
     setValue(name, dateChange, {
@@ -41,7 +37,6 @@ export default function DatePickerComponent({
           <DatePicker
             {...field}
             {...props}
-            locale={ptBR}
             dateFormat="dd/MM/yyyy"
             withPortal
             isClearable={clearble}
@@ -55,9 +50,6 @@ export default function DatePickerComponent({
           />
         )}
       />
-      <div className={`invalid-feedback d-block`}>
-        {Object.keys(errors).length > 0 && errors[name]?.message}
-      </div>
     </Form.Group>
   );
 }

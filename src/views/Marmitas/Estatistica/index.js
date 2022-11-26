@@ -1,10 +1,11 @@
-import { Container, Button } from 'react-bootstrap';
+import { Container, Button, Alert } from 'react-bootstrap';
 import { Layout } from 'layout';
 import { useForm, FormProvider } from 'react-hook-form';
 import { StatisticCard, Header } from '../components';
 import { convertMonetary } from 'utils';
-import { DatePicker } from 'components';
+import { DatePicker, Loading } from 'components';
 import styled from './statistics_page.module.scss';
+import { useState } from 'react';
 
 export default function StatisticView({
   statistics,
@@ -13,9 +14,14 @@ export default function StatisticView({
   setFilter,
 }) {
   const methods = useForm();
+  const [isValid, setIsValid] = useState(false);
 
   const onSubmit = async (value) => {
-    console.log('asd', value);
+    if (!value.initial_date || !value.final_date) {
+      setIsValid(true);
+      return;
+    }
+    setIsValid(false);
     setFilter({
       ...value,
     });
@@ -31,9 +37,14 @@ export default function StatisticView({
         />
 
         <div className="mt-4">
+          {isValid && (
+            <Alert variant="warning">
+              Por favor, selecione uma data para continuar!
+            </Alert>
+          )}
           <FormProvider {...methods}>
             <form
-              className="d-flex rounded-1 flex-row align-items-end gap-3 justify-content-end"
+              className={styled.formWrapper}
               onSubmit={methods.handleSubmit(onSubmit)}
             >
               <DatePicker
@@ -67,25 +78,39 @@ export default function StatisticView({
             icon="/icons/cart-frame.svg"
             title="Marmitas"
             description="Marmitas vendidas no mês"
-            statistic={statistics?.order?.total_sales}
+            statistic={
+              statistics?.order?.total_sales
+                ? statistics?.order?.total_sales
+                : 0
+            }
             color="primary"
           />
           <StatisticCard
             icon="/icons/cash-stack.svg"
             title="Valor arrecadado"
             description="Valor arrecadado"
-            statistic={`${convertMonetary(statistics?.order?.total_colected)}`}
+            statistic={`${
+              statistics?.order?.total_colected
+                ? convertMonetary(statistics?.order?.total_colected)
+                : convertMonetary(0)
+            }`}
             color="green"
           />
           <StatisticCard
             icon="/icons/person.svg"
             title="Novos clientes"
             description="Quantidade de novos clientes"
-            statistic={statistics?.clients?.total_clients}
+            statistic={
+              statistics?.clients?.total_clients
+                ? statistics?.clients?.total_clients
+                : 0
+            }
             color="yellow"
           />
         </div>
       </Container>
+
+      <Loading show={isLoading} />
     </Layout>
   );
 }

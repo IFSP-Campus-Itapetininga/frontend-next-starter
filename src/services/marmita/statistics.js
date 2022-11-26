@@ -7,7 +7,6 @@ export const getMarmitaStatistics = async ({ initial_date, final_date }) => {
       initial_date: format(initial_date, 'yyyy-MM-dd'),
       final_date: format(final_date, 'yyyy-MM-dd'),
     };
-    console.log('teste', payload);
     const response = await api.get('/lunchs/statistics', { params: payload });
 
     return response.data;

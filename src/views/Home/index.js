@@ -8,7 +8,7 @@ function Home() {
     <Layout session="Início">
       <Container>
         <div className={styles.content}>
-          <Alert variant="success">Ola</Alert>
+          <Alert variant="success">Bem-vindo!</Alert>
         </div>
       </Container>
     </Layout>
