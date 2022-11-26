@@ -23,7 +23,7 @@ export function Layout({ children, session }) {
         <meta name="twitter:url" content="" />
         <meta name="twitter:title" content="PWA App" />
         <meta name="twitter:description" content="" />
-        <meta name="twitter:image" content="/vercel.svg" />
+        <meta name="twitter:image" content="/sexta-logo.svg" />
         <meta name="twitter:creator" content="" />
         {/* Open Graph */}
         <meta property="og:type" content="website" />
@@ -31,12 +31,12 @@ export function Layout({ children, session }) {
         <meta property="og:description" content="" key="ogdesc" />
         <meta property="og:site_name" content="" />
         <meta property="og:url" content="" key="ogurl" />
-        <meta property="og:image" content="/vercel.svg" key="ogimage" />
-        <link rel="shortcut icon" href="/vercel.svg" />
-        <link rel="apple-touch-icon" href="/vercel.svg" />
-        <link rel="mask-icon" href="/vercel.svg" color="#212529" />
-        <link rel="apple-touch-icon" href="/vercel.svg" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/vercel.svg" />=
+        <meta property="og:image" content="/sexta-logo.svg" key="ogimage" />
+        <link rel="shortcut icon" href="/sexta-logo.svg" />
+        <link rel="apple-touch-icon" href="/sexta-logo.svg" />
+        <link rel="mask-icon" href="/sexta-logo.svg" color="#212529" />
+        <link rel="apple-touch-icon" href="/sexta-logo.svg" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/sexta-logo.svg" />=
       </Head>
 
       <Navbar />
