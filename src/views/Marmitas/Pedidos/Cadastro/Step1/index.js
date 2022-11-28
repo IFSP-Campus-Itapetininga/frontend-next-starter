@@ -1,6 +1,6 @@
 import { Input, ButtonIcon } from 'components';
 import { useForm, FormProvider } from 'react-hook-form';
-import { Button, Spinner } from 'react-bootstrap';
+import { Button, Spinner, Alert } from 'react-bootstrap';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -93,23 +93,24 @@ export function Step1({ nextStep, setFormData, ...porps }) {
     }
   );
 
-  const { mutate, isLoading: isClientLoading } = useMutation(
-    createMarmitaClient,
-    {
-      onSuccess: (data, sended) => {
-        const response = {
-          ...data,
-          ...sended,
-        };
+  const {
+    mutate,
+    isLoading: isClientLoading,
+    isError,
+  } = useMutation(createMarmitaClient, {
+    onSuccess: (data, sended) => {
+      const response = {
+        ...data,
+        ...sended,
+      };
 
-        setFormData((state) => {
-          return { ...state, cliente: response };
-        });
+      setFormData((state) => {
+        return { ...state, cliente: response };
+      });
 
-        nextStep();
-      },
-    }
-  );
+      nextStep();
+    },
+  });
 
   const onSubmit = methods.handleSubmit(async (values) => {
     const clients = {
@@ -168,6 +169,12 @@ export function Step1({ nextStep, setFormData, ...porps }) {
 
         <div>{isFetched && <ClientForm hasData={!!data} />}</div>
       </form>
+
+      {isError && (
+        <Alert variant="danger" className="mt-4">
+          Ocorreu um erro ao cadastrar cliente, tente novamente!
+        </Alert>
+      )}
 
       <div className="w-100 d-flex justify-content-end">
         <Button variant="outline-primary" onClick={onSubmit}>

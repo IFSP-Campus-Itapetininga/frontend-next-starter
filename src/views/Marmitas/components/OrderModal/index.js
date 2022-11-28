@@ -1,5 +1,6 @@
 import { Modal, Loading } from 'components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Alert from 'react-bootstrap/Alert';
 
 import { editMarmitaOrderStatus } from 'services';
 
@@ -13,7 +14,7 @@ export function OrderModal({ showModal, setShowModal }) {
 
   const order = showModal.split(' ');
 
-  const { mutate, isLoading } = useMutation(editMarmitaOrderStatus, {
+  const { mutate, isLoading, isError } = useMutation(editMarmitaOrderStatus, {
     onSuccess: () => {
       queryClient.invalidateQueries(['getActiveMarmitaOrders']);
       handleCloseModal();
@@ -48,6 +49,12 @@ export function OrderModal({ showModal, setShowModal }) {
             Deseja {orderStatusEnun[order[0]]} pedido - #{order[1]}
           </h5>
         </div>
+
+        {isError && (
+          <Alert variant="danger">
+            Ocorreu um erro ao alterar status, tente novamente!
+          </Alert>
+        )}
       </Modal>
       <Loading show={isLoading} />
     </>

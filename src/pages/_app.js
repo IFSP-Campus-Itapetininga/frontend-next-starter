@@ -6,6 +6,7 @@ import {
   Hydrate,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import NextNProgress from 'nextjs-progressbar';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../globals.scss';
@@ -25,6 +26,14 @@ function MyApp({ Component, pageProps }) {
           <ReactQueryDevtools initialIsOpen={false} />
         </Hydrate>
       </QueryClientProvider>
+
+      <NextNProgress
+        color="#0dcaf0"
+        startPosition={0.3}
+        stopDelayMs={200}
+        height={3}
+        showOnShallow={true}
+      />
     </>
   );
 }

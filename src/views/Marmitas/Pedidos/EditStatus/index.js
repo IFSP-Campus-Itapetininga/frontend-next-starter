@@ -1,6 +1,7 @@
 import { Modal, Loading, Select } from 'components';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Alert from 'react-bootstrap/Alert';
 
 import { editMarmitaOrderStatus } from 'services';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,7 +11,7 @@ export function EditStatus({ showModal, setShowModal }) {
   const methods = useForm({ resolver: yupResolver(schema) });
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useMutation(editMarmitaOrderStatus, {
+  const { mutate, isLoading, isError } = useMutation(editMarmitaOrderStatus, {
     onSuccess: () => {
       queryClient.invalidateQueries(['getAllMarmitaOrders']);
       handleCloseModal();
@@ -59,6 +60,12 @@ export function EditStatus({ showModal, setShowModal }) {
             />
           </form>
         </FormProvider>
+
+        {isError && (
+          <Alert variant="danger" className="mt-4">
+            Ocorreu um erro, tente novamente!
+          </Alert>
+        )}
       </Modal>
       <Loading show={isLoading} />
     </>
