@@ -15,6 +15,8 @@ export default function Input({
   isRequired,
   mask,
   size,
+  disabled,
+  ...rest
 }) {
   const {
     control,
@@ -41,12 +43,14 @@ export default function Input({
           return (
             <Form.Control
               {...field}
+              {...rest}
               type={type || 'text'}
               size={size}
               inputMode={inputMode || 'text'}
               value={field.value || ''}
               placeholder={placeholeder || label}
               isInvalid={!!errors[name]}
+              disabled={disabled}
               onChange={(evt) => {
                 handleChande(evt);
                 field.onChange(evt);

@@ -16,7 +16,12 @@ const CustomButton = ({ variant, icon, action, asChild, ...rest }) => {
   );
 };
 
-export default function Headers({ route, action, sectionTitle }) {
+export default function Headers({
+  route,
+  action,
+  sectionTitle,
+  showButton = true,
+}) {
   return (
     <div className={styles.contentWrapper}>
       <h1>{sectionTitle}</h1>
@@ -36,22 +41,24 @@ export default function Headers({ route, action, sectionTitle }) {
           </div>
         </Link>
 
-        <CustomButton
-          action={action}
-          variant="bg-success text-white"
-          icon="/icons/plus-lg.svg"
-        >
-          <>
-            <Image
-              src="/icons/plus-lg.svg"
-              width="16px"
-              height="16px"
-              alt="Icone botão"
-            />
+        {showButton && (
+          <CustomButton
+            action={action}
+            variant="bg-success text-white"
+            icon="/icons/plus-lg.svg"
+          >
+            <>
+              <Image
+                src="/icons/plus-lg.svg"
+                width="16px"
+                height="16px"
+                alt="Icone botão"
+              />
 
-            <span>Novo</span>
-          </>
-        </CustomButton>
+              <span>Novo</span>
+            </>
+          </CustomButton>
+        )}
       </div>
     </div>
   );
