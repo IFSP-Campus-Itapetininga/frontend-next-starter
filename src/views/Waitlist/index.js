@@ -1,69 +1,82 @@
-﻿import { Container } from 'react-bootstrap'; 
-import { Layout } from 'layout';
-import { useEffect, useState } from 'react';
-import api from '../../services';
-import {Form, Modal, Button} from 'react-bootstrap'
+﻿import { Layout } from 'layout';
+import { useState, useEffect } from 'react';
+import api from 'services';
+import {Form, Modal, Button, Container} from 'react-bootstrap'
+import { useForm } from 'react-hook-form';
 
 import style from './Waitlist.module.scss' 
 
 export default function Waitlist() { 
+  const{ register, handleSubmit } = useForm();
   
-  const[nome, setNome] = useState([]);
-  const[dataNascimento, setDataNascimento] = useState([]);
-  const[dataCadastro, setDataCadastro] = useState([]);
-  const[alfabetizado, setAlfabetizado] = useState([]);
-  const[escolaridade, setEscolaridade] = useState([]);
-  const[nomeResponsavel, setNomeResponsavel] = useState([]);
-  const[telefone, setTelefone] = useState([]);
+  const [alunoList, setAlunoList] = useState([]);
 
-  const[alunoList, setAlunoList] = useState([]);
-
-  const [show, setShow] = useState(false)
-
+  const [show, setShow] = useState(false);
+  const [pegaID, setPegaID] = useState({});
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  async function getWaitlist(){ 
-    const response = await api.get('/waitlist');
-    setAlunoList(response.data)
-    console.log(response.data);
+  const [showEdit, setShowEdit] = useState(false)
+  const handleShowEdit = () => setShowEdit(true);
+  const handleCloseEdit = () => setShowEdit(false);
+
+  const createWaitlist = async data => {
+    const dataList = {
+      id: data.id,
+      nome: data.nome,
+      alfabetizado: data.alfabetizado,
+      escolaridade: data.escolaridade,
+      oficina: data.oficina,
+      dataCadastro: data.dataCadastro,
+      dataNascimento: data.dataNascimento,
+      nomeResponsavel: data.nomeResponsavel,
+      telefone: data.telefone
+    }
+    const request = await api.post('/waitlist', dataList)
   }
 
-  async function sendWaitlist (){
-    const data = {
-      nome: nome,
-      alfabetizado: alfabetizado,
-      escolaridade: escolaridade,
-      dataNascimento: dataNascimento,
-      dataCadastro: new Date().toLocaleDateString(),
-      nomeResponsavel: nomeResponsavel,
-      telefone: telefone
+  const editWaitlist = async data => {
+    const editDataList = {
+      nome: data.nome,
+      alfabetizado: data.alfabetizado,
+      escolaridade: data.escolaridade,
+      oficina: data.oficina,
+      dataNascimento: data.dataNascimento,
+      nomeResponsavel: data.nomeResponsavel,
+      telefone: data.telefone
     }
-    console.log(JSON.stringify(data));
-    const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/waitlist`, JSON.stringify(data), {
-      header: {
-        'Content-Type': 'application/json' 
-      }
-    }).then(res => console.log("Inserindo informações", res)).catch(err => console.log("Erro", err))
-    
+    console.log(editDataList)
+    const request = await api.put(`/waitlist/${pegaID}`, editDataList)
   }
+
+  async function deleteWaitlist(id){
+    await api.delete(`/waitlist/${id}`);
+    setAlunoList(alunoList.filter(alunoList => alunoList.id !== id))
+    console.log(id)
+  }
+
+  async function getAllWaitlist(){ 
+    const response = await api.get('/waitlist');
+    setAlunoList(response.data)
+  }
+
+  useEffect(() => {
+    getAllWaitlist()
+  },[])
 
   function calculaIdade(dateString){
     const hoje = new Date();
     const dataNasci = new Date(dateString)
     let idade = hoje.getFullYear() - dataNasci.getFullYear();
     const m = hoje.getMonth() - dataNasci.getMonth();
-
-    if(m < (m === 0 && hoje.getDate() < dataNasci.getDate())){
-      idade--
-    }
     return idade;
   }
 
-  useEffect(() => {
-    getWaitlist()
-  },[])
-  
+  function handleId(id){
+    setPegaID(id)
+    handleShowEdit()
+  }
+
   return (
     <Layout session={'Waitlist'}>
       <Container className='py-5'>
@@ -88,30 +101,32 @@ export default function Waitlist() {
                     <th>Data de Cadastro</th>
                     <th>Alfabetizado</th>
                     <th>Escolaridade</th>
+                    <th>Oficina</th>
                     <th>Nome do responsável</th>
                     <th>Telefone</th>
                     <th>Ações</th>
                 </tr>
             </thead>
-            {alunoList.map((get, key) => {
+            {alunoList.map((valor, chave) => {
               return (
-                <tbody key={get.id}>
+                <tbody>
                   <tr>
-                    <td><b>{get.nome}</b></td>
-                    <td>{calculaIdade(get.dataNascimento)}</td>
-                    <td>{get.dataCadastro}</td>
-                    <td>{get.alfabetizado}</td>
-                    <td>{get.escolaridade}</td>
-                    <td>{get.nomeResponsavel}</td>
-                    <td>{get.telefone}</td>
+                    <td><b>{valor.nome}</b></td>
+                    <td>{calculaIdade(valor.dataNascimento)}</td>
+                    <td>{valor.dataCadastro}</td>
+                    <td>{valor.alfabetizado}</td>
+                    <td>{valor.escolaridade}</td>
+                    <td>{valor.oficina}</td>
+                    <td>{valor.nomeResponsavel}</td>
+                    <td>{valor.telefone}</td>
                     <td>
-                      <a href="#editEmployeeModal" className="edit" data-toggle="modal">Edit</a>
-                      <a href="#deleteEmployeeModal" className="delete" data-toggle="modal">Delete</a>                  
+                      <button onClick={() => handleId(valor.id)} className="edit" id="update" data-toggle="modal">Edit</button>
+                      <button onClick={() => deleteWaitlist(valor.id)} className="btn text-danger btn act" data-toggle="modal"><i className="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></button>                  
                     </td>
                   </tr>
                 </tbody>
               );
-            })}   
+            })}
           </table>
 
           <Modal show={show} onHide={handleClose}>
@@ -121,17 +136,14 @@ export default function Waitlist() {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form>
-                <Form.Group>
+              <Form onSubmit={handleSubmit(createWaitlist)}>
+                <Form.Group>s
                   <Form.Control 
                     input="true"
                     type="text"
                     placeholder="Nome *"
                     required
-                    value={nome}
-                    onChange={(event) => {
-                      setNome(event.target.value);
-                    }}
+                    {...register("nome")}
                   />
                 </Form.Group>
                 <Form.Group>
@@ -140,10 +152,7 @@ export default function Waitlist() {
                       type="text"
                       placeholder="Alfabetizado *"
                       required
-                      value={alfabetizado}
-                      onChange={(event) => {
-                        setAlfabetizado(event.target.value);
-                      }}
+                      {...register("alfabetizado")}
                     />
                 </Form.Group>
                 <Form.Group>
@@ -152,10 +161,16 @@ export default function Waitlist() {
                     type="text"
                     placeholder="Escolaridade *"
                     required
-                    value={escolaridade}
-                    onChange={(event) => {
-                      setEscolaridade(event.target.value);
-                    }}
+                    {...register("escolaridade")}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control 
+                    input="true"
+                    type="text"
+                    placeholder="Oficina *"
+                    required
+                    {...register("oficina")}
                   />
                 </Form.Group>
                 <Form.Group>
@@ -164,10 +179,7 @@ export default function Waitlist() {
                     type="date"
                     placeholder="Data de Nascimento *"
                     required
-                    value={dataNascimento}
-                    onChange={(event) => {
-                      setDataNascimento(event.target.value);
-                    }}
+                    {...register("dataNascimento")}
                   />
                 </Form.Group>
                 <Form.Group>
@@ -176,10 +188,7 @@ export default function Waitlist() {
                     type="text"
                     placeholder="Nome do Responsável *"
                     required
-                    value={nomeResponsavel}
-                    onChange={(event) => {
-                      setNomeResponsavel(event.target.value);
-                    }}
+                    {...register("nomeResponsavel")}
                   />
                 </Form.Group>
                 <Form.Group>
@@ -188,10 +197,7 @@ export default function Waitlist() {
                     type="text"
                     placeholder="Telefone*"
                     required
-                    value={telefone}
-                    onChange={(event) => {
-                      setTelefone(event.target.value);
-                    }}
+                    {...register("telefone")}
                   />
                 </Form.Group>
                 <Form.Group>
@@ -200,22 +206,95 @@ export default function Waitlist() {
                     type="text"
                     value={new Date().toLocaleDateString()}
                     readOnly
-                    onChange= {(event) => {
-                      setDataCadastro(event.target.value);
-                    }}
                   />
                 </Form.Group>
-
-                <Button onClick={sendWaitlist}>
+                <button type="submit">
                   Cadastrar
-                </Button>
+                </button>
               </Form>
             </Modal.Body>
           </Modal>
-
+      
+          
+          <Modal show={showEdit} onHide={handleCloseEdit}>
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    Editar
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form onSubmit={handleSubmit(editWaitlist)}>
+                <Form.Group>
+                  <Form.Control 
+                    input="true"
+                    type="text"
+                    placeholder="Nome *"
+                    required
+                    {...register("nome")}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control 
+                      input="true"
+                      type="text"
+                      placeholder="Alfabetizado *"
+                      required
+                      {...register("alfabetizado")}
+                    />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control 
+                    input="true"
+                    type="text"
+                    placeholder="Escolaridade *"
+                    required
+                    {...register("escolaridade")}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control 
+                    input="true"
+                    type="text"
+                    placeholder="Oficina *"
+                    required
+                    {...register("oficina")}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control 
+                    input="true"
+                    type="date"
+                    placeholder="Data de Nascimento *"
+                    required
+                    {...register("dataNascimento")}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control 
+                    input="true"
+                    type="text"
+                    placeholder="Nome do Responsável *"
+                    required
+                    {...register("nomeResponsavel")}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Control 
+                    input="true"
+                    type="text"
+                    placeholder="Telefone*"
+                    required
+                    {...register("telefone")}
+                  />
+                </Form.Group>
+                <button type="submit">
+                  Editar
+                </button>
+              </Form>
+            </Modal.Body>
+          </Modal>
         </div>
       </Container>
-
     </Layout>
     ) 
 }
