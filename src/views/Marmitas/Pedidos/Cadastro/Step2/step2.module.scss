@@ -1,0 +1,12 @@
+.formWrapper {
+  visibility: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.5s ease, opacity 0.8s ease;
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    max-height: 100%;
+  }
+}

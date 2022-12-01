@@ -1,17 +1,9 @@
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { Layout } from 'layout';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import {
-  Input,
-  Table,
-  Tooltip,
-  Pagination,
-  Loading,
-  ButtonIcon,
-} from 'components';
+import { Input, Table, Pagination, Loading, ButtonIcon } from 'components';
 import { Header } from '../components';
 import { Cadastro } from './Cadastro';
 import { DeleteProduct } from './Delete';

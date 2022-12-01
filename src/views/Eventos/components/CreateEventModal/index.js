@@ -36,7 +36,7 @@ const CreateEventModal = ({ isOpen, onClose }) => {
         <Modal.Body>
           <FormGroup>
             <FormLabel>Título</FormLabel>
-            <FormControl {...register('titulo', { required: true })} />
+            <FormControl required {...register('titulo', { required: true })} />
           </FormGroup>
           <Row>
             <Col>
@@ -44,6 +44,7 @@ const CreateEventModal = ({ isOpen, onClose }) => {
                 <FormLabel>Data de início</FormLabel>
                 <FormControl
                   type="datetime-local"
+                  required
                   {...register('dataInicio', { required: true })}
                 />
               </FormGroup>
@@ -53,14 +54,19 @@ const CreateEventModal = ({ isOpen, onClose }) => {
                 <FormLabel>Data de término</FormLabel>
                 <FormControl
                   type="datetime-local"
+                  required
                   {...register('dataTermino', { required: true })}
                 />
               </FormGroup>
             </Col>
           </Row>
           <FormGroup>
+            <FormLabel>Responsável</FormLabel>
+            <FormControl required {...register('responsavel', { required: true })} />
+          </FormGroup>
+          <FormGroup>
             <FormLabel>Local</FormLabel>
-            <FormControl {...register('local', { required: true })} />
+            <FormControl required {...register('local', { required: true })} />
           </FormGroup>
           <FormGroup>
             <FormLabel>Descrição</FormLabel>

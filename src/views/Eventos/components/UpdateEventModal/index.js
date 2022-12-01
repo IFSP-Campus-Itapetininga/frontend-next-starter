@@ -16,7 +16,7 @@ import { update as updateEvent } from 'services/eventos';
 import { parseISO, format } from 'date-fns';
 
 const UpdateEventModal = ({ isOpen, onClose, data }) => {
-  const { id, titulo, local, dataInicio, dataTermino, descricao } = data;
+  const { id, titulo, responsavel, local, dataInicio, dataTermino, descricao } = data;
   const {
     register,
     handleSubmit,
@@ -47,6 +47,7 @@ const UpdateEventModal = ({ isOpen, onClose, data }) => {
             <FormLabel>Título</FormLabel>
             <FormControl
               defaultValue={titulo}
+              required
               {...register('titulo', { required: true })}
             />
           </FormGroup>
@@ -56,6 +57,7 @@ const UpdateEventModal = ({ isOpen, onClose, data }) => {
                 <FormLabel>Data de início</FormLabel>
                 <FormControl
                   defaultValue={getDatetimeLocalFormat(dataInicio)}
+                  required
                   type="datetime-local"
                   {...register('dataInicio', { required: true })}
                 />
@@ -67,15 +69,25 @@ const UpdateEventModal = ({ isOpen, onClose, data }) => {
                 <FormControl
                   defaultValue={getDatetimeLocalFormat(dataTermino)}
                   type="datetime-local"
+                  required
                   {...register('dataTermino', { required: true })}
                 />
               </FormGroup>
             </Col>
           </Row>
           <FormGroup>
+            <FormLabel>Responsável</FormLabel>
+            <FormControl
+              defaultValue={responsavel}
+              required
+              {...register('responsavel', { required: true })}
+            />
+          </FormGroup>
+          <FormGroup>
             <FormLabel>Local</FormLabel>
             <FormControl
               defaultValue={local}
+              required
               {...register('local', { required: true })}
             />
           </FormGroup>
