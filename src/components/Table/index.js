@@ -2,7 +2,7 @@ import Table from 'react-bootstrap/Table';
 
 export default function TableComponent({ header, data }) {
   const renderTabelBody = () =>
-    data.map((item, id) => (
+    data?.map((item, id) => (
       <tr key={id}>
         {header.map((row, id) => (
           <td key={id}>
@@ -15,7 +15,7 @@ export default function TableComponent({ header, data }) {
     ));
 
   return (
-    <Table striped bordered hover>
+    <Table responsive striped bordered hover>
       <thead>
         <tr>
           {header.map((el, id) => (

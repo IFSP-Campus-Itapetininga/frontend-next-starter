@@ -11,6 +11,8 @@ const links = [
     name: 'Início',
     route: '/',
   },
+  {name: 'Estoque',route: '/estoque'},
+  { name: 'Eventos', route: '/eventos' },
   {
     name: 'Marmitas',
     route: '/marmitas',
@@ -38,9 +40,9 @@ export default function NavComponent() {
         <Container>
           <Navbar.Brand>
             <Image
-              src="/logo-sexta-eh-nois-amarelo.svg"
-              width="160"
-              height="60"
+              src="/sexta-logo.svg"
+              width="80"
+              height="30"
               className="d-inline-block align-top"
               alt=" logo"
             />

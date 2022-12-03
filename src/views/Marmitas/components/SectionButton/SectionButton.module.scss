@@ -3,8 +3,12 @@ $yellow: #ffc107;
 $light-blue: #0dcaf0;
 $gray: #6c757d;
 
+@import '/node_modules/bootstrap/scss/functions';
+@import '/node_modules/bootstrap/scss/variables';
+@import '/node_modules/bootstrap/scss/mixins';
+
 .slotContent {
-  width: 9.1rem;
+  width: 100%;
   height: 3rem;
   color: #fff;
   font-weight: 500;
@@ -14,30 +18,41 @@ $gray: #6c757d;
   justify-content: center;
   align-items: center;
 
-  background-color: $green;
+  background-color: $success;
   transition: 0.5s background ease;
 
   &:hover {
     color: white;
-    background-color: darken($green, 10%);
+    background-color: darken($success, 10%);
+  }
+
+  &.primary {
+    background-color: $primary;
+    &:hover {
+      background-color: darken($primary, 10%);
+    }
   }
 
   &.yellow {
-    background-color: $yellow;
+    background-color: $warning;
     &:hover {
-      background-color: darken($yellow, 10%);
+      background-color: darken($warning, 10%);
     }
   }
   &.light-blue {
-    background-color: $light-blue;
+    background-color: $info;
     &:hover {
-      background-color: darken($light-blue, 10%);
+      background-color: darken($info, 10%);
     }
   }
   &.gray {
-    background-color: $gray;
+    background-color: $secondary;
     &:hover {
-      background-color: darken($gray, 10%);
+      background-color: darken($secondary, 10%);
     }
+  }
+
+  @media (min-width: 960px) {
+    width: 9.1rem;
   }
 }
