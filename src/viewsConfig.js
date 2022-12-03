@@ -28,7 +28,7 @@ const viewsConfig = [
     route: '/marmitas',
     authorization: {
       enabled: false,
-      roles: [],
+      roles: ['Marmita', 'Administrador'],
     },
   },
   {
