@@ -50,7 +50,8 @@ export default function MarmitaView({ orders, filter, setFilter, isLoading }) {
 
   useEffect(() => {
     const result = orders?.data.map(
-      ({ id, status, cliente, valor_total, produtos }) => {
+      ({ id, status, cliente, valor_total, produtos, ...rest }) => {
+        console.log(rest);
         return {
           id,
           produto: () =>

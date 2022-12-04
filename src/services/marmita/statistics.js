@@ -1,13 +1,16 @@
 import { format } from 'date-fns';
 import api from 'services';
 
-export const getMarmitaStatistics = async ({ initial_date, final_date }) => {
+export const getMarmitaStatistics = async ({ filter, token }) => {
   try {
     const payload = {
-      initial_date: format(initial_date, 'yyyy-MM-dd'),
-      final_date: format(final_date, 'yyyy-MM-dd'),
+      initial_date: format(filter.initial_date, 'yyyy-MM-dd'),
+      final_date: format(filter.final_date, 'yyyy-MM-dd'),
     };
-    const response = await api.get('/lunchs/statistics', { params: payload });
+    const response = await api.get('/lunchs/statistics', {
+      params: payload,
+      headers: { authorization: `Bearear ${token}` },
+    });
 
     return response.data;
   } catch (error) {

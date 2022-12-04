@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
-import { Form, Button, Container, Tabs, Tab } from "react-bootstrap";
+import { Form, Button, Tabs, Tab } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import ListTransactions from "../components/ListTransactions";
 import api from "../../../services";
@@ -8,17 +8,25 @@ import { StockLayout } from "../layout";
 import { Layout } from "layout";
 import { getProduct } from "services/estoque";
 import ListVendors from "../components/ListVendors";
-import { Modal } from "components";
 import StockModal from "../components/StockModal";
+import { getCookie } from 'cookies-next';
+import { AlertModal } from "../components/AlertModal";
 
 const Produto = () => {
   const [item, setItem] = useState({});
+  const [showAlertModal, setShowAlertModal] = useState(false);
   const [newVendor, setNewVendor] = useState(false);
+  const token = getCookie('auth.token');
   const router = useRouter()
   const id = router.query.id;
   async function getItem() {
     const data = await getProduct(id);
     setItem(data);
+  }
+  function hideAlert() {
+    setTimeout(() => {
+      setShowAlertModal(false);
+    }, 2000);
   }
 
   useEffect(() => {
@@ -28,8 +36,6 @@ const Produto = () => {
   const {
     register,
     handleSubmit,
-    getValues,
-    watch,
     formState: { errors }
   } = useForm();
 
@@ -42,16 +48,15 @@ const Produto = () => {
     const response = await api.patch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/item/${item.itemid}`, JSON.stringify(newItem), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
-      .then(res => {
-        alert("Item atualizado!");
-      });
+    if (response.status === 204) setShowAlertModal(true);
+    hideAlert();
   };
   function handleNewVendor() {
     setNewVendor(!newVendor);
   }
-
 
   return (
     <Layout session={'Estoque'} >
@@ -97,11 +102,12 @@ const Produto = () => {
               setShow={() => setNewVendor(false)}
               title="Novo contato"
             >
-              <ListVendors itemid={id} setNewVendor={handleNewVendor}/>
+              <ListVendors itemid={id} setNewVendor={handleNewVendor} />
             </StockModal>
           </Tab>
         </Tabs>
       </StockLayout>
+      <AlertModal title="Sucesso" text="Produto atualizado com sucesso!" showAlertModal={showAlertModal} />
     </Layout>
   )
 }

@@ -28,7 +28,7 @@ export default function MarmitaView({ orders }) {
           />
         </div>
         <div className={styles.wrapper}>
-          {orders?.data.map((order) => (
+          {orders?.data?.map((order) => (
             <Card key={order.id} order={order.id} {...order} />
           ))}
         </div>
