@@ -31,8 +31,11 @@ function TelaCrudAssistido({ titulo, abrir, fechar, placeholder }) {
     //mensagem
     const [mensagem, setMensagem] = useState(false)
 
+    //API
+    const api = process.env.NEXT_LOCAL_API_BASE_URL
+
     //URL API
-    const urlAPI = `http://localhost:5000/${dado}`
+    const urlAPI = `${api}/${dado}`
 
     //Apagar o campo de busca após resultado for verdadeiro
     const [consulta, setConsulta] = useState()
