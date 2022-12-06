@@ -1,14 +1,29 @@
 import React, { useState } from 'react';
+import styles from './SecretariaInicio.module.scss'
 
-import TelaCrud from '../layout/TelaCrud';
-import Teste from '../layout/Teste'
+// IMPORT IMAGE
+import Image from 'next/image';
+
+
+// IMPORT LAYOUT
+import TelaCrudOficina from '../layout/CadastroOficina/TelaCrudOficina';
+import TelaCrudOficineiro from '../layout/CadastroOficineiro/TelaCrudOficineiro';
+import TelaCrudAssistido from '../layout/CadastroAssistido/TelaCrudAssistido';
+import TelaCrudTurma from '../layout/CadastroTurma/TelaCrudTurma';
+import TelaCrudMatricula from '../layout/CadastroMatricula/TelaCrudMatricula';
+import TelaCrudAtividade from '../layout/CadastroAtividade/TelaCrudAtividade';
+
 
 
 function SecretariaInicio(){
 
+
+
     //Tela Inicial da Secretaria
     const [showMainSecretaria, setShowMainSecretaria] = useState(true);
 
+    
+    
     const [showCadastrarOficina, setShowCadastrarOficina] = useState(false);
     function mostrarCadastroOficina(){
         setShowMainSecretaria(false)
@@ -43,6 +58,14 @@ function SecretariaInicio(){
     }
 
 
+    const [showAtividade, setShowAtividade] = useState(false);
+    function mostrarAtividade(){
+        setShowMainSecretaria(false)
+        setShowCadastrarOficina(false)
+        setShowAtividade(true)
+    }
+
+
     
     
 
@@ -50,55 +73,124 @@ function SecretariaInicio(){
 
     return(
         <>
-
+            
             { showMainSecretaria === true  && (
+
+
+                
+
                 <div className='container' >
+                    
                     <h1>Secretaria Institucional</h1>
                     <hr/>
-                    <div onClick={mostrarCadastroOficina}> Cadastrar Oficina </div>                
-                    <div onClick={mostrarCadastroOficineiro}>Cadastro Oficineiro</div>
-                    <div onClick={mostrarCadastroAssistido}>Cadastro Assistido</div>
-                    <div onClick={mostrarCadastroTurma}>Cadastro Turma</div>
-                    <div onClick={mostrarMatricula}>Matrícula</div>
+                    <div className={styles.containerCards}>
+                        <div className={styles.cardContainer} onClick={mostrarCadastroOficina}>
+                            <Image  src="/asset/imgCadastrarOficina.svg" width="95%" height="95%" alt="Oficina" />
+                            <p>Cadastrar Oficina</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarCadastroOficineiro}>
+                             <Image  src="/asset/imgOficineiro.svg" width="95%" height="95%" alt="Oficineiro" />
+                            <p >Profissional </p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarCadastroAssistido}>
+                            <Image  src="/asset/imgAssistido.svg" width="95%" height="95%" alt="Aluno" />                        
+                            <p >Assitido / Aluno </p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarCadastroTurma}>
+                            <Image  src="/asset/imgTurma.svg" width="95%" height="95%" alt="Turma" />  
+                            <p >Cadastrar Turma </p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <Image  src="/asset/imgMatricula.svg" width="95%" height="95%" alt="Matricula" />  
+                            <p >Matrícula</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <Image  src="/asset/imgResponsavel.svg" width="95%" height="95%" alt="Responsável" />  
+                            <p >Responsável</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <Image  src="/asset/imgAtividades.svg" width="95%" height="95%" alt="Atividades" />  
+                            <p >Atividades</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <Image  src="/asset/imgFrequencia.svg" width="95%" height="95%" alt="Frequência" />  
+                            <p >Frequência</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <Image  src="/asset/imgFilaEspera.svg" width="95%" height="95%" alt="Fila de Espera" />  
+                            <p >Fila de Espera</p>
+                        </div>
+                        <div className={styles.cardContainer} onClick={mostrarMatricula}>
+                            <Image  src="/asset/imgAula.svg" width="95%" height="95%" alt="Eventos e Aulas" />  
+                            <p >Evento / Aula</p>
+                        </div>
+                    </div>
                 </div>
             ) }
+
             { showCadastrarOficina === true && (
                 <div>                    
-                    <TelaCrud 
+                    <TelaCrudOficina 
                         titulo={'Cadastro Oficina'} 
                         fechar={setShowCadastrarOficina}  
                         abrir={setShowMainSecretaria} 
+                        metodoShowAtividade={mostrarAtividade}
                         placeholder={'Consultar Oficina'}   
                     />
                 </div>
             ) }
             { showCadastroOficineiro === true && (
                 <div>  
-                    <TelaCrud 
+                   <TelaCrudOficineiro
                         titulo={'Cadastro Oficineiro'} 
                         fechar={setShowCadastrarOficineiro}  
-                        abrir={setShowMainSecretaria}    
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar Oficineiro'} 
                     />
                 </div>
             ) }
             { showCadastrarAssistido === true && (
                 <div>                    
-                    <div onClick={() => ( setShowMainSecretaria(true), setShowCadastrarAssistido(false))}> Voltar ao Inicio </div>
-                    <div> Cadastro Oficina </div>
+                     <TelaCrudAssistido
+                        titulo={'Cadastro Assistido'} 
+                        fechar={setShowCadastrarAssistido}  
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar Assistido'} 
+                    />
                 </div>
             ) }
             { showCadastrarTurma === true && (
                 <div>                    
-                    <div onClick={() => ( setShowMainSecretaria(true), setShowCadastrarTurma(false))}> Voltar ao Inicio </div>
-                    <div> Cadastro Oficina </div>
+                     <TelaCrudTurma
+                        titulo={'Cadastro Turma'} 
+                        fechar={setShowCadastrarTurma}  
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar Turma'} 
+                    />
                 </div>
             ) }
             { showMatricula === true && (
                 <div>                    
-                    <div onClick={() => ( setShowMainSecretaria(true), setShowMatricula(false))}> Voltar ao Inicio </div>
-                    <div> Cadastro Oficina </div>
+                     <TelaCrudMatricula
+                        titulo={'Matrícula'} 
+                        fechar={setShowMatricula}  
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar matrícula'} 
+                    />
                 </div>
             ) }
+            { showAtividade === true && (
+                <div>                    
+                     <TelaCrudAtividade
+                        titulo={'Atividade'} 
+                        fechar={setShowAtividade}  
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar Atividade'} 
+                    />
+                </div>
+            ) }
+
+
             
         </>
     )
