@@ -66,8 +66,7 @@ function SecretariaInicio(){
     const [showQuestionario, setShowQuestionario] = useState(false);
     function mostrarQuestionario(){
         setShowMainSecretaria(false)
-        setShowCadastrarQuestionario(false)
-        setShowAtividade(true)
+        setShowQuestionario(true)
     }
 
 
@@ -205,6 +204,16 @@ function SecretariaInicio(){
                         fechar={setShowAtividade}  
                         abrir={setShowMainSecretaria} 
                         placeholder={'Consultar Atividade'} 
+                    />
+                </div>
+            ) }
+            { showQuestionario === true && (
+                <div>                    
+                     <TelaCrudQuestionario
+                        titulo={'Questionário'} 
+                        fechar={setShowQuestionario}  
+                        abrir={setShowMainSecretaria} 
+                        placeholder={'Consultar Questionários'} 
                     />
                 </div>
             ) }
