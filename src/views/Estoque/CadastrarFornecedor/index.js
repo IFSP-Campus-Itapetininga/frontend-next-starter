@@ -23,6 +23,7 @@ const CadastrarFornecedor = () => {
 
   const onSubmit = async data => {
     const newVendor = {
+      ativo: 1,
       fornecedor: data.fornecedor,
       descricao: data.descricao,
       cnpj: data.cnpj,

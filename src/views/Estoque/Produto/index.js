@@ -8,7 +8,6 @@ import { StockLayout } from "../layout";
 import { Layout } from "layout";
 import { getProduct } from "services/estoque";
 import ListVendors from "../components/ListVendors";
-import { Modal } from "components";
 import StockModal from "../components/StockModal";
 
 const Produto = () => {

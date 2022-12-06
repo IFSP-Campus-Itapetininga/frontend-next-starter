@@ -1,13 +1,14 @@
 import { Modal, Button } from "react-bootstrap";
-import api from "../../../../services";
+import { deleteContact, deleteItem, deleteItemHasVendor, deleteVendor } from "services/estoque";
 
 
-const DeleteModal = ({ showModal, iditem }) => {
+const DeleteModal = ({ showModal, id, type, setShow, getData}) => {
   async function handleDeleteItem() {
-    const response = await api.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/item/${iditem}`)
-      .then(res => {
-        alert("Item excluído com sucesso!");
-      });
+    if (type === 'item') deleteItem(id);
+    if (type === 'vendor') deleteVendor(id);
+    if (type === 'contact') deleteContact(id);
+    if (type === 'itemHasVendor') deleteItemHasVendor(id);
+    setShow();
   }
 
   return (

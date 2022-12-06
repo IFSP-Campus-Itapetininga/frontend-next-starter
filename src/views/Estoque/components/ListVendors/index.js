@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import api from "services";
-import { getItemHasVendor, getVendors } from "services/estoque";
+import { deleteItemHasVendor, getItemHasVendor, getVendors } from "services/estoque";
+import DeleteModal from "../DeleteModal";
 
-const ListVendors = ({ itemid, justList, setNewVendor}) => {
+const ListVendors = ({ itemid, justList, setNewVendor }) => {
 
   const [vendors, setVendors] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteIds, setDeleteIds] = useState();
 
   async function handleFilterVendors() {
     const data = await getVendors();
@@ -48,41 +51,55 @@ const ListVendors = ({ itemid, justList, setNewVendor}) => {
   useEffect(() => {
     getListVendors();
   }, []);
-  return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th className="text-center">Código</th>
-          <th className="text-center">Fornecedor</th>
-          <th className="text-center">Descrição</th>
-          {justList && <th className="text-center">CNPJ</th>}
-          <th className="text-center">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          vendors?.map(vendor => {
-            return (
-              <tr key={vendor.fornecedorid}>
-                <td className="text-center">{vendor.fornecedorid}</td>
-                <td>{vendor.fornecedor}</td>
-                <td>{vendor.descricao}</td>
-                {justList && <td>{vendor.cnpj}</td>}
-                <td>
-                  <div className="text-center">
-                    {justList ?
-                      <Button variant="danger">Excluir</Button> :
-                      <Button variant="success" onClick={() => handleAddVendorToItem(vendor.fornecedorid)}>Adicionar</Button>
-                    }
 
-                  </div>
-                </td>
-              </tr>
-            )
-          })
-        }
-      </tbody>
-    </Table>
+  function handleShowDeleteModal(vendorid) {
+    const delIds = {
+      itemid: +itemid,
+      fornecedorid: vendorid
+    }
+    setDeleteIds(delIds);
+    setShowDeleteModal(!showDeleteModal);
+  }
+
+
+  return (
+    <>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th className="text-center">Código</th>
+            <th className="text-center">Fornecedor</th>
+            <th className="text-center">Descrição</th>
+            {justList && <th className="text-center">CNPJ</th>}
+            <th className="text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            vendors?.map(vendor => {
+              return (
+                <tr key={vendor.fornecedorid}>
+                  <td className="text-center">{vendor.fornecedorid}</td>
+                  <td>{vendor.fornecedor}</td>
+                  <td>{vendor.descricao}</td>
+                  {justList && <td>{vendor.cnpj}</td>}
+                  <td>
+                    <div className="text-center">
+                      {justList ?
+                        <Button variant="danger" onClick={() => handleShowDeleteModal(vendor.fornecedorid)}>Excluir</Button> :
+                        <Button variant="success" onClick={() => handleAddVendorToItem(vendor.fornecedorid)}>Adicionar</Button>
+                      }
+
+                    </div>
+                  </td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </Table>
+      <DeleteModal showModal={showDeleteModal} type="itemHasVendor" id={deleteIds} setShow={() => setShowDeleteModal(false)} getData={getListVendors}/>
+    </>
   )
 }
 
