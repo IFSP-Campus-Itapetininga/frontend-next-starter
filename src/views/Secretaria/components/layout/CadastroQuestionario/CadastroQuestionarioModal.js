@@ -4,9 +4,9 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Selects from 'react-select'
 import makeAnimated from "react-select/animated";
-import Select from "../CadastroTurma/Select"
+import Select from "../CadastroQuestionario/Select"
 
-function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados, metodoAtualizaDados }) {
+function CadastroQuestionarioModal({ textbtn, titulo, metodoCadastraDados, propsDados, metodoAtualizaDados }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -20,9 +20,9 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
   const [options, setOptions] = useState([])
 
   // Carrega Dados de Turma
-  const [turma, setTurma] = useState([])
+  const [perguntas, setPerguntas] = useState([])
   useEffect(() => {
-    fetch('http://localhost:5000/turma', {
+    fetch('http://localhost:5000/perguntas', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
     })
       .then((resp) => resp.json())
       .then((data) => {
-        setTurma(data)
+        setPerguntas(data)
         //console.log(data)
       })
       .catch((err) => console.log(err))
@@ -44,11 +44,11 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
 
   //Pega valor dos selection do formulário
   function handleCategory(e) {
-    setDadosLocal({ ...dadosLocal, oficina: e })
+    setDadosLocal({ ...dadosLocal, questionario: e })
     //console.log(dadosLocal)
   }
 
-  //Passa para o componente pai(TelaCrud/método cadastrarOficina) os valores de oficina.
+  //Passa para o componente pai(TelaCrud/método cadastrarQuestionario) os valores de questionario.
   const enviaDados = (e) => {
     e.preventDefault()//não deixa a págian dar reload
     //console.log(dadosLocal)
@@ -57,7 +57,7 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
     } else if (titulo === "Cadastrar Dados") {
       metodoCadastraDados(dadosLocal)
     }
-    setDadosLocal({})//esvazia set oficineiro
+    setDadosLocal({})//esvazia set questionario
     setShow(false)
   }
 
@@ -95,35 +95,25 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
         <Modal.Body>
           <Form >
 
-
+          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
+              <Form.Label>Nova Pergunta:</Form.Label>
+              <Form.Control
+                type="text"
+                name="diasSemana"
+                placeholder="Psicologia 1"
+                onChange={handleChange}
+                value={dadosLocal.diasSemana ? dadosLocal.diasSemana : ''}
+              />
+            </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
-              <Form.Label>Turma:</Form.Label>
+              <Form.Label>Grupos:</Form.Label>
               <Select
-                propsDados={turma}
+                propsDados={perguntas}
                 
               />
             </Form.Group>
             
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
-
-              <Form.Label>Alunos:</Form.Label>
-
-              <Selects
-                defaultValue={dadosLocal.nome ? dadosLocal.id : ''}
-                components={animatedComponents}
-                isMulti
-                options={options}
-                onChange={(item) => handleCategory(item)}
-                className="select"
-                isClearable={true}
-                isSearchable={true}
-                isDisabled={false}
-                isLoading={false}
-                isRtl={false}
-                closeMenuOnSelect={false}
-              />
-
-            </Form.Group>
+            
 
 
           </Form>
@@ -141,4 +131,4 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
   );
 }
 
-export default CadastroOficinaModal
+export default CadastroQuestionarioModal
