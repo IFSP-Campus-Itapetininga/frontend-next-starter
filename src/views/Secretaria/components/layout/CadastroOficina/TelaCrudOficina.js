@@ -1,7 +1,8 @@
 import styles from '../CadastroOficina/TelaCrudOficina.module.scss'
 import React, { useState, useEffect } from 'react';
 
-
+// IMPORT IMAGE
+import Image from 'next/image';
 
 // Import Layout
 
@@ -53,9 +54,9 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
         }).then(
             resp => resp.json()
         ).then(
-            data => {                
+            data => {
                 setMensagem(true),
-                setDados(data)
+                    setDados(data)
             }
         ).catch(
             err => console.log(err)
@@ -90,10 +91,10 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
     }
 
     //verificar se o campo de pesquisa está digitado
-    function verificaCampo(){
-        if(palavra === ''){
-            recarregaPagina() 
-        }else{
+    function verificaCampo() {
+        if (palavra === '') {
+            recarregaPagina()
+        } else {
             carregaPesquisa(palavra)
         }
     }
@@ -117,15 +118,15 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
                     //console.log(teste) verdadeiro ou falso
 
                     if (teste) {
-                        setMensagem(false)                        
+                        setMensagem(false)
                         apagaCampoBusca()
                         return teste
                     } else {
                         setMensagem(true)
-                        return teste       
+                        return teste
                     }
                 }
-                
+
                 setDados(data.filter((dado) =>
                     busca(dado.oficina),
                     setMensagem(false)
@@ -135,7 +136,7 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
             err => console.log(err)
         )
     }
-    
+
     //não deixa a págian dar reload
     const submit = (e) => {
         e.preventDefault()
@@ -183,13 +184,13 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
                 'Content-Type': 'application/json'
             }
         }).then(
-            
+
             resp => resp.json()
         ).then(
             data => {
-                
+
                 setDados([]),
-                timeOut()
+                    timeOut()
 
             }
         ).catch(
@@ -202,13 +203,13 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
     function timeOut() {
         setTimeout(() => {
             setPalavra(''),
-            setDados({}),
-            recarregaPagina()
+                setDados({}),
+                recarregaPagina()
         }, "3000")
     }
 
     //Apagar o campo após um tempo sem interação
-    function apagaCampoBusca(){
+    function apagaCampoBusca() {
         setTimeout(() => {
             setPalavra('')
             setConsulta('')
@@ -267,7 +268,7 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
                     <button
                         className='btn btn-primary'
                         onClick={carregaPesquisa}
-                        
+
                     >Consultar
                     </button>
 
@@ -296,8 +297,8 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
                     dados.map((dado) => (
                         <CardsOficina
                             key={dado.id}
-                            propsDados={dado}                            
-                            pesquisa={removeDadosID}                            
+                            propsDados={dado}
+                            pesquisa={removeDadosID}
                             metodoAtualizaDados={atualizaDados}
                             propsNomeAtividade={dado.atividade.nome}
                         />
@@ -305,8 +306,10 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
 
                 }
                 {dados.length <= 0 && mensagem !== true && (
-                     <div className={styles.loader}><img src='/loader.svg' alt='Cadastro Oficina' /></div>
-                    
+                    <div className={styles.loader}>
+                        <Image src="/loader.svg" width="95%" height="95%" alt="Loader" />
+                    </div>
+
                 )}
 
 

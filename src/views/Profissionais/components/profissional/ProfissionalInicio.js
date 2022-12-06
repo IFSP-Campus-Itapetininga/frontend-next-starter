@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import styles from './SecretariaInicio.module.scss'
 
+// IMPORT IMAGE
+import Image from 'next/image';
 
 // IMPORT LAYOUT
-import TelaCrudOficina from '../layout/CadastroOficina/TelaCrudOficina';
-import TelaCrudOficineiro from '../layout/CadastroOficineiro/TelaCrudOficineiro';
-import TelaCrudAssistido from '../layout/CadastroAssistido/TelaCrudAssistido';
-import TelaCrudTurma from '../layout/CadastroTurma/TelaCrudTurma';
-import TelaCrudMatricula from '../layout/CadastroMatricula/TelaCrudMatricula';
-import TelaCrudAtividade from '../layout/CadastroAtividade/TelaCrudAtividade';
-
-
+import TelaCrudChamada from '../layout/CadastroChamadas/TelaCrudChamada';
 
 function ProfissionalInicio(){
 
@@ -62,59 +57,37 @@ function ProfissionalInicio(){
         setShowAtividade(true)
     }
 
-
-    
-    
-
-    
-
     return(
         <>
             
             { showMainSecretaria === true  && (
-
-
-                
-
                 <div className='container' >
-                    
-                    
-                    
-                    <h1>Secretaria Institucional</h1>
+                    <h1>Profissionais</h1>
                     <hr/>
-                    
                     <div className={styles.containerCards}>
                         <div className={styles.cardContainer} onClick={mostrarCadastroOficina}>
-                            <img src='/asset/imgChamada.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <Image  src="/asset/imgChamada.svg" width="95%" height="95%" alt="Oficina" />
                             <p>Fazer Chamada</p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarCadastroOficina}>
-                            <img src='/asset/imgQuestionario.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <Image  src="/asset/imgQuestionario.svg" width="95%" height="95%" alt="Oficina" />
                             <p>Questionário </p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarCadastroOficina}>
-                            <img src='/asset/imgFrequencia.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <Image  src="/asset/imgFrequencia.svg" width="95%" height="95%" alt="Oficina" />
                             <p>Frequência</p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarCadastroOficina}>
-                            <img src='/asset/imgAula.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <Image  src="/asset/imgAula.svg" width="95%" height="95%" alt="Oficina" />
                             <p>Aula / Evento </p>
                         </div>
-                       
-
-                        
-
                     </div>
-
                 </div>
-
-
-
             ) }
 
             { showCadastrarOficina === true && (
                 <div>                    
-                    <TelaCrudOficina 
+                    <TelaCrudChamada 
                         titulo={'Cadastro Oficina'} 
                         fechar={setShowCadastrarOficina}  
                         abrir={setShowMainSecretaria} 
@@ -122,60 +95,7 @@ function ProfissionalInicio(){
                         placeholder={'Consultar Oficina'}   
                     />
                 </div>
-            ) }
-            { showCadastroOficineiro === true && (
-                <div>  
-                   <TelaCrudOficineiro
-                        titulo={'Cadastro Oficineiro'} 
-                        fechar={setShowCadastrarOficineiro}  
-                        abrir={setShowMainSecretaria} 
-                        placeholder={'Consultar Oficineiro'} 
-                    />
-                </div>
-            ) }
-            { showCadastrarAssistido === true && (
-                <div>                    
-                     <TelaCrudAssistido
-                        titulo={'Cadastro Assistido'} 
-                        fechar={setShowCadastrarAssistido}  
-                        abrir={setShowMainSecretaria} 
-                        placeholder={'Consultar Assistido'} 
-                    />
-                </div>
-            ) }
-            { showCadastrarTurma === true && (
-                <div>                    
-                     <TelaCrudTurma
-                        titulo={'Cadastro Turma'} 
-                        fechar={setShowCadastrarTurma}  
-                        abrir={setShowMainSecretaria} 
-                        placeholder={'Consultar Turma'} 
-                    />
-                </div>
-            ) }
-            { showMatricula === true && (
-                <div>                    
-                     <TelaCrudMatricula
-                        titulo={'Matrícula'} 
-                        fechar={setShowMatricula}  
-                        abrir={setShowMainSecretaria} 
-                        placeholder={'Consultar matrícula'} 
-                    />
-                </div>
-            ) }
-            { showAtividade === true && (
-                <div>                    
-                     <TelaCrudAtividade
-                        titulo={'Atividade'} 
-                        fechar={setShowAtividade}  
-                        abrir={setShowMainSecretaria} 
-                        placeholder={'Consultar Atividade'} 
-                    />
-                </div>
-            ) }
-
-
-            
+            ) }      
         </>
     )
 }

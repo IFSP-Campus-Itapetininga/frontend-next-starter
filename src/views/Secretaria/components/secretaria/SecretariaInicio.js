@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styles from './SecretariaInicio.module.scss'
 
+// IMPORT IMAGE
+import Image from 'next/image';
+
 
 // IMPORT LAYOUT
 import TelaCrudOficina from '../layout/CadastroOficina/TelaCrudOficina';
@@ -78,61 +81,51 @@ function SecretariaInicio(){
 
                 <div className='container' >
                     
-                    
-                    
                     <h1>Secretaria Institucional</h1>
                     <hr/>
-                    
                     <div className={styles.containerCards}>
                         <div className={styles.cardContainer} onClick={mostrarCadastroOficina}>
-                            <img src='/asset/imgCadastrarOficina.svg' alt='Cadastro Oficina' className='card-img-top'/>
-                            <p>Cadastrar Oficina </p>
+                            <Image  src="/asset/imgCadastrarOficina.svg" width="95%" height="95%" alt="Oficina" />
+                            <p>Cadastrar Oficina</p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarCadastroOficineiro}>
-                            <img src='/asset/imgOficineiro.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                             <Image  src="/asset/imgOficineiro.svg" width="95%" height="95%" alt="Oficineiro" />
                             <p >Profissional </p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarCadastroAssistido}>
-                            <img src='/asset/imgAssistido.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <Image  src="/asset/imgAssistido.svg" width="95%" height="95%" alt="Aluno" />                        
                             <p >Assitido / Aluno </p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarCadastroTurma}>
-                            <img src='/asset/imgTurma.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <Image  src="/asset/imgTurma.svg" width="95%" height="95%" alt="Turma" />  
                             <p >Cadastrar Turma </p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarMatricula}>
-                            <img src='/asset/imgMatricula.svg' alt='Cadastro Oficina' className='card-img-top'/>
+                            <Image  src="/asset/imgMatricula.svg" width="95%" height="95%" alt="Matricula" />  
                             <p >Matrícula</p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarMatricula}>
-                            <img src='/asset/imgResponsavel.svg' alt='Responsável' className='card-img-top'/>
+                            <Image  src="/asset/imgResponsavel.svg" width="95%" height="95%" alt="Responsável" />  
                             <p >Responsável</p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarMatricula}>
-                            <img src='/asset/imgAtividades.svg' alt='Responsável' className='card-img-top'/>
+                            <Image  src="/asset/imgAtividades.svg" width="95%" height="95%" alt="Atividades" />  
                             <p >Atividades</p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarMatricula}>
-                            <img src='/asset/imgFrequencia.svg' alt='Frequência' className='card-img-top'/>
+                            <Image  src="/asset/imgFrequencia.svg" width="95%" height="95%" alt="Frequência" />  
                             <p >Frequência</p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarMatricula}>
-                            <img src='/asset/imgFilaEspera.svg' alt='Fila de Espera' className='card-img-top'/>
+                            <Image  src="/asset/imgFilaEspera.svg" width="95%" height="95%" alt="Fila de Espera" />  
                             <p >Fila de Espera</p>
                         </div>
                         <div className={styles.cardContainer} onClick={mostrarMatricula}>
-                            <img src='/asset/imgAula.svg' alt='Aula' className='card-img-top'/>
+                            <Image  src="/asset/imgAula.svg" width="95%" height="95%" alt="Eventos e Aulas" />  
                             <p >Evento / Aula</p>
                         </div>
-
-                        
-
                     </div>
-
                 </div>
-
-
-
             ) }
 
             { showCadastrarOficina === true && (

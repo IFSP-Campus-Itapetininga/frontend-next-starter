@@ -1,10 +1,10 @@
-import styles from '../CadastroOficina/CardsOficina.module.scss'
+import styles from '../CadastroChamadas/CardsOficina.module.scss'
 import React, { useState, useEffect } from 'react';
 
 /* IMPORT LAYOUT */
-import CadastroTurmaModal from './CadastroTurmaModal';
+import CardsChamada from './CadastroChamada';
 
-function CardsTurma({ pesquisa, propsDados, metodoAtualizaDados }) {
+function CardsAssistido({ pesquisa, propsDados, metodoAtualizaDados }) {
 
     const remove = (e) => {
         e.preventDefault()
@@ -20,13 +20,13 @@ function CardsTurma({ pesquisa, propsDados, metodoAtualizaDados }) {
             <div className={styles.cards}>
                 <div className="card">
                     <div className="card-body">
-                        <h5 className="card-title">{dadosLocal.id} | {dadosLocal.oficina}</h5>
-                        <p className="card-text"><b>Oficineiro: </b>{dadosLocal.oficineiro}</p>
-                        <p className="card-text"><b>Horário: </b>{dadosLocal.horario}</p>
+                        <h5 className="card-title">{dadosLocal.id} | {dadosLocal.nome}</h5>
+                        <p className="card-text">{dadosLocal.cpf}</p>
+                        <p className="card-text"><b>Nascimento: </b>{dadosLocal.nascimento}</p>
                         <div className={styles.buttons}>
                             <button className="btn btn-outline-danger" onClick={remove}>Excluir</button>
 
-                            <CadastroTurmaModal 
+                            <CardsChamada 
                                 textbtn={'Editar'} 
                                 titulo={'Editar Dados'} 
                                 propsDados={dadosLocal} 
@@ -45,4 +45,4 @@ function CardsTurma({ pesquisa, propsDados, metodoAtualizaDados }) {
     )
 }
 
-export default CardsTurma
+export default CardsAssistido

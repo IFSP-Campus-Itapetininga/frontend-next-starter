@@ -1,7 +1,8 @@
 import styles from '../CadastroOficina/TelaCrudOficina.module.scss'
 import React, { useState, useEffect } from 'react';
 
-
+// IMPORT IMAGE
+import Image from 'next/image';
 
 // Import Layout
 
@@ -53,9 +54,9 @@ function TelaCrudAtividade({ titulo, abrir, fechar, placeholder }) {
         }).then(
             resp => resp.json()
         ).then(
-            data => {                
+            data => {
                 setMensagem(true),
-                setDados(data)
+                    setDados(data)
             }
         ).catch(
             err => console.log(err)
@@ -108,15 +109,15 @@ function TelaCrudAtividade({ titulo, abrir, fechar, placeholder }) {
                     //console.log(teste) verdadeiro ou falso
 
                     if (teste) {
-                        setMensagem(false)                        
+                        setMensagem(false)
                         apagaCampoBusca()
                         return teste
                     } else {
                         setMensagem(true)
-                        return teste       
+                        return teste
                     }
                 }
-                
+
                 setDados(data.filter((dado) =>
                     busca(dado.nome),
                     setMensagem(false)
@@ -126,7 +127,7 @@ function TelaCrudAtividade({ titulo, abrir, fechar, placeholder }) {
             err => console.log(err)
         )
     }
-    
+
     //não deixa a págian dar reload
     const submit = (e) => {
         e.preventDefault()
@@ -191,13 +192,13 @@ function TelaCrudAtividade({ titulo, abrir, fechar, placeholder }) {
     function timeOut() {
         setTimeout(() => {
             setPalavra(''),
-            setDados({}),
-            recarregaPagina()
+                setDados({}),
+                recarregaPagina()
         }, "4000")
     }
 
     //Apagar o campo após um tempo sem interação
-    function apagaCampoBusca(){
+    function apagaCampoBusca() {
         setTimeout(() => {
             setPalavra('')
             setConsulta('')
@@ -256,7 +257,7 @@ function TelaCrudAtividade({ titulo, abrir, fechar, placeholder }) {
                     <button
                         className='btn btn-primary'
                         onClick={carregaPesquisa}
-                        
+
                     >Consultar
                     </button>
 
@@ -283,16 +284,17 @@ function TelaCrudAtividade({ titulo, abrir, fechar, placeholder }) {
                     dados.map((dado) => (
                         <CardsAtividade
                             key={dado.id}
-                            propsDados={dado}                            
-                            pesquisa={removeDadosID}                            
+                            propsDados={dado}
+                            pesquisa={removeDadosID}
                             metodoAtualizaDados={atualizaDados}
                         />
                     ))
 
                 }
                 {dados.length <= 0 && mensagem !== true && (
-                     <div className={styles.loader}><img src='/loader.svg' alt='Cadastro Oficina' /></div>
-                    
+                    <div className={styles.loader}>
+                        <Image src="/loader.svg" width="95%" height="95%" alt="Loader" />
+                    </div>
                 )}
 
 

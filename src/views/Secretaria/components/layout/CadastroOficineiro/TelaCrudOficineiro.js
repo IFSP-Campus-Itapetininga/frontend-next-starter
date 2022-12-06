@@ -1,7 +1,8 @@
 import styles from '../CadastroOficina/TelaCrudOficina.module.scss'
 import React, { useState, useEffect } from 'react';
 
-
+// IMPORT IMAGE
+import Image from 'next/image';
 
 // Import Layout
 
@@ -288,22 +289,15 @@ function TelaCrudOficineiro({ titulo, abrir, fechar, placeholder }) {
                             metodoAtualizaDados={atualizaDados}
                         />
                     ))
-
                 }
                 {dados.length <= 0 && mensagem !== true && (
-                    <div className={styles.loader}><img src='/loader.svg' alt='Cadastro Oficina' /></div>
-                    
+                    <div className={styles.loader}>                        
+                        <Image  src="/loader.svg" width="95%" height="95%" alt="Loader" />
+                    </div>
                 )}
-
-
             </section>
-
-
         </div>
-
     )
-
-
 }
 
 export default TelaCrudOficineiro

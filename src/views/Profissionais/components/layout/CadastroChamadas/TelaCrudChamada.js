@@ -1,12 +1,13 @@
-import styles from '../CadastroOficina/TelaCrudOficina.module.scss'
+import styles from '../CadastroChamadas/TelaCrudOficina.module.scss'
 import React, { useState, useEffect } from 'react';
 
-
+// IMPORT IMAGE
+import Image from 'next/image';
 
 // Import Layout
 
-import CadastroOficinaModal from './CadastroOficinaModal';
-import CardsOficina from './CardsOficina';
+import CadastroChamada from './CadastroChamada';
+import CardsChamada from './CardsChamada';
 
 /*
     Props
@@ -17,10 +18,10 @@ import CardsOficina from './CardsOficina';
 
 */
 
-function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtividade }) {
+function TelaCrudAssistido({ titulo, abrir, fechar, placeholder }) {
 
     //CRUD referente ao dado
-    const dado = 'projetos'
+    const dado = 'assistido'
 
     //Salvar os dados
     const [dados, setDados] = useState([])
@@ -53,9 +54,9 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
         }).then(
             resp => resp.json()
         ).then(
-            data => {                
+            data => {
                 setMensagem(true),
-                setDados(data)
+                    setDados(data)
             }
         ).catch(
             err => console.log(err)
@@ -89,15 +90,6 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
         )
     }
 
-    //verificar se o campo de pesquisa está digitado
-    function verificaCampo(){
-        if(palavra === ''){
-            recarregaPagina() 
-        }else{
-            carregaPesquisa(palavra)
-        }
-    }
-
 
     //Carrega as palavras pesquisadas    
     function carregaPesquisa(palavra) {
@@ -117,17 +109,17 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
                     //console.log(teste) verdadeiro ou falso
 
                     if (teste) {
-                        setMensagem(false)                        
+                        setMensagem(false)
                         apagaCampoBusca()
                         return teste
                     } else {
                         setMensagem(true)
-                        return teste       
+                        return teste
                     }
                 }
-                
+
                 setDados(data.filter((dado) =>
-                    busca(dado.oficina),
+                    busca(dado.nome),
                     setMensagem(false)
                 ))
             },
@@ -135,7 +127,7 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
             err => console.log(err)
         )
     }
-    
+
     //não deixa a págian dar reload
     const submit = (e) => {
         e.preventDefault()
@@ -183,13 +175,11 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
                 'Content-Type': 'application/json'
             }
         }).then(
-            
+
+            timeOut(),
             resp => resp.json()
         ).then(
             data => {
-                
-                setDados([]),
-                timeOut()
 
             }
         ).catch(
@@ -202,17 +192,17 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
     function timeOut() {
         setTimeout(() => {
             setPalavra(''),
-            setDados({}),
-            recarregaPagina()
-        }, "3000")
+                setDados({}),
+                recarregaPagina()
+        }, "4000")
     }
 
     //Apagar o campo após um tempo sem interação
-    function apagaCampoBusca(){
+    function apagaCampoBusca() {
         setTimeout(() => {
             setPalavra('')
             setConsulta('')
-        }, "7000")
+        }, "5000")
     }
 
     //atualizar os dados
@@ -267,7 +257,7 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
                     <button
                         className='btn btn-primary'
                         onClick={carregaPesquisa}
-                        
+
                     >Consultar
                     </button>
 
@@ -275,13 +265,11 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
                 </form>
                 <div className={styles.btncadastro}>
 
-                    <CadastroOficinaModal
+                    <CadastroChamada
 
                         textbtn={'Cadastrar'}
                         titulo={'Cadastrar Dados'}
                         metodoCadastraDados={cadastraDados}
-                        metodoShowAtividade={metodoShowAtividade}
-                        metodoAbriFecha={abrirFechar}
 
                     />
 
@@ -289,24 +277,25 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
             </div>
 
             <section className={styles.mainSection}>
-                {dados.length < 0 && mensagem === true && (
+                {dados.length <= 0 && mensagem === true && (
                     <p>Não foram encontradas referências para o termo: {palavra}!</p>
                 )}
                 {dados.length > 0 &&
                     dados.map((dado) => (
-                        <CardsOficina
+                        <CardsChamada
                             key={dado.id}
-                            propsDados={dado}                            
-                            pesquisa={removeDadosID}                            
+                            propsDados={dado}
+                            pesquisa={removeDadosID}
                             metodoAtualizaDados={atualizaDados}
-                            propsNomeAtividade={dado.atividade.nome}
                         />
                     ))
 
                 }
                 {dados.length <= 0 && mensagem !== true && (
-                     <div className={styles.loader}><img src='/loader.svg' alt='Cadastro Oficina' /></div>
-                    
+                    <div className={styles.loader}>
+                        <Image src="/loader.svg" width="95%" height="95%" alt="Loader" />
+                    </div>
+
                 )}
 
 
@@ -320,4 +309,4 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
 
 }
 
-export default TelaCrudOficina
+export default TelaCrudAssistido
