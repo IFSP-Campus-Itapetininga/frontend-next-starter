@@ -1,4 +1,4 @@
-import styles from '../CadastroOficina/TelaCrudOficina.module.scss'
+import styles from '../CadastroQuestionario/TelaCrudQuestionario.module.scss'
 import React, { useState, useEffect } from 'react';
 
 
@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 // Import Layout
 
 import CadastroQuestionarioModal from './CadastroQuestionarioModal';
+import CadastroQuestionarioModal2 from './CadastroQuestionarioModal2';
 import CardsQuestionario from './CardsQuestionario';
 
 /*
@@ -20,7 +21,7 @@ import CardsQuestionario from './CardsQuestionario';
 function TelaCrudQuestionario({ titulo, abrir, fechar, placeholder }) {
 
     //CRUD referente ao dado
-    const dado = 'turma'
+    const dado = 'perguntas'
 
     //Salvar os dados
     const [dados, setDados] = useState([])
@@ -266,11 +267,18 @@ function TelaCrudQuestionario({ titulo, abrir, fechar, placeholder }) {
 
                     <CadastroQuestionarioModal
 
-                        textbtn={'Questionario Alunos por Turma'}
-                        titulo={'Questionário'}
+                        textbtn={'Adicionar Pergunta'}
+                        titulo={'Adicionar Pergunta'}
                         metodoCadastraDados={cadastraDados}
 
                     />
+                    <CadastroQuestionarioModal2
+
+                        textbtn={'Adicionar Grupo'}
+                        titulo={'Adicionar Grupo'}
+                        metodoCadastraDados={cadastraDados}
+
+/>
 
                 </div>
             </div>
