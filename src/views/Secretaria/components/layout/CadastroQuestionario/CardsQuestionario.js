@@ -1,4 +1,4 @@
-import styles from '../CadastroOficina/CardsOficina.module.scss'
+import styles from '../CadastroQuestionario/CardsQuestionario.module.scss'
 import React, { useState, useEffect } from 'react';
 
 /* IMPORT LAYOUT */
@@ -12,7 +12,7 @@ function CardsQuestionario({ pesquisa, propsDados, metodoAtualizaDados }) {
         setDadosLocal({})
     }
 
-    // Oficina
+    // Questionario
     const [dadosLocal, setDadosLocal] = useState(propsDados || {})
 
     return (
@@ -23,7 +23,7 @@ function CardsQuestionario({ pesquisa, propsDados, metodoAtualizaDados }) {
 
 
 
-                        <h5 className="card-title">{dadosLocal.id} | {dadosLocal.oficina.oficina}</h5>
+                        <h5 className="card-title">{dadosLocal.id} | {dadosLocal.questionario.questionario}</h5>
                         <p className="card-text"><b>Oficineiro: </b>{dadosLocal.oficineiro.nome}</p>
                         <p className="card-text"><b>Capacidade: </b>{dadosLocal.lotacao} | <b>Questionario: </b>{dadosLocal.lotacao} | <b>Vagas: </b>{dadosLocal.lotacao}</p>
                         <p className="card-text"></p>
