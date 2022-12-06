@@ -6,26 +6,11 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const links = [
-  {
-    name: 'Início',
-    route: '/',
-  },
-  {name: 'Estoque',route: '/estoque'},
-  { name: 'Eventos', route: '/eventos' },
-  {
-    name: 'Marmitas',
-    route: '/marmitas',
-  },
-  {
-    name: 'Secretaria',
-    route: '/secretaria',
-  },
-];
+import viewsConfig from '../../viewsConfig';
 
 export default function NavComponent() {
   const renderRoutesLink = () => {
-    return links?.map((link) => (
+    return viewsConfig?.map((link) => (
       <Nav.Item key={link.name}>
         <Link href={link.route}>
           <a className="nav-link">{link.name}</a>
