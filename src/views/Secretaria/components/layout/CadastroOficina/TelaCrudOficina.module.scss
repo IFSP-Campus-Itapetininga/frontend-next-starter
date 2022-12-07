@@ -1,0 +1,75 @@
+
+
+.header{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.formDiv{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;    
+    align-items: center;
+}
+
+.formDiv form{
+    margin: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-bottom: 7px;
+}
+
+.formDiv form input{
+    max-width: 277px;
+}
+
+.formDiv button{
+    height: 38px;
+    max-width: 380px;
+    margin: auto;
+    flex: 1;
+}
+
+.btncadastro{
+    max-width: 400px;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+
+
+.formDiv input{
+    width: 350px;
+    max-width: 235px;
+    margin-right: 7px;
+    height: 38px;
+    border-radius: 8px;
+}
+
+.mainSection{
+    margin-top: 25px;
+}
+
+.loader{
+     width: 100%;
+     height: 200px;
+     display: flex;
+     justify-content: center;
+}
+
+@media (min-width: 700px) {
+
+    .formDiv form{
+
+        justify-content: flex-start;
+        margin-left: 0px;
+        margin-right: 7px;
+
+    }
+
+
+}
