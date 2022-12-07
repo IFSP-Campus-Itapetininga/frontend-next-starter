@@ -20,6 +20,16 @@ export const getProduct = async (id) => {
   }
 }
 
+export const getTransactions = async (id) => {
+  try {
+    const response = await api.get(`inventory/transactions/${id}`);
+    return response.data.transacoes;
+  } catch (error) {
+    throw new Error('Houve um problema com a chamada');
+  }
+}
+
+
 export const getVendors = async () => {
   try {
     const response = await api.get('/vendor');

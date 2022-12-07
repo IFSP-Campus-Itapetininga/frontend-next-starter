@@ -1,8 +1,14 @@
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import api from "../../../../services";
+import {getCookie} from 'cookies-next';
+import { useContext } from "react";
+import { AuthContext } from "components/AuthProvider";
 
 const TransactionForm = ({ itemid, getTransactions, getItem, setShowTransactionForm }) => {
+  const { data } = useContext(AuthContext);
+  console.log(data);
+  const token = getCookie('auth.token');
   const {
     register,
     handleSubmit,
@@ -12,18 +18,19 @@ const TransactionForm = ({ itemid, getTransactions, getItem, setShowTransactionF
     formState: { errors }
   } = useForm();
 
-  const onSubmit = async data => {
-    const updateQt = data.type === 'entry' ? data.quantidade : (0 - data.quantidade);
+  const onSubmit = async formData => {
+    const updateQt = formData.type === 'entry' ? formData.quantidade : (0 - formData.quantidade);
     const newTransaction = {
       itemid: itemid,
       quantidade: updateQt,
-      usuario: 'Giovanni',
-      memo: data.memo
+      usuario: data.user.name,
+      memo: formData.memo
     }
 
     const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/transactions`, JSON.stringify(newTransaction), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
       .then(res => {

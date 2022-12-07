@@ -1,6 +1,8 @@
 
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
+import { getTransactions } from "services/estoque";
 import api from "../../../../services";
 import StockModal from "../StockModal";
 import TransactionForm from "../TransactionForm";
@@ -8,22 +10,28 @@ import TransactionForm from "../TransactionForm";
 
 
 const ListTransactions = ({ itemid, getItem }) => {
-  const [transactions, setTransactions] = useState([]);
+  // const [transactions, setTransactions] = useState([]);
   const [newTransaction, setNewTransaction] = useState(false);
-  async function getTransactions() {
-    const response = await api.get(`inventory/transactions/${itemid}`);
-    const data = response.data;
-    setTransactions(data.transacoes);
-  }
+  const { isLoading, error, data: transactions } = useQuery(['stockItemTransactions'],
+    () => getTransactions(itemid).then(res => { return res }));
+  console.log(transactions);
+  // async function getTransactions() {
+  //   const response = await api.get(`inventory/transactions/${itemid}`);
+  //   const data = response.data;
+  //   setTransactions(data.transacoes);
+  // }
 
-  useEffect(() => {
-    getTransactions();
-  }, []);
+  // useEffect(() => {
+  //   getTransactions();
+  // }, []);
 
   function handleNewTransaction() {
     setNewTransaction(!newTransaction);
   }
 
+  if (isLoading) return "Loading..."
+
+  if (error) return 'Ocorreu um erro: ' + error.message;
 
   return (
     <>
