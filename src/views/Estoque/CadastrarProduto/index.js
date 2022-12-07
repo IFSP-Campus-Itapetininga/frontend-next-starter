@@ -4,11 +4,12 @@ import { useForm } from "react-hook-form";
 import api from "../../../services";
 import { AlertModal } from "../components/AlertModal";
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 const CadastrarProduto = () => {
   const [showAlertModal, setShowAlertModal] = useState(false);
-
+  const queryClient = useQueryClient();
   function hideAlert() {
     setTimeout(() => {
       setShowAlertModal(false);
@@ -20,6 +21,16 @@ const CadastrarProduto = () => {
     reset,
     formState: { errors }
   } = useForm();
+
+  const { mutate: createProduto, isLoading } = useMutation(
+    onSubmit,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['stockItems']);
+        handleCloseModal();
+      },
+    }
+  );
 
   async function handleFirstTransaction(id, qtd) {
     const newTransaction = {
