@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import { setCookie } from 'cookies-next';
 import { useLocalStorage } from './hooks';
 import viewsConfig from 'viewsConfig';
 
@@ -26,8 +27,8 @@ export default function AuthProvider(props) {
         ) {
           router.push('/');
         }
-    };
       }
+    };
 
     router.events.on('routeChangeComplete', handler);
 
@@ -42,13 +43,18 @@ export default function AuthProvider(props) {
       router.push('/login');
     }
 
-    router.push('/');
+    if (router.pathname === '/login') {
+      router.push('/');
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setLoginData = useCallback(
     (payload) => {
       setData(payload);
+      setCookie('auth.token', payload.token, {
+        maxAge: 60 * 24 * 3,
+      });
 
       router.push('/');
     },
