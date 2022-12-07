@@ -1,5 +1,6 @@
 import api from 'services';
-
+import { getCookie } from 'cookies-next';
+const token = getCookie('auth.token');
 export const getProducts = async () => {
   try {
     const response = await api.get('/inventory/item');
@@ -58,7 +59,11 @@ export const getAllTransactions = async () => {
 
 export const deleteItem = async (id) => {
   try {
-    const response = await api.delete(`/inventory/item/${id}`)
+    const response = await api.delete(`/inventory/item/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
   } catch (error) {
     throw new Error('Houve um problema com a chamada')
   }
@@ -66,7 +71,11 @@ export const deleteItem = async (id) => {
 
 export const deleteVendor = async (id) => {
   try {
-    const response = await api.delete(`/vendor/${id}`)
+    const response = await api.delete(`/vendor/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
   } catch (error) {
     throw new Error('Houve um problema com a chamada')
   }
@@ -74,7 +83,11 @@ export const deleteVendor = async (id) => {
 
 export const deleteContact = async (id) => {
   try {
-    const response = await api.delete(`/vendor/contact/${id}`)
+    const response = await api.delete(`/vendor/contact/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
   } catch (error) {
     throw new Error('Houve um problema com a chamada')
   }
@@ -83,10 +96,14 @@ export const deleteContact = async (id) => {
 export const deleteItemHasVendor = async (data) => {
   console.log(data);
   try {
-    const response = await api.delete('inventory/item/vendor/itemhasvendor', {data: data})
+    const response = await api.delete('inventory/item/vendor/itemhasvendor', {
+      data: data, headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
     alert("Relacionamento excluido com sucesso!");
     console.log(response);
   } catch (error) {
     throw new Error('Houve um problema com a chamada')
-  } 
+  }
 }

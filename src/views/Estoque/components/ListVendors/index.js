@@ -3,13 +3,14 @@ import { Button, Table } from "react-bootstrap";
 import api from "services";
 import { deleteItemHasVendor, getItemHasVendor, getVendors } from "services/estoque";
 import DeleteModal from "../DeleteModal";
-
+import {getCookie} from 'cookies-next';
+import Link from "next/link";
 const ListVendors = ({ itemid, justList, setNewVendor }) => {
 
   const [vendors, setVendors] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteIds, setDeleteIds] = useState();
-
+  const token = getCookie('auth.token');
   async function handleFilterVendors() {
     const data = await getVendors();
     const itemVendors = await getItemHasVendor(itemid);
@@ -39,10 +40,10 @@ const ListVendors = ({ itemid, justList, setNewVendor }) => {
     const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/item/vendor`, JSON.stringify(newVendorHasItem), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
       .then(res => {
-        alert("Fornecedor adicionado ao item!");
         setNewVendor();
         getListVendors();
       });
@@ -76,11 +77,13 @@ const ListVendors = ({ itemid, justList, setNewVendor }) => {
         </thead>
         <tbody>
           {
-            vendors?.map(vendor => {
+            vendors
+            .filter(vendor => vendor.ativo === '1')
+            .map(vendor => {
               return (
                 <tr key={vendor.fornecedorid}>
                   <td className="text-center">{vendor.fornecedorid}</td>
-                  <td>{vendor.fornecedor}</td>
+                  <td><Link href={`/estoque/fornecedor/${vendor.fornecedorid}`}>{vendor.fornecedor}</Link></td>
                   <td>{vendor.descricao}</td>
                   {justList && <td>{vendor.cnpj}</td>}
                   <td>

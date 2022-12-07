@@ -9,15 +9,24 @@ import { Layout } from "layout";
 import { getProduct } from "services/estoque";
 import ListVendors from "../components/ListVendors";
 import StockModal from "../components/StockModal";
+import {getCookie} from 'cookies-next';
+import { AlertModal } from "../components/AlertModal";
 
 const Produto = () => {
+  const [showAlertModal, setShowAlertModal] = useState(false);
   const [item, setItem] = useState({});
   const [newVendor, setNewVendor] = useState(false);
+  const token = getCookie('auth.token');
   const router = useRouter()
   const id = router.query.id;
   async function getItem() {
     const data = await getProduct(id);
     setItem(data);
+  }
+  function hideAlert() {
+    setTimeout(() => {
+      setShowAlertModal(false);
+    }, 2000);
   }
 
   useEffect(() => {
@@ -41,11 +50,12 @@ const Produto = () => {
     const response = await api.patch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/item/${item.itemid}`, JSON.stringify(newItem), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
-      .then(res => {
-        alert("Item atualizado!");
-      });
+    console.log(response);
+    if (response.status === 204) setShowAlertModal(true);
+    hideAlert();
   };
   function handleNewVendor() {
     setNewVendor(!newVendor);
@@ -101,6 +111,7 @@ const Produto = () => {
           </Tab>
         </Tabs>
       </StockLayout>
+      <AlertModal title="Sucesso" text="Produto atualizado com sucesso!" showAlertModal={showAlertModal} />
     </Layout>
   )
 }

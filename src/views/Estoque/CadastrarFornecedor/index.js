@@ -4,9 +4,11 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import api from '../../../services';
 import { StockLayout } from "../layout";
+import {getCookie} from 'cookies-next';
 
 const CadastrarFornecedor = () => {
   const [newContact, setNewContact] = useState(false);
+  const token = getCookie('auth.token');
 
   function handleNewContact() {
     setNewContact(!newContact);
@@ -50,6 +52,7 @@ const CadastrarFornecedor = () => {
     const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/vendor`, JSON.stringify(newVendor), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
       .then(res => {

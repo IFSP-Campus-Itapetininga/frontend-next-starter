@@ -5,11 +5,13 @@ import api from "../../../services";
 import { AlertModal } from "../components/AlertModal";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getCookie } from 'cookies-next'
 
 
 const CadastrarProduto = () => {
   const [showAlertModal, setShowAlertModal] = useState(false);
   const queryClient = useQueryClient();
+  const token = getCookie('auth.token');
   function hideAlert() {
     setTimeout(() => {
       setShowAlertModal(false);
@@ -22,15 +24,15 @@ const CadastrarProduto = () => {
     formState: { errors }
   } = useForm();
 
-  const { mutate: createProduto, isLoading } = useMutation(
-    onSubmit,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['stockItems']);
-        handleCloseModal();
-      },
-    }
-  );
+  // const { mutate: createProduto, isLoading } = useMutation(
+  //   onSubmit,
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries(['stockItems']);
+  //       handleCloseModal();
+  //     },
+  //   }
+  // );
 
   async function handleFirstTransaction(id, qtd) {
     const newTransaction = {
@@ -43,6 +45,7 @@ const CadastrarProduto = () => {
     const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/transactions`, JSON.stringify(newTransaction), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     });
     if (response.status === 201) setShowAlertModal(true);
@@ -59,6 +62,7 @@ const CadastrarProduto = () => {
     const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/item`, JSON.stringify(newItem), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
       .then(res => {

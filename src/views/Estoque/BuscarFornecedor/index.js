@@ -26,6 +26,8 @@ const BuscarFornecedor = () => {
     setShowDeleteModal(true);
   }
 
+  console.log(vendors);
+
   if (isLoading) return "Carregando..."
 
   if (error) return 'Ocorreu um erro: ' + error.message;
@@ -55,7 +57,7 @@ const BuscarFornecedor = () => {
             <tbody>
               {
                 vendors
-                  .filter(vendor => vendor.ativo === 1)
+                  .filter(vendor => vendor.ativo === '1')
                   .filter(val => {
                     if (searchTerm == "") {
                       return val;
