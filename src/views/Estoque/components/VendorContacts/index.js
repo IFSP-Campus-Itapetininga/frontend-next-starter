@@ -1,4 +1,4 @@
-import { Table, Button } from "react-bootstrap";
+import { Table, Button } from 'react-bootstrap';
 
 const VendorContacts = ({ contatos }) => {
   return (
@@ -14,11 +14,10 @@ const VendorContacts = ({ contatos }) => {
         </tr>
       </thead>
       <tbody>
-        {
-          contatos &&
-          contatos.map(contato => {
+        {contatos &&
+          contatos.map((contato, key) => {
             return (
-              <tr>
+              <tr key={key}>
                 <td className="text-center">{contato.contatoid}</td>
                 <td>{contato.nome}</td>
                 <td>{contato.funcao}</td>
@@ -26,17 +25,18 @@ const VendorContacts = ({ contatos }) => {
                 <td className="text-center">{contato.telefone}</td>
                 <td>
                   <div className="text-center">
-                    <Button variant="success" style={{ "marginRight": "20px" }}>Editar</Button>
-                    <Button variant="danger" >Excluir</Button>
+                    <Button variant="success" style={{ marginRight: '20px' }}>
+                      Editar
+                    </Button>
+                    <Button variant="danger">Excluir</Button>
                   </div>
                 </td>
               </tr>
-            )
-          })
-        }
+            );
+          })}
       </tbody>
     </Table>
-  )
-}
+  );
+};
 
 export default VendorContacts;

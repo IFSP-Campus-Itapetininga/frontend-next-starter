@@ -1,4 +1,5 @@
 import StepWizard from 'react-step-wizard';
+import Alert from 'react-bootstrap/Alert';
 
 import { Modal, Loading } from 'components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,7 +16,7 @@ export function Cadastro({ showModal, setShowModal }) {
   const [formData, setFormData] = useState({});
   const [isButtonDisabled, setIsButtonIsDisabled] = useState(true);
 
-  const { mutate, isLoading } = useMutation(createMarmitaOrder, {
+  const { mutate, isLoading, isError } = useMutation(createMarmitaOrder, {
     onSuccess: () => {
       queryClient.invalidateQueries(['getAllMarmitaOrders']);
       handleCloseModal();
@@ -61,6 +62,12 @@ export function Cadastro({ showModal, setShowModal }) {
             disableButton={setIsButtonIsDisabled}
           />
         </StepWizard>
+
+        {isError && (
+          <Alert variant="danger" className="mt-4">
+            Ocorreu um erro ao criar pedido, tente novamente!
+          </Alert>
+        )}
       </Modal>
       <Loading show={isLoading} />
     </>

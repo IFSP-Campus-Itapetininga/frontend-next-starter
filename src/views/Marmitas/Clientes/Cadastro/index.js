@@ -1,6 +1,6 @@
 import { Modal, Input, Loading } from 'components';
 import { useForm, FormProvider } from 'react-hook-form';
-
+import Alert from 'react-bootstrap/Alert';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
@@ -34,22 +34,27 @@ export function Cadastro({ showModal, setShowModal }) {
     }
   );
 
-  const { mutate: createMamita, isLoading } = useMutation(createMarmitaClient, {
+  const {
+    mutate: createMamita,
+    isLoading,
+    isError,
+  } = useMutation(createMarmitaClient, {
     onSuccess: () => {
       queryClient.invalidateQueries(['getAllMarmitaClients']);
       handleCloseModal();
     },
   });
 
-  const { mutate: editMamita, isLoading: isEditLoading } = useMutation(
-    editMarmitaClient,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['getAllMarmitaClients']);
-        handleCloseModal();
-      },
-    }
-  );
+  const {
+    mutate: editMamita,
+    isLoading: isEditLoading,
+    isError: hasError,
+  } = useMutation(editMarmitaClient, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['getAllMarmitaClients']);
+      handleCloseModal();
+    },
+  });
 
   const onSubmit = methods.handleSubmit(async (values) => {
     const data = {
@@ -117,6 +122,10 @@ export function Cadastro({ showModal, setShowModal }) {
             </div>
           </form>
         </FormProvider>
+
+        {(isError || hasError) && (
+          <Alert variant="danger">Ocorreu um erro, tente novamente!</Alert>
+        )}
       </Modal>
       <Loading
         show={(isLoadingEdit && isFetching) || isLoading || isEditLoading}
