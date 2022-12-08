@@ -1,29 +1,31 @@
 
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import api from "../../../../services";
+import { getTransactions } from "services/estoque";
+import { parseISO, format } from 'date-fns';
 import StockModal from "../StockModal";
 import TransactionForm from "../TransactionForm";
 
 
+const formatDateToBrazilianStandard = (_date) => {
+  const date = parseISO(_date.split('.')[0]);
+  return format(date, "dd'/'MM'/'yyyy HH':'mm");
+};
+
 
 const ListTransactions = ({ itemid, getItem }) => {
-  const [transactions, setTransactions] = useState([]);
   const [newTransaction, setNewTransaction] = useState(false);
-  async function getTransactions() {
-    const response = await api.get(`inventory/transactions/${itemid}`);
-    const data = response.data;
-    setTransactions(data.transacoes);
-  }
-
-  useEffect(() => {
-    getTransactions();
-  }, []);
+  const { isLoading, error, data: transactions } = useQuery(['stockItemTransactions'],
+    () => getTransactions(itemid).then(res => { return res }));
 
   function handleNewTransaction() {
     setNewTransaction(!newTransaction);
   }
 
+  if (isLoading) return "Loading..."
+
+  if (error) return 'Ocorreu um erro: ' + error.message;
 
   return (
     <>
@@ -47,7 +49,7 @@ const ListTransactions = ({ itemid, getItem }) => {
                       <td>{item.usuario}</td>
                       <td className={`${(item.quantidade >= 0 ? 'text-success' : 'text-danger')} text-center`}>{item.quantidade}</td>
                       <td>{item.memo}</td>
-                      <td className="text-center">{item.datatransacao}</td>
+                      <td className="text-center">{formatDateToBrazilianStandard(item.datatransacao)}</td>
                     </tr>
                   )
                 })

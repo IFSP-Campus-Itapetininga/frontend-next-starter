@@ -25,3 +25,4 @@ Para criar uma nova página, basta rodar o seguinte comando:
 ```bash
 yarn generate
 ```
+
