@@ -10,13 +10,19 @@ import viewsConfig from '../../viewsConfig';
 
 export default function NavComponent() {
   const renderRoutesLink = () => {
-    return viewsConfig?.map((link) => (
-      <Nav.Item key={link.name}>
-        <Link href={link.route}>
-          <a className="nav-link">{link.name}</a>
-        </Link>
-      </Nav.Item>
-    ));
+    return viewsConfig?.reduce((acc, curr) => {
+      if (curr.visible) {
+        acc.push(
+          <Nav.Item key={curr.name}>
+            <Link href={curr.route}>
+              <a className="nav-link">{curr.name}</a>
+            </Link>
+          </Nav.Item>
+        );
+      }
+
+      return acc;
+    }, []);
   };
 
   return (
