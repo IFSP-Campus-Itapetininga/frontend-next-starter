@@ -30,8 +30,6 @@ export default function AuthProvider(props) {
       if (data) {
         const view = viewsConfig.find((viewConfig) => viewConfig.route === url);
 
-        console.log('view:::', view);
-
         if (
           view.authorization.enabled &&
           !view.authorization.roles.includes(data.role.name)
