@@ -19,7 +19,7 @@ const BuscarFornecedor = () => {
   const [page, setPage] = useState(0);
 
   const { isLoading, error, data: vendors } = useQuery(['stockVendors'],
-    () => getVendors().then(res => {return res}));
+    () => getVendors().then(res => { return res }));
 
   function handleShowDeleteModal(id) {
     setSelectedItem(id);
@@ -55,6 +55,7 @@ const BuscarFornecedor = () => {
             <tbody>
               {
                 vendors
+                  .filter(vendor => vendor.ativo === '1')
                   .filter(val => {
                     if (searchTerm == "") {
                       return val;
@@ -90,7 +91,7 @@ const BuscarFornecedor = () => {
             </Button>
           </div>
         </section>
-        <DeleteModal showModal={showDeleteModal} iditem={selectedItem} />
+        <DeleteModal showModal={showDeleteModal} id={selectedItem} type='vendor' setShow={() => setShowDeleteModal(false)} />
       </StockLayout>
     </Layout>
   )

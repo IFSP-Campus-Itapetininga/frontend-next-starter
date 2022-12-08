@@ -9,17 +9,25 @@ import VendorContacts from "../components/VendorContacts";
 import ContactForm from "../components/ContactForm";
 import ListItems from "../components/ListItems";
 import StockModal from "../components/StockModal";
+import { AlertModal } from "../components/AlertModal";
+import { getCookie } from 'cookies-next';
 
 const Fornecedor = () => {
+  const [showAlertModal, setShowAlertModal] = useState(false);
   const [vendor, setVendor] = useState({});
   const [newContact, setNewContact] = useState(false);
   const [newItem, setNewItem] = useState(false);
+  const token = getCookie('auth.token');
+  function hideAlert() {
+    setTimeout(() => {
+      setShowAlertModal(false);
+    }, 2000);
+  }
   const router = useRouter()
   const id = router.query.id;
   async function getVendor() {
     const response = await api.get(`/vendor/${id}`);
     const data = response.data;
-    console.log(data);
     setVendor(data);
   }
 
@@ -31,45 +39,29 @@ const Fornecedor = () => {
   const {
     register,
     handleSubmit,
-    getValues,
-    watch,
     formState: { errors },
-    reset
   } = useForm();
 
   const onSubmit = async data => {
-    const newVendor = {
-      fornecedor: data.fornecedor,
-      descricao: data.descricao,
-      endereco: {
-        rua: data.rua,
-        numero: data.numero,
-        estado: data.estado,
-        cidade: data.cidade,
-        cep: data.cep,
-        bairro: data.bairro,
-        complemento: data.complemento
-      },
-      contact: [
-        {
-          fornecedor: data.manager,
-          email: data.email,
-          phone: data.phone,
-          whatsapp: data.whatsapp,
-          role: data.role
-        }
-      ]
+    const newAddress = {
+      enderecoid: vendor.endereco[0].enderecoid,
+      rua: data.rua,
+      numero: data.numero,
+      estado: data.estado,
+      cidade: data.cidade,
+      cep: data.cep,
+      bairro: data.bairro,
+      complemento: data.complemento
     }
 
-    const response = await api.post('http://localhost:3333/v1/vendor', JSON.stringify(newVendor), {
+    const response = await api.patch('http://localhost:3333/v1/vendor/address', JSON.stringify(newAddress), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
-      .then(res => {
-        alert("Item cadastrado!");
-        reset();
-      });
+    if (response); setShowAlertModal(true);
+    hideAlert();
   };
 
   function handleNewContact() {
@@ -216,7 +208,7 @@ const Fornecedor = () => {
           className="mb-3"
         >
           <Tab eventKey="contacts" title="Contatos">
-            <VendorContacts contatos={vendor.contato} />
+            <VendorContacts contatos={vendor.contato} getContacts={getVendor} />
             <Button variant={"primary"} onClick={handleNewContact} className="mb-5">
               Adicionar contato
             </Button>
@@ -243,6 +235,7 @@ const Fornecedor = () => {
           </Tab>
         </Tabs>
       </StockLayout>
+      <AlertModal title="Sucesso" text="Endereço atualizado com sucesso!" showAlertModal={showAlertModal} />
     </Layout >
   )
 }

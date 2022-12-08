@@ -1,51 +1,66 @@
 import { useState, useEffect } from "react";
 import { Button, Table, InputGroup, Form } from "react-bootstrap";
-import api from "services";
 import { getProducts, getVendorHasItem } from "services/estoque";
+import { handleAddItemToVendor } from "services/estoque";
+import DeleteModal from "../DeleteModal";
+import Link from "next/link";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 const ListItems = ({ fornecedorid, justList, setNewItem }) => {
+  const [products, setProducts] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteIds, setDeleteIds] = useState();
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(0);
-  async function handleFilterItems() {
-    const products = await getProducts();
-    const vendorProducts = await getVendorHasItem(fornecedorid);
-    const filteredItems = products.filter((item) => {
-      const checkFilter = vendorProducts.response.item.some((i) => i.itemid === item.itemid);
-      if (!checkFilter) return item;
-    });
-    console.log(filteredItems);
-    setItems(filteredItems);
-  }
+
+  const queryClient = useQueryClient();
+
+  const { isLoading, error, data: dataItems } = useQuery(['vendorItems'],
+    () => getVendorHasItem(fornecedorid).then(res => {
+      return res.response.item
+    }));
+
   async function getItems() {
-    if (justList) {
-      const data = await getVendorHasItem(fornecedorid);
-      setItems(data.response.item);
-    } else {
-      handleFilterItems();
-    }
+    const newProducts = await getProducts();
+    setProducts(newProducts);
   }
   useEffect(() => {
     getItems();
   }, [])
 
-  async function handleAddItemToVendor(id) {
+  const {
+    mutate: createItemToVendor,
+    isLoading: isCallLoading,
+    isError: isCallError,
+  } = useMutation(handleAddItemToVendor, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['vendorItems']);
+      setNewItem();
+    },
+  });
+
+  async function addItemToVendor(id) {
     const newVendorHasItem = {
       fornecedorid,
       itemid: id
     }
-
-    const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/item/vendor`, JSON.stringify(newVendorHasItem), {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-      .then(res => {
-        alert("Item adicionado ao fornecedor!");
-        getVendorHasItem(fornecedorid);
-        setNewItem();
-      });
+    createItemToVendor(newVendorHasItem);
   }
+
+  function handleShowDeleteModal(itemid) {
+    const delIds = {
+      itemid: +itemid,
+      fornecedorid: fornecedorid
+    }
+    setDeleteIds(delIds);
+    setShowDeleteModal(!showDeleteModal);
+  }
+
+
+  if (isLoading) return "Loading..."
+
+  if (error) return 'Ocorreu um erro: ' + error.message;
 
   return (
     <>
@@ -65,37 +80,67 @@ const ListItems = ({ fornecedorid, justList, setNewItem }) => {
             <th className="text-center">Ações</th>
           </tr>
         </thead>
-        <tbody>
-          {
-            items
-              .filter(item => item.ativo === 1)
-              .filter(val => {
-                if (searchTerm == "") {
-                  return val;
-                } else if (val.descricao.toLowerCase().includes(searchTerm.toLowerCase())) {
-                  return val;
-                }
-              })
-              .slice(page, page + 10)
-              .map(item => {
-                return (
-                  <tr key={justList ? item.itemid : item.itemid + 10}>
-                    <td className="text-center">{item.itemid}</td>
-                    <td>{item.descricao}</td>
-                    <td>
-                      <div className="text-center">
-                        {justList ?
-                          <Button variant="danger">Excluir</Button> :
-                          <Button variant="success" onClick={() => handleAddItemToVendor(item.itemid)}>Adicionar</Button>
-                        }
-
-                      </div>
-                    </td>
-                  </tr>
-                )
-              })
-          }
-        </tbody>
+        {
+          justList ?
+            <tbody>
+              {
+                dataItems
+                  .filter(item => item.ativo === 1)
+                  .filter(val => {
+                    if (searchTerm == "") {
+                      return val;
+                    } else if (val.descricao.toLowerCase().includes(searchTerm.toLowerCase())) {
+                      return val;
+                    }
+                  })
+                  .slice(page, page + 10)
+                  .map(item => {
+                    return (
+                      <tr key={item.itemid}>
+                        <td className="text-center">{item.itemid}</td>
+                        <td><Link href={`/estoque/produto/${item.itemid}`}>{item.descricao}</Link></td>
+                        <td>
+                          <div className="text-center">
+                            <Button variant="danger" onClick={() => handleShowDeleteModal(item.itemid)}>Excluir</Button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })
+              }
+            </tbody>
+            :
+            <tbody>
+              {
+                products
+                  .filter(item => {
+                    const checkFilter = dataItems.some((i) => i.itemid === item.itemid);
+                    if (!checkFilter) return item;
+                  })
+                  .filter(item => item.ativo === 1)
+                  .filter(val => {
+                    if (searchTerm == "") {
+                      return val;
+                    } else if (val.descricao.toLowerCase().includes(searchTerm.toLowerCase())) {
+                      return val;
+                    }
+                  })
+                  .slice(page, page + 10)
+                  .map(item => {
+                    return (
+                      <tr key={item.itemid + 10}>
+                        <td className="text-center">{item.itemid}</td>
+                        <td><Link href={`/estoque/produto/${item.itemid}`}>{item.descricao}</Link></td>
+                        <td>
+                          <div className="text-center">
+                            <Button variant="success" onClick={() => addItemToVendor(item.itemid)}>Adicionar</Button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })
+              }
+            </tbody>}
       </Table>
       {!justList && <div className="d-flex justify-content-between">
         <Button onClick={() => { setPage(page - 10) }} disabled={page === 0}>
@@ -105,6 +150,7 @@ const ListItems = ({ fornecedorid, justList, setNewItem }) => {
           Próximo
         </Button>
       </div>}
+      <DeleteModal showModal={showDeleteModal} type="itemHasVendor" id={deleteIds} setShow={() => setShowDeleteModal(false)} getData={getItems} />
     </>
   )
 }

@@ -21,7 +21,7 @@ const BuscarProduto = () => {
 
 
   const { isLoading, error, data: items } = useQuery(['stockItems'],
-    () => getProducts().then(res => {return res}));
+    () => getProducts().then(res => { return res }));
 
 
   function handleShowDeleteModal(id) {
@@ -94,7 +94,13 @@ const BuscarProduto = () => {
             </Button>
           </div>
         </section>
-        <DeleteModal showModal={showDeleteModal} itemid={selectedItem} />
+        <DeleteModal
+          showModal={showDeleteModal}
+          id={selectedItem}
+          type='item'
+          setShow={() => setShowDeleteModal(false)
+          }
+        />
       </StockLayout>
     </Layout>
   )
