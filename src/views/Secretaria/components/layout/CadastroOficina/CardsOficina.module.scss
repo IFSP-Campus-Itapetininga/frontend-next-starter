@@ -1,0 +1,14 @@
+.container{
+    margin-top: 15px;
+
+}
+
+.buttons{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+}
+
+.buttons button{
+    margin-right: 7px;
+}

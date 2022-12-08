@@ -34,8 +34,8 @@
       },
       {
         type: 'append',
-        path: '../src/components/Navbar/index.js',
-        pattern: /(},)/,
+        path: '../src/viewsConfig.js',
+        pattern: /(},\n\t},)/,
         template: `  {name: '{{pascalCase route}}',route: '/{{lowerCase route}}'},`,
       },
     ],

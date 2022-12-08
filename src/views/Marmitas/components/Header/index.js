@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Slot } from '@radix-ui/react-slot';
+//import { Slot } from '@radix-ui/react-slot';
 import styles from './header.module.scss';
 import Link from 'next/link';
 
