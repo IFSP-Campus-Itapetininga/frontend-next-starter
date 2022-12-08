@@ -3,9 +3,13 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Select from 'react-select'
+import { getCookie } from 'cookies-next';
 import makeAnimated from "react-select/animated";
 
 function CadastroOficineiroModal({ textbtn, titulo, metodoCadastraDados, propsDados, metodoAtualizaDados }) {
+  const token = getCookie('auth.token')
+
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -49,7 +53,8 @@ const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary/ativvalueadeAt
     fetch(urlAPI, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        authorization:  `Bearear ${token}`
       },
     })
       .then((resp) => resp.json())

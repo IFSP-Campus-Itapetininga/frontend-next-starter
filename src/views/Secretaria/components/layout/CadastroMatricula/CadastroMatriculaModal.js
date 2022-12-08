@@ -5,8 +5,10 @@ import Modal from 'react-bootstrap/Modal';
 import Selects from 'react-select'
 import makeAnimated from "react-select/animated";
 import Select from "../CadastroTurma/Select"
+import { getCookie } from 'cookies-next';
 
 function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados, metodoAtualizaDados }) {
+  const token = getCookie('auth.token')
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -28,7 +30,8 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
     fetch(`${urlAPI}/turma`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        authorization:  `Bearear ${token}`
       },
     })
       .then((resp) => resp.json())
@@ -69,7 +72,8 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
     fetch(`${urlAPI}/assistido`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        authorization:  `Bearear ${token}`
       },
     })
       .then((resp) => resp.json())

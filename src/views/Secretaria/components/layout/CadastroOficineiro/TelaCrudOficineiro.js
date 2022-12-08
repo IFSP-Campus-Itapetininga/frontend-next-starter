@@ -1,5 +1,6 @@
 import styles from '../CadastroOficina/TelaCrudOficina.module.scss'
 import React, { useState, useEffect } from 'react';
+import { getCookie } from 'cookies-next';
 
 // IMPORT IMAGE
 import Image from 'next/image';
@@ -19,9 +20,11 @@ import CardsOficineiros from './CardsOficineiros';
 */
 
 function TelaCrudOficineiro({ titulo, abrir, fechar, placeholder }) {
+    const token = getCookie('auth.token')
+
 
     //CRUD referente ao dado
-    const dado = 'oficineiro'
+    const dado = 'instructor'
 
     //Salvar os dados
     const [dados, setDados] = useState([])
@@ -49,7 +52,8 @@ function TelaCrudOficineiro({ titulo, abrir, fechar, placeholder }) {
         fetch(`${urlAPI}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization:  `Bearear ${token}`
             }
         }).then(
             resp => resp.json()
@@ -68,7 +72,8 @@ function TelaCrudOficineiro({ titulo, abrir, fechar, placeholder }) {
         fetch(`${urlAPI}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization:  `Bearear ${token}`
             }
         }).then(
 
@@ -97,7 +102,8 @@ function TelaCrudOficineiro({ titulo, abrir, fechar, placeholder }) {
         fetch(`${urlAPI}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization:  `Bearear ${token}`
             }
         }).then(
             resp => resp.json()
@@ -148,7 +154,8 @@ function TelaCrudOficineiro({ titulo, abrir, fechar, placeholder }) {
             {
                 method: 'POST',
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    authorization:  `Bearear ${token}`
                 },
                 body: JSON.stringify(dados) // vai receber a nova oficina
             })
@@ -172,7 +179,8 @@ function TelaCrudOficineiro({ titulo, abrir, fechar, placeholder }) {
         fetch(`${urlAPI}/${id}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization:  `Bearear ${token}`
             }
         }).then(
 
@@ -211,7 +219,8 @@ function TelaCrudOficineiro({ titulo, abrir, fechar, placeholder }) {
             {
                 method: 'PUT',
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    authorization:  `Bearear ${token}`
                 },
                 body: JSON.stringify(dados) // vai receber a nova oficina
             })

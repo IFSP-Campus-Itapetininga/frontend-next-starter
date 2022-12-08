@@ -1,5 +1,6 @@
 import styles from '../CadastroOficina/TelaCrudOficina.module.scss'
 import React, { useState, useEffect } from 'react';
+import { getCookie } from 'cookies-next';
 
 // IMPORT IMAGE
 import Image from 'next/image';
@@ -19,6 +20,7 @@ import CardsOficina from './CardsOficina';
 */
 
 function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtividade }) {
+    const token = getCookie('auth.token')
 
     //CRUD referente ao dado
     const dado = 'workshop'
@@ -52,7 +54,8 @@ const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary/${dado}`
             const resp = await fetch(`${urlAPI}`, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    authorization:  `Bearear ${token}`
                 }
             })
             const data = await resp.json()
@@ -69,7 +72,8 @@ const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary/${dado}`
         fetch(`${urlAPI}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization:  `Bearear ${token}`
             }
         }).then(
 
@@ -107,7 +111,8 @@ const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary/${dado}`
         fetch(`${urlAPI}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization:  `Bearear ${token}`
             }
         }).then(
             resp => resp.json()
@@ -158,7 +163,8 @@ const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary/${dado}`
             {
                 method: 'POST',
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    authorization:  `Bearear ${token}`
                 },
                 body: JSON.stringify(dados) // vai receber a nova oficina
             })
@@ -182,7 +188,8 @@ const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary/${dado}`
         fetch(`${urlAPI}/${id}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                authorization:  `Bearear ${token}`
             }
         }).then(
 
@@ -223,7 +230,8 @@ const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary/${dado}`
             {
                 method: 'PUT',
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    authorization:  `Bearear ${token}`
                 },
                 body: JSON.stringify(dados) // vai receber a nova oficina
             })

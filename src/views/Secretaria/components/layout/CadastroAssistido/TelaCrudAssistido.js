@@ -32,7 +32,7 @@ import CardsAssistido from './CardsAssistido';
 function TelaCrudAssistido({ titulo, abrir, fechar, placeholder }) {
 
     //CRUD referente ao dado
-    const dado = 'assistido'
+    const dado = 'student'
 
     //Salvar os dados
     const [dados, setDados] = useState([])
