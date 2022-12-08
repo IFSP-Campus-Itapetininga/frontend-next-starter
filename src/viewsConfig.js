@@ -11,8 +11,8 @@ const viewsConfig = [
     name: 'Estoque',
     route: '/estoque',
     authorization: {
-      enabled: false,
-      roles: [],
+      enabled: true,
+      roles: ['Almoxarife', 'Administrador'],
     },
   },
   {
