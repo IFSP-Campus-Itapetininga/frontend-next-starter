@@ -25,8 +25,10 @@ export default function Edit({ user }) {
     try {
       setShowError(false);
       const token = getCookie('auth.token');
+      const { nome, idPapel, senha } = values;
 
-      await admin.update(user.id, values, token);
+      await admin.update(user.id, { nome, idPapel }, token);
+      await admin.updatePassword(user.id, { senha }, token);
 
       router.push('/admin');
     } catch (error) {
@@ -58,7 +60,7 @@ export default function Edit({ user }) {
             <Form.Label>Senha:</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Informe o nome do usuário"
+              placeholder="Informe a nova senha"
               {...register('senha', { required: true })}
               required
             />

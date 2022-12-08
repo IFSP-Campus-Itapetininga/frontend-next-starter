@@ -57,7 +57,7 @@ export default function Create() {
             <Form.Label>Senha:</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Informe o nome do usuário"
+              placeholder="Informe a senha"
               {...register('senha', { required: true })}
               required
             />
