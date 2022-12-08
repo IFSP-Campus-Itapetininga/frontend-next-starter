@@ -3,12 +3,12 @@ import { MarmitaEstatistica } from 'views';
 
 import { getMarmitaStatistics } from 'services';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-import { format, subDays } from 'date-fns';
+import { addDays, subDays } from 'date-fns';
 import { getCookie } from 'cookies-next';
 
 const filterProps = {
-  initial_date: subDays(new Date(), 30),
-  final_date: new Date(),
+  initial_date: subDays(new Date(), 7),
+  final_date: addDays(new Date(), 1),
 };
 
 export default function MarmitaProdutoPage({ token }) {
