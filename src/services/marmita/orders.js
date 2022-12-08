@@ -1,8 +1,11 @@
 import api from 'services';
 
-export const getAllMarmitaOrders = async (filter) => {
+export const getAllMarmitaOrders = async ({ filter, token }) => {
   try {
-    const response = await api.get('/lunchs/orders', { params: filter });
+    const response = await api.get('/lunchs/orders', {
+      params: filter,
+      headers: { authorization: `Bearear ${token}` },
+    });
 
     return response.data;
   } catch (error) {

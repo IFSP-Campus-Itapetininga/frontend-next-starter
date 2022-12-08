@@ -8,6 +8,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import schema from './validation';
 import { getMarmitaClientByPhone, createMarmitaClient } from 'services';
 import { useState } from 'react';
+import { getCookie } from 'cookies-next';
 
 const ClientForm = ({ hasData }) => {
   return (
@@ -54,6 +55,7 @@ const ClientForm = ({ hasData }) => {
 
 export function Step1({ nextStep, setFormData, ...porps }) {
   const [search, setSearch] = useState(false);
+  const token = getCookie('auth.token');
   const [hasClient, setHasClient] = useState(true);
   const methods = useForm({ resolver: yupResolver(schema) });
   const {
@@ -64,7 +66,7 @@ export function Step1({ nextStep, setFormData, ...porps }) {
 
   const { data, isLoading, isFetching, isFetched } = useQuery(
     ['getMarmitaClientByPhone', { search: clientPhone }],
-    () => getMarmitaClientByPhone({ search: clientPhone }),
+    () => getMarmitaClientByPhone({ search: clientPhone, token }),
     {
       enabled: search,
       onSuccess: (data) => {
