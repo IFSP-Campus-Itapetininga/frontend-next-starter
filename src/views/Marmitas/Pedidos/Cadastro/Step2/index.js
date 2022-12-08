@@ -12,6 +12,7 @@ import { getAllMarmitaProducts } from 'services';
 import { yupResolver } from '@hookform/resolvers/yup';
 import schema from './validation';
 import { convertMonetary } from 'utils';
+import { getCookie } from 'cookies-next';
 
 export function Step2({
   nextStep,
@@ -20,6 +21,7 @@ export function Step2({
   formData,
   ...props
 }) {
+  const token = getCookie('auth.token');
   const [search, setSearch] = useState('');
   const [newProduct, setNewProduct] = useState(false);
   const [orders, setOrders] = useState([]);
@@ -28,7 +30,7 @@ export function Step2({
 
   const { data, isLoading } = useQuery(
     ['getProductsToSeatch', { search, limit: 5 }],
-    () => getAllMarmitaProducts({ search, limit: 5 }),
+    () => getAllMarmitaProducts({ filter: { search, limit: 5 }, token }),
     {
       enabled: props.currentStep === 2,
       select: ({ data }) =>

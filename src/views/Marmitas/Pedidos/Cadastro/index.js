@@ -9,19 +9,25 @@ import { Step2 } from './Step2';
 import { Step3 } from './Step3';
 import { useState } from 'react';
 import { createMarmitaOrder } from 'services';
+import { getCookie } from 'cookies-next';
 
 export function Cadastro({ showModal, setShowModal }) {
   const enableModal = showModal.split(' ');
+  const token = getCookie('auth.token');
+
   const queryClient = useQueryClient();
   const [formData, setFormData] = useState({});
   const [isButtonDisabled, setIsButtonIsDisabled] = useState(true);
 
-  const { mutate, isLoading, isError } = useMutation(createMarmitaOrder, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['getAllMarmitaOrders']);
-      handleCloseModal();
-    },
-  });
+  const { mutate, isLoading, isError } = useMutation(
+    (data) => createMarmitaOrder(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['getAllMarmitaOrders']);
+        handleCloseModal();
+      },
+    }
+  );
 
   const handleCloseModal = () => {
     setShowModal('');

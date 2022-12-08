@@ -3,14 +3,15 @@ import { MarmitaEstatistica } from 'views';
 
 import { getMarmitaStatistics } from 'services';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-import { format, subDays } from 'date-fns';
+import { addDays, subDays } from 'date-fns';
+import { getCookie } from 'cookies-next';
 
 const filterProps = {
-  initial_date: subDays(new Date(), 30),
-  final_date: new Date(),
+  initial_date: subDays(new Date(), 7),
+  final_date: addDays(new Date(), 1),
 };
 
-export default function MarmitaProdutoPage() {
+export default function MarmitaProdutoPage({ token }) {
   const [filter, setFilter] = useState(filterProps);
 
   const {
@@ -18,7 +19,7 @@ export default function MarmitaProdutoPage() {
     isLoading,
     isFetching,
   } = useQuery(['getAllMarmitaClients', filter], () =>
-    getMarmitaStatistics(filter)
+    getMarmitaStatistics({ filter, token })
   );
 
   return (
@@ -31,16 +32,28 @@ export default function MarmitaProdutoPage() {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req, res }) {
+  const token = getCookie('auth.token', { req, res });
+
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(['getMarmitaStatistics', filterProps], () =>
-    getMarmitaStatistics(filterProps)
-  );
+  if (token) {
+    await queryClient.prefetchQuery(['getMarmitaStatistics', filterProps], () =>
+      getMarmitaStatistics({ filter: filterProps, token })
+    );
+
+    return {
+      props: {
+        dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
+        token,
+      },
+    };
+  }
 
   return {
-    props: {
-      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
+    redirect: {
+      destination: '/login',
+      permanent: false,
     },
   };
 }

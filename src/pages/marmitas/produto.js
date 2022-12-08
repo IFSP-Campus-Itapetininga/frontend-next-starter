@@ -3,6 +3,7 @@ import { MarmitaProduto } from 'views';
 
 import { getAllMarmitaProducts } from 'services';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import { getCookie } from 'cookies-next';
 
 const filterProps = {
   page: 1,
@@ -10,12 +11,12 @@ const filterProps = {
   search: '',
 };
 
-export default function MarmitaProdutoPage() {
+export default function MarmitaProdutoPage({ token }) {
   const [filter, setFilter] = useState(filterProps);
 
   const { data: products, isLoading } = useQuery(
     ['getAllMarmitaProducts', filter],
-    () => getAllMarmitaProducts(filter)
+    () => getAllMarmitaProducts({ filter, token })
   );
 
   return (
@@ -28,16 +29,29 @@ export default function MarmitaProdutoPage() {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req, res }) {
+  const token = getCookie('auth.token', { req, res });
+
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(['getAllMarmitaProducts', filterProps], () =>
-    getAllMarmitaProducts(filterProps)
-  );
+  if (token) {
+    await queryClient.prefetchQuery(
+      ['getAllMarmitaProducts', filterProps],
+      () => getAllMarmitaProducts({ filter: filterProps, token })
+    );
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        token,
+      },
+    };
+  }
 
   return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
+    redirect: {
+      destination: '/login',
+      permanent: false,
     },
   };
 }

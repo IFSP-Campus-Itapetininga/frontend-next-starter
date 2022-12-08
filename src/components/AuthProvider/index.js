@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { setCookie, deleteCookie, getCookie } from 'cookies-next';
 import { useLocalStorage } from './hooks';
 import viewsConfig from 'viewsConfig';
+import api from 'services';
 
 export const AuthContext = React.createContext({
   data: null,
@@ -33,8 +34,8 @@ export default function AuthProvider(props) {
         const view = viewsConfig.find((viewConfig) => viewConfig.route === url);
 
         if (
-          view.authorization.enabled &&
-          !view.authorization.roles.includes(data.role.name)
+          view?.authorization.enabled &&
+          !view?.authorization.roles.includes(data.role.name)
         ) {
           router.push('/');
         }
@@ -52,13 +53,15 @@ export default function AuthProvider(props) {
   useEffect(() => {
     if (!data) {
       router.push('/login');
+    } else {
+      api.defaults.headers.authorization = `Bearer ${data?.token}`;
     }
 
     if (router.pathname === '/login') {
       router.push('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data?.token]);
 
   const setLoginData = useCallback(
     (payload) => {
