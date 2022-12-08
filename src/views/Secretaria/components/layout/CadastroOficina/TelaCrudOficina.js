@@ -33,7 +33,8 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
     const [mensagem, setMensagem] = useState(false)
 
     //URL API
-    const urlAPI = `http://localhost:3333/v1/secretary/${dado}`
+const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary/${dado}`
+
 
     //Apagar o campo de busca após resultado for verdadeiro
     const [consulta, setConsulta] = useState()

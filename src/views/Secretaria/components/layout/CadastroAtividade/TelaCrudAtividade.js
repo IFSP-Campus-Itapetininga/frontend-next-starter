@@ -33,7 +33,7 @@ function TelaCrudAtividade({ titulo, abrir, fechar, placeholder }) {
     const [mensagem, setMensagem] = useState(false)
 
     //URL API
-    const urlAPI = `http://localhost:5000/${dado}`
+    const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary/${dado}`
 
     //Apagar o campo de busca após resultado for verdadeiro
     const [consulta, setConsulta] = useState()

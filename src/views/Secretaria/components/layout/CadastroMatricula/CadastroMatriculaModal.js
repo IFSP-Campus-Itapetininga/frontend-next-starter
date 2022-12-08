@@ -19,10 +19,13 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
   // Setar Aluno options campo select
   const [options, setOptions] = useState([])
 
+  const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary`
+
+
   // Carrega Dados de Turma
   const [turma, setTurma] = useState([])
   useEffect(() => {
-    fetch('http://localhost:5000/turma', {
+    fetch(`${urlAPI}/turma`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -63,7 +66,7 @@ function CadastroOficinaModal({ textbtn, titulo, metodoCadastraDados, propsDados
 
   //Carrega assistido / aluno
   useEffect(() => {
-    fetch('http://localhost:5000/assistido', {
+    fetch(`${urlAPI}/assistido`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

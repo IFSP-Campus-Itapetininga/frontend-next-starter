@@ -31,6 +31,8 @@ function CadastroTurmaModal({ textbtn, metodoAbriFecha, metodoShowAtividade, tit
     console.log(dadosLocal)
 }
 
+const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary`
+
   //Passa para o componente pai(TelaCrud/método cadastrarOficina) os valores de oficina.
   const enviaDados = (e) => {
     e.preventDefault()//não deixa a págian dar reload
@@ -52,7 +54,7 @@ function CadastroTurmaModal({ textbtn, metodoAbriFecha, metodoShowAtividade, tit
 
   //Carrega Select Atividades
   useEffect(() => {
-    fetch('http://localhost:5000/atividade', {
+    fetch(`${urlAPI}/atividade`, {
         method: 'GET',
         headers:{
             'Content-Type': 'application/json'

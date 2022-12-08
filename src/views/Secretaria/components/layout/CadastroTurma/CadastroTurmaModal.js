@@ -17,10 +17,12 @@ function CadastroTurmaModal({ textbtn, titulo, metodoCadastraDados, propsDados, 
   // dados locais
   const [dadosLocal, setDadosLocal] = useState(propsDados || {})
 
+  const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary`
+
   // oficineiros select
   const [oficineiros, setOficineiros] = useState([])
   useEffect(() => {
-    fetch('http://localhost:5000/oficineiro', {
+    fetch(`${urlAPI}/oficineiro`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -38,7 +40,7 @@ function CadastroTurmaModal({ textbtn, titulo, metodoCadastraDados, propsDados, 
   const [oficina, setOficina] = useState([])
   //Carrega Select oficinas
   useEffect(() => {
-    fetch('http://localhost:5000/projetos', {
+    fetch(`${urlAPI}/projetos`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

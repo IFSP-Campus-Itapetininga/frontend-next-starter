@@ -21,6 +21,9 @@ function CadastroOficineiroModal({ textbtn, titulo, metodoCadastraDados, propsDa
   // Atividades
   const [select, setSelect] = useState([])
 
+const urlAPI = `${process.env.NEXT_PUBLIC_API_BASE_URL}/secretary/ativvalueadeAtivvalueade`
+
+
 
   //Pega valor dos inputs do formulário
   function handleChange(e) {
@@ -43,7 +46,7 @@ function CadastroOficineiroModal({ textbtn, titulo, metodoCadastraDados, propsDa
 
   //Carrega Select Atividades
   useEffect(() => {
-    fetch('http://localhost:5000/ativvalueadeAtivvalueade', {
+    fetch(urlAPI, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
