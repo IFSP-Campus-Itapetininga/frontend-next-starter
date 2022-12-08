@@ -1,13 +1,22 @@
 import { Modal, Button } from "react-bootstrap";
-import api from "../../../../services";
+import { deleteContact, deleteItem, deleteItemHasVendor, deleteVendor } from "services/estoque";
 
 
-const DeleteModal = ({ showModal, iditem }) => {
+const DeleteModal = ({ showModal, id, type, setShow, getData }) => {
+
+  async function handleDeleteContact() {
+    if (type === 'contact') {
+      deleteContact(id);
+      getData();
+      setShow();
+    };
+  }
+
   async function handleDeleteItem() {
-    const response = await api.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/item/${iditem}`)
-      .then(res => {
-        alert("Item excluído com sucesso!");
-      });
+    if (type === 'item') deleteItem(id);
+    if (type === 'vendor') deleteVendor(id);
+    if (type === 'itemHasVendor') deleteItemHasVendor(id);
+    setShow();
   }
 
   return (
@@ -17,8 +26,14 @@ const DeleteModal = ({ showModal, iditem }) => {
       </Modal.Header>
       <Modal.Body>
         <h4>Deseja mesmo excluir o item?</h4>
-        <Button variant="success"onClick={handleDeleteItem}>Sim</Button>
-        <Button variant="danger">Não</Button>
+        <div class="d-flex justify-content-around">
+          {
+            type === 'contact' ?
+              <Button variant="success" onClick={handleDeleteContact}>Sim</Button> :
+              <Button variant="success" onClick={handleDeleteItem}>Sim</Button>
+          }
+          <Button variant="danger" onClick={setShow}>Não</Button>
+        </div>
       </Modal.Body>
     </Modal>
   );

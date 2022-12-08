@@ -3,12 +3,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from "react-hook-form";
 import api from "../../../services";
 import { AlertModal } from "../components/AlertModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { getCookie } from 'cookies-next'
+import { AuthContext } from "components/AuthProvider";
 
 
 const CadastrarProduto = () => {
+  const {data} = useContext(AuthContext);
   const [showAlertModal, setShowAlertModal] = useState(false);
-
+  const token = getCookie('auth.token');
   function hideAlert() {
     setTimeout(() => {
       setShowAlertModal(false);
@@ -25,13 +28,14 @@ const CadastrarProduto = () => {
     const newTransaction = {
       itemid: id,
       quantidade: qtd,
-      usuario: 'Giovanni',
+      usuario: data.user.name,
       memo: 'Cadastro do item'
     }
 
     const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/transactions`, JSON.stringify(newTransaction), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     });
     if (response.status === 201) setShowAlertModal(true);
@@ -48,6 +52,7 @@ const CadastrarProduto = () => {
     const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/item`, JSON.stringify(newItem), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
       .then(res => {
