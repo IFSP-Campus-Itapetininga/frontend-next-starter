@@ -42,13 +42,15 @@ export default function NavComponent() {
       <Navbar bg="dark" variant="dark" expand={false} className="mb-3">
         <Container>
           <Navbar.Brand>
-            <Image
-              src="/sexta-logo.svg"
-              width="80"
-              height="30"
-              className="d-inline-block align-top"
-              alt=" logo"
-            />
+            <Link href="/">
+              <Image
+                src="/sexta-logo.svg"
+                width="80"
+                height="30"
+                className="d-inline-block align-top"
+                alt=" logo"
+              />
+            </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand`} bsPrefix="" />
           <Navbar.Offcanvas

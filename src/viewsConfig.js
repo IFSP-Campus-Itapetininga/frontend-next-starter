@@ -5,7 +5,13 @@ const viewsConfig = [
     route: '/',
     authorization: {
       enabled: false,
-      roles: ['Administrador'],
+      roles: [
+        'Administrador',
+        'Almoxarife',
+        'Resp. Evento',
+        'Marmita',
+        'Secretário',
+      ],
     },
   },
   {
