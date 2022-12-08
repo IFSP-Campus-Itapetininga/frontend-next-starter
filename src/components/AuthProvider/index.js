@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { setCookie, deleteCookie } from 'cookies-next';
+import { setCookie, deleteCookie, getCookie } from 'cookies-next';
 import { useLocalStorage } from './hooks';
 import viewsConfig from 'viewsConfig';
 
@@ -17,8 +17,10 @@ export default function AuthProvider(props) {
   const router = useRouter();
 
   useEffect(() => {
+    const cookieSession = getCookie('auth.token');
+
     const handler = (url) => {
-      if (!data && url !== '/login') {
+      if (!cookieSession && url !== '/login') {
         router.push('/login');
       }
 
@@ -27,7 +29,7 @@ export default function AuthProvider(props) {
 
       url = regexData?.length ? regexData[0] : url;
 
-      if (data) {
+      if (cookieSession) {
         const view = viewsConfig.find((viewConfig) => viewConfig.route === url);
 
         if (
