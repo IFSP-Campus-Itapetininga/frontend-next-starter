@@ -5,7 +5,7 @@ const viewsConfig = [
     route: '/',
     authorization: {
       enabled: false,
-      roles: [],
+      roles: ['Administrador'],
     },
   },
   {
@@ -40,8 +40,8 @@ const viewsConfig = [
     route: '/estoque',
     visible: true,
     authorization: {
-      enabled: false,
-      roles: [],
+      enabled: true,
+      roles: ['Almoxarife', 'Administrador'],
     },
   },
   {
@@ -50,7 +50,7 @@ const viewsConfig = [
     visible: true,
     authorization: {
       enabled: true,
-      roles: ['Administrador'],
+      roles: ['Administrador', 'Resp. Evento'],
     },
   },
   {
@@ -59,7 +59,7 @@ const viewsConfig = [
     visible: true,
     authorization: {
       enabled: false,
-      roles: [],
+      roles: ['Administrador', 'Marmita'],
     },
   },
   {
@@ -68,9 +68,9 @@ const viewsConfig = [
     visible: true,
     authorization: {
       enabled: false,
-      roles: [],
+      roles: ['Administrador', 'Secretário'],
     },
   },
 ];
 
-export default viewsConfig;
+export default Object.freeze(viewsConfig);

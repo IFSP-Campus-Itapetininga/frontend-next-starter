@@ -4,25 +4,27 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import api from '../../../services';
 import { StockLayout } from "../layout";
+import { getCookie } from 'cookies-next';
+import { AlertModal } from "../components/AlertModal";
 
 const CadastrarFornecedor = () => {
-  const [newContact, setNewContact] = useState(false);
-
-  function handleNewContact() {
-    setNewContact(!newContact);
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const token = getCookie('auth.token');
+  function hideAlert() {
+    setTimeout(() => {
+      setShowAlertModal(false);
+    }, 2000);
   }
-
   const {
     register,
     handleSubmit,
-    getValues,
-    watch,
     formState: { errors },
     reset
   } = useForm();
 
   const onSubmit = async data => {
     const newVendor = {
+      ativo: 1,
       fornecedor: data.fornecedor,
       descricao: data.descricao,
       cnpj: data.cnpj,
@@ -49,12 +51,12 @@ const CadastrarFornecedor = () => {
     const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/vendor`, JSON.stringify(newVendor), {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
-      .then(res => {
-        alert("Fornecedor cadastrado!");
-        reset();
-      });
+    if (response.status === 201) setShowAlertModal(true);
+    hideAlert();
+    reset();
   };
 
   return (
@@ -236,6 +238,7 @@ const CadastrarFornecedor = () => {
             Cadastrar
           </Button>
         </Form>
+        <AlertModal title="Sucesso" text="Fornecedor cadastrado com sucesso!" showAlertModal={showAlertModal} />
       </StockLayout>
     </Layout>
   )
