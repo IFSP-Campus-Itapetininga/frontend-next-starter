@@ -4,7 +4,7 @@ const viewsConfig = [
     route: '/',
     authorization: {
       enabled: false,
-      roles: [],
+      roles: ['Administrador'],
     },
   },
   {
@@ -20,7 +20,7 @@ const viewsConfig = [
     route: '/eventos',
     authorization: {
       enabled: true,
-      roles: ['Administrador'],
+      roles: ['Administrador', 'Resp. Evento'],
     },
   },
   {
@@ -28,7 +28,7 @@ const viewsConfig = [
     route: '/marmitas',
     authorization: {
       enabled: false,
-      roles: [],
+      roles: ['Administrador', 'Marmita'],
     },
   },
   {
@@ -36,9 +36,9 @@ const viewsConfig = [
     route: '/secretaria',
     authorization: {
       enabled: false,
-      roles: [],
+      roles: ['Administrador', 'Secretário'],
     },
   },
 ];
 
-export default viewsConfig;
+export default Object.freeze(viewsConfig);

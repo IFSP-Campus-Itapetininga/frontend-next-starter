@@ -27,5 +27,16 @@ export function useLocalStorage(key, initialValue) {
       console.log(error);
     }
   };
-  return [storedValue, setValue];
+
+  const removeValue = () => {
+    try {
+      setStoredValue(null);
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem(key);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return [storedValue, setValue, removeValue];
 }
