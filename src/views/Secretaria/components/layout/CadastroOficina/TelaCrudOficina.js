@@ -21,10 +21,10 @@ import CardsOficina from './CardsOficina';
 function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtividade }) {
 
     //CRUD referente ao dado
-    const dado = 'projetos'
+    const dado = 'workshop'
 
     //Salvar os dados
-    const [dados, setDados] = useState([])
+    const [dados, setDados] = useState({})
 
     //palavra de busca
     const [palavra, setPalavra] = useState()
@@ -33,7 +33,7 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
     const [mensagem, setMensagem] = useState(false)
 
     //URL API
-    const urlAPI = `http://localhost:5000/${dado}`
+    const urlAPI = `http://localhost:3333/v1/secretary/${dado}`
 
     //Apagar o campo de busca após resultado for verdadeiro
     const [consulta, setConsulta] = useState()
@@ -46,21 +46,21 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
 
     //Carregamento Inicial ao abrir o componente
     useEffect(() => {
-        fetch(`${urlAPI}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(
-            resp => resp.json()
-        ).then(
-            data => {
-                setMensagem(true),
-                    setDados(data)
-            }
-        ).catch(
-            err => console.log(err)
-        )
+        const fetchData = async () => {
+
+            const resp = await fetch(`${urlAPI}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await resp.json()
+            
+            setDados(data)
+            console.log(dados)
+        }
+
+        fetchData()
     }, [])
 
     //recarrega página
@@ -293,19 +293,18 @@ function TelaCrudOficina({ titulo, abrir, fechar, placeholder, metodoShowAtivida
                 {dados.length < 0 && mensagem === true && (
                     <p>Não foram encontradas referências para o termo: {palavra}!</p>
                 )}
-                {dados.length > 0 &&
-                    dados.map((dado) => (
+                {dados?.data &&
+                    dados.data.map((dado) => (
                         <CardsOficina
                             key={dado.id}
                             propsDados={dado}
                             pesquisa={removeDadosID}
                             metodoAtualizaDados={atualizaDados}
-                            propsNomeAtividade={dado.atividade.nome}
                         />
                     ))
 
                 }
-                {dados.length <= 0 && mensagem !== true && (
+                { dados?.data <= 0 && mensagem !== true && (
                     <div className={styles.loader}>
                         <Image src="/loader.svg" width="95%" height="95%" alt="Loader" />
                     </div>

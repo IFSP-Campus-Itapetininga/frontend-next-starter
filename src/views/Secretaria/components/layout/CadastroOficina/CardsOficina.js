@@ -6,6 +6,8 @@ import CadastroOficinaModal from './CadastroOficinaModal';
 
 function CardsOficina({ pesquisa, propsDados, propsNomeAtividade, metodoAtualizaDados }) {
 
+    console.log(propsDados)
+    
     const remove = (e) => {
         e.preventDefault()
         console.log(propsDados.id)
@@ -21,8 +23,8 @@ function CardsOficina({ pesquisa, propsDados, propsNomeAtividade, metodoAtualiza
             <div className={styles.cards}>
                 <div className="card">
                     <div className="card-body">
-                        <h5 className="card-title">{dadosLocal.id} | {dadosLocal.oficina}</h5>
-                        <p className="card-text"><b>Atividade: </b>{propsNomeAtividade}</p>
+                        <h5 className="card-title">{dadosLocal.id} | {dadosLocal.nome}</h5>
+                        <p className="card-text"><b>Atividade: </b> {propsNomeAtividade}</p>
                         <p className="card-text"><b>Idade mínima: </b>{dadosLocal.idademinima} | <b>Idade máxima: </b>{dadosLocal.idademaxima}</p>
                         <p className="card-text"><b>Outras Requisitos: </b>{dadosLocal.requisito}</p>
                         <div className={styles.buttons}>
