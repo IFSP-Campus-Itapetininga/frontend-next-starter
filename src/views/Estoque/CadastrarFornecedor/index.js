@@ -4,21 +4,20 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import api from '../../../services';
 import { StockLayout } from "../layout";
-import {getCookie} from 'cookies-next';
+import { getCookie } from 'cookies-next';
+import { AlertModal } from "../components/AlertModal";
 
 const CadastrarFornecedor = () => {
-  const [newContact, setNewContact] = useState(false);
+  const [showAlertModal, setShowAlertModal] = useState(false);
   const token = getCookie('auth.token');
-
-  function handleNewContact() {
-    setNewContact(!newContact);
+  function hideAlert() {
+    setTimeout(() => {
+      setShowAlertModal(false);
+    }, 2000);
   }
-
   const {
     register,
     handleSubmit,
-    getValues,
-    watch,
     formState: { errors },
     reset
   } = useForm();
@@ -55,10 +54,9 @@ const CadastrarFornecedor = () => {
         'Authorization': `Bearer ${token}`
       }
     })
-      .then(res => {
-        alert("Fornecedor cadastrado!");
-        reset();
-      });
+    if (response.status === 201) setShowAlertModal(true);
+    hideAlert();
+    reset();
   };
 
   return (
@@ -240,6 +238,7 @@ const CadastrarFornecedor = () => {
             Cadastrar
           </Button>
         </Form>
+        <AlertModal title="Sucesso" text="Fornecedor cadastrado com sucesso!" showAlertModal={showAlertModal} />
       </StockLayout>
     </Layout>
   )

@@ -1,26 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import ContactEditForm from '../ContactEditForm';
 import DeleteModal from '../DeleteModal';
 import StockModal from '../StockModal';
 
-const VendorContacts = ({ contatos }) => {
+const VendorContacts = ({ contatos, getContacts }) => {
+  const [contacts, setContacts] = useState([]);
   const [newEditContact, setNewEditContact] = useState(false);
   const [selectedContact, setSelectedContact] = useState(false);
   const [selectedItem, setSelectedItem] = useState('')
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  useEffect(() => {
+    setContacts(contatos)
+  }, [contatos]);
+
+  function updateContacts() {
+    console.log('Chamou!')
+    console.log(contacts)
+    contatos.forEach(contato => {
+      if (contato.contatoid === selectedItem) {
+        const newItems = [...contatos];
+        const index = newItems.findIndex(contato => contato.contatoid === selectedItem);
+        newItems.splice(index, 1);
+        setContacts(newItems);
+      }
+    })
+  }
 
   function handleEditContact(data) {
     setSelectedContact(data);
     setNewEditContact(true);
   }
 
-  
+
   function handleShowDeleteModal(id) {
     setSelectedItem(id);
     setShowDeleteModal(true);
   }
-
 
   return (
     <>
@@ -36,8 +53,8 @@ const VendorContacts = ({ contatos }) => {
           </tr>
         </thead>
         <tbody>
-          {contatos &&
-            contatos.map((contato, key) => {
+          {contacts &&
+            contacts.map((contato, key) => {
               return (
                 <tr key={key}>
                   <td className="text-center">{contato.contatoid}</td>
@@ -77,8 +94,8 @@ const VendorContacts = ({ contatos }) => {
         showModal={showDeleteModal}
         id={selectedItem}
         type='contact'
-        setShow={() => setShowDeleteModal(false)
-        }
+        setShow={() => setShowDeleteModal(false)}
+        getData={updateContacts}
       />
     </>
   );

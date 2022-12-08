@@ -1,6 +1,7 @@
 import api from 'services';
 import { getCookie } from 'cookies-next';
 const token = getCookie('auth.token');
+
 export const getProducts = async () => {
   try {
     const response = await api.get('/inventory/item');
@@ -9,6 +10,15 @@ export const getProducts = async () => {
     throw new Error('Houve um problema com a chamada');
   }
 
+};
+
+export const getVendors = async () => {
+  try {
+    const response = await api.get('/vendor');
+    return response.data;
+  } catch (error) {
+    throw new Error('Houve um problema com a chamada');
+  }
 };
 
 export const getProduct = async (id) => {
@@ -29,16 +39,62 @@ export const getTransactions = async (id) => {
   }
 }
 
-
-export const getVendors = async () => {
+export const handleNewTransaction = async (newTransaction) => {
   try {
-    const response = await api.get('/vendor');
+    const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/transactions`, JSON.stringify(newTransaction), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    return response.data;
+  } catch (error) {
+    throw new Error('Houve um problema com a chamada ');
+  }
+}
+
+export const handleAddItemToVendor = async (newItemVendor) => {
+  try {
+    const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/inventory/item/vendor`, JSON.stringify(newItemVendor), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    return response.data;
+  } catch (error) {
+    throw new Error('Houve um problema com a chamada ');
+  }
+}
+
+export const handleAddNewContact = async (newContact) => {
+  try {
+    const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/vendor/contact`, JSON.stringify(newContact), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
     return response.data;
   } catch (error) {
     throw new Error('Houve um problema com a chamada');
   }
-};
+}
 
+
+export const handleUpdateContact = async (newContact) => {
+  try {
+    const response = await api.patch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/vendor/contact`, JSON.stringify(newContact), {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    return response.data;
+  } catch (error) {
+    throw new Error('Houve um problema com a chamada');
+  }
+}
 
 export const getVendorHasItem = async (id) => {
   try {
@@ -104,7 +160,6 @@ export const deleteContact = async (id) => {
 }
 
 export const deleteItemHasVendor = async (data) => {
-  console.log(data);
   try {
     const response = await api.delete('inventory/item/vendor/itemhasvendor', {
       data: data, headers: {

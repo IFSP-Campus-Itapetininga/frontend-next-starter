@@ -3,14 +3,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from "react-hook-form";
 import api from "../../../services";
 import { AlertModal } from "../components/AlertModal";
-import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useContext, useState } from "react";
 import { getCookie } from 'cookies-next'
+import { AuthContext } from "components/AuthProvider";
 
 
 const CadastrarProduto = () => {
+  const {data} = useContext(AuthContext);
   const [showAlertModal, setShowAlertModal] = useState(false);
-  const queryClient = useQueryClient();
   const token = getCookie('auth.token');
   function hideAlert() {
     setTimeout(() => {
@@ -24,21 +24,11 @@ const CadastrarProduto = () => {
     formState: { errors }
   } = useForm();
 
-  // const { mutate: createProduto, isLoading } = useMutation(
-  //   onSubmit,
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries(['stockItems']);
-  //       handleCloseModal();
-  //     },
-  //   }
-  // );
-
   async function handleFirstTransaction(id, qtd) {
     const newTransaction = {
       itemid: id,
       quantidade: qtd,
-      usuario: 'Giovanni',
+      usuario: data.user.name,
       memo: 'Cadastro do item'
     }
 

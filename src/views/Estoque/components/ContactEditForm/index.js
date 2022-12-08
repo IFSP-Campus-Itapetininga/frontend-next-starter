@@ -2,22 +2,13 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import api from '../../../../services';
 import { getCookie } from 'cookies-next'
-import {AlertModal} from '../AlertModal'
-import { useState } from "react";
 
 const ContactEditForm = ({ contactData, setShowContactForm }) => {
   const token = getCookie('auth.token');
-  console.log(contactData);
-  function hideAlert() {
-    setTimeout(() => {
-      setShowAlertModal(false);
-    }, 2000);
-  }
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset
   } = useForm();
 
   const onSubmit = async data => {

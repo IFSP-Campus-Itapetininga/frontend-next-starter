@@ -2,16 +2,9 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import api from '../../../../services';
 import { getCookie } from 'cookies-next'
-import {AlertModal} from '../AlertModal'
-import { useState } from "react";
 
 const ContactForm = ({ fornecedorid, getContacts, setShowContactForm }) => {
   const token = getCookie('auth.token');
-  function hideAlert() {
-    setTimeout(() => {
-      setShowAlertModal(false);
-    }, 2000);
-  }
   const {
     register,
     handleSubmit,

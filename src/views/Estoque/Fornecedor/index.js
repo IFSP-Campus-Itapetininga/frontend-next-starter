@@ -11,7 +11,6 @@ import ListItems from "../components/ListItems";
 import StockModal from "../components/StockModal";
 import { AlertModal } from "../components/AlertModal";
 import { getCookie } from 'cookies-next';
-import ContactEditForm from "../components/ContactEditForm";
 
 const Fornecedor = () => {
   const [showAlertModal, setShowAlertModal] = useState(false);
@@ -29,7 +28,6 @@ const Fornecedor = () => {
   async function getVendor() {
     const response = await api.get(`/vendor/${id}`);
     const data = response.data;
-    console.log(data.endereco[0].enderecoid);
     setVendor(data);
   }
 
@@ -41,10 +39,7 @@ const Fornecedor = () => {
   const {
     register,
     handleSubmit,
-    getValues,
-    watch,
     formState: { errors },
-    reset
   } = useForm();
 
   const onSubmit = async data => {
@@ -65,8 +60,7 @@ const Fornecedor = () => {
         'Authorization': `Bearer ${token}`
       }
     })
-    console.log(response);
-    if (response.status === 204) setShowAlertModal(true);
+    if (response); setShowAlertModal(true);
     hideAlert();
   };
 
@@ -214,7 +208,7 @@ const Fornecedor = () => {
           className="mb-3"
         >
           <Tab eventKey="contacts" title="Contatos">
-            <VendorContacts contatos={vendor.contato} />
+            <VendorContacts contatos={vendor.contato} getContacts={getVendor} />
             <Button variant={"primary"} onClick={handleNewContact} className="mb-5">
               Adicionar contato
             </Button>
@@ -242,7 +236,6 @@ const Fornecedor = () => {
         </Tabs>
       </StockLayout>
       <AlertModal title="Sucesso" text="Endereço atualizado com sucesso!" showAlertModal={showAlertModal} />
-      
     </Layout >
   )
 }

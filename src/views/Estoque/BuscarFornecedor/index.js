@@ -26,8 +26,6 @@ const BuscarFornecedor = () => {
     setShowDeleteModal(true);
   }
 
-  console.log(vendors);
-
   if (isLoading) return "Carregando..."
 
   if (error) return 'Ocorreu um erro: ' + error.message;

@@ -1,13 +1,17 @@
 import { Table } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useEffect } from "react";
-import DeleteModal from "../components/DeleteModal";
 import { StockLayout } from "../layout";
 import { Layout } from "layout";
 import { getAllTransactions } from "services/estoque";
+import { parseISO, format } from 'date-fns';
+
+const formatDateToBrazilianStandard = (_date) => {
+  const date = parseISO(_date.split('.')[0]);
+  return format(date, "dd'/'MM'/'yyyy HH':'mm");
+};
+
 
 
 const MovimentacoesEstoque = () => {
@@ -57,7 +61,7 @@ const MovimentacoesEstoque = () => {
                         <td className="text-center">{transaction.transacaoid}</td>
                         <td>{transaction.descricao}</td>
                         <td className={`${(transaction.quantidade >= 0 ? 'text-success' : 'text-danger')} text-center`}>{Math.round(transaction.quantidade)}</td>
-                        <td className="text-center">{transaction.datatransacao}</td>
+                        <td className="text-center">{formatDateToBrazilianStandard(transaction.datatransacao)}</td>
                         <td>{transaction.usuario}</td>
                         <td>{transaction.memo}</td>
                       </tr>

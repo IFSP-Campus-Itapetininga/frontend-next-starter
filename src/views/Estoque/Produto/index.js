@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
-import { Form, Button, Container, Tabs, Tab } from "react-bootstrap";
+import { Form, Button, Tabs, Tab } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import ListTransactions from "../components/ListTransactions";
 import api from "../../../services";
@@ -9,12 +9,12 @@ import { Layout } from "layout";
 import { getProduct } from "services/estoque";
 import ListVendors from "../components/ListVendors";
 import StockModal from "../components/StockModal";
-import {getCookie} from 'cookies-next';
+import { getCookie } from 'cookies-next';
 import { AlertModal } from "../components/AlertModal";
 
 const Produto = () => {
-  const [showAlertModal, setShowAlertModal] = useState(false);
   const [item, setItem] = useState({});
+  const [showAlertModal, setShowAlertModal] = useState(false);
   const [newVendor, setNewVendor] = useState(false);
   const token = getCookie('auth.token');
   const router = useRouter()
@@ -36,8 +36,6 @@ const Produto = () => {
   const {
     register,
     handleSubmit,
-    getValues,
-    watch,
     formState: { errors }
   } = useForm();
 
@@ -53,14 +51,12 @@ const Produto = () => {
         'Authorization': `Bearer ${token}`
       }
     })
-    console.log(response);
     if (response.status === 204) setShowAlertModal(true);
     hideAlert();
   };
   function handleNewVendor() {
     setNewVendor(!newVendor);
   }
-
 
   return (
     <Layout session={'Estoque'} >
@@ -106,7 +102,7 @@ const Produto = () => {
               setShow={() => setNewVendor(false)}
               title="Novo contato"
             >
-              <ListVendors itemid={id} setNewVendor={handleNewVendor}/>
+              <ListVendors itemid={id} setNewVendor={handleNewVendor} />
             </StockModal>
           </Tab>
         </Tabs>
