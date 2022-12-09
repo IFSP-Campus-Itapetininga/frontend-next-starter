@@ -29,6 +29,7 @@ const AddForm = () => {
             'authorization': `Bearer ${token}`
           }
         })
+        window.location.reload(true);
     }
     
     return(

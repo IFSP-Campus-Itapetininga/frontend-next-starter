@@ -74,9 +74,10 @@ const viewsConfig = [
   {
     name: 'Fila de Espera',
     route: '/waitlist',
+    visible: true,
     authorization: {
       enabled: true,
-      roles: ['Administrador'],
+      roles: ['Administrador', ' '],
     },
   }
 ];
