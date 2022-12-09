@@ -71,6 +71,15 @@ const viewsConfig = [
       roles: ['Administrador', 'Secretário'],
     },
   },
+  {
+    name: 'Fila de Espera',
+    route: '/waitlist',
+    visible: true,
+    authorization: {
+      enabled: true,
+      roles: ['Administrador', ' '],
+    },
+  }
 ];
 
 export default Object.freeze(viewsConfig);

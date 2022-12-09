@@ -1,0 +1,64 @@
+.content {
+    font-size: 15px;
+}
+
+.titulo {        
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    background: #435d7d;
+    color: #fff;
+    min-width: 100%;
+    border-radius: 7px 7px 0 0;
+}
+
+.titulo h2{
+    margin: 25px;
+}
+
+.btn_add{
+    margin: 25px;
+}
+
+.table{
+    min-width: 100%;
+}
+
+.table tr th, .table tr td {
+    padding: 10px 0px 10px 0px; 
+    text-align: center;
+    border-bottom: solid 1px;
+    border-color: #dddddd;
+}
+
+.table tbody tr:hover {
+	background: #e2e2e2;
+}
+
+.thead{
+    background: #eeeeee;
+    border-bottom: solid 1px;
+    border-color: #dddddd;
+}  
+
+.modal{
+    margin: 180px 0 0 0;
+}
+
+.form_control {
+    border-radius: 5px;
+    box-shadow: none;
+    border-color: #dddddd;
+    margin: 7px 0px;
+}
+
+.btn_cad {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+}
+
+.btn_cad_color{
+    background-color: #08811c;
+    border: none;
+}
