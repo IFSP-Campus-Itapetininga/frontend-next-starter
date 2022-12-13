@@ -1,9 +1,10 @@
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import api from '../../../../services';
 import { getCookie } from 'cookies-next'
+import { handleAddNewContact } from "services/estoque";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const ContactForm = ({ fornecedorid, getContacts, setShowContactForm }) => {
+const ContactForm = ({ fornecedorid, setShowContactForm }) => {
   const token = getCookie('auth.token');
   const {
     register,
@@ -11,6 +12,19 @@ const ContactForm = ({ fornecedorid, getContacts, setShowContactForm }) => {
     formState: { errors },
     reset
   } = useForm();
+
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: addVendorContact,
+    isLoading: isCallLoading,
+    isError: isCallError,
+  } = useMutation(handleAddNewContact, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['vendorContacts']);
+      setShowContactForm(false);
+    },
+  });
 
   const onSubmit = async data => {
     const newContact = {
@@ -22,18 +36,8 @@ const ContactForm = ({ fornecedorid, getContacts, setShowContactForm }) => {
       funcao: data.funcao
 
     }
-    const response = await api.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/vendor/contact`, JSON.stringify(newContact), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    })
-
-    if (response.status === 201) {
-      getContacts();
-      setShowContactForm(false);
-      reset();
-    }
+    addVendorContact(newContact);
+    reset();
   };
 
   return (

@@ -1,32 +1,21 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
+import { getVendorContacts } from 'services/estoque';
 import ContactEditForm from '../ContactEditForm';
 import DeleteModal from '../DeleteModal';
 import StockModal from '../StockModal';
 
-const VendorContacts = ({ contatos, getContacts }) => {
-  const [contacts, setContacts] = useState([]);
+const VendorContacts = ({ fornecedorid }) => {
   const [newEditContact, setNewEditContact] = useState(false);
   const [selectedContact, setSelectedContact] = useState(false);
   const [selectedItem, setSelectedItem] = useState('')
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  useEffect(() => {
-    setContacts(contatos)
-  }, [contatos]);
-
-  function updateContacts() {
-    console.log('Chamou!')
-    console.log(contacts)
-    contatos.forEach(contato => {
-      if (contato.contatoid === selectedItem) {
-        const newItems = [...contatos];
-        const index = newItems.findIndex(contato => contato.contatoid === selectedItem);
-        newItems.splice(index, 1);
-        setContacts(newItems);
-      }
-    })
-  }
+  const { isLoading, error, data: contacts } = useQuery(['vendorContacts'],
+    () => getVendorContacts(fornecedorid).then(res => {
+      return res
+    }));
 
   function handleEditContact(data) {
     setSelectedContact(data);
@@ -38,6 +27,10 @@ const VendorContacts = ({ contatos, getContacts }) => {
     setSelectedItem(id);
     setShowDeleteModal(true);
   }
+
+  if (isLoading) return "Loading..."
+
+  if (error) return 'Ocorreu um erro: ' + error.message;
 
   return (
     <>
@@ -61,7 +54,7 @@ const VendorContacts = ({ contatos, getContacts }) => {
                   <td>{contato.nome}</td>
                   <td>{contato.funcao}</td>
                   <td className="text-center">{contato.email}</td>
-                  <td className="text-center">{contato.telefone}</td>
+                  <td className="text-center"><a href={`https://wa.me/55${contato.telefone}?text=Ola%20${contato.nome}`}>{contato.telefone}</a></td>
                   <td>
                     <div className="text-center">
                       <Button
@@ -95,7 +88,6 @@ const VendorContacts = ({ contatos, getContacts }) => {
         id={selectedItem}
         type='contact'
         setShow={() => setShowDeleteModal(false)}
-        getData={updateContacts}
       />
     </>
   );
