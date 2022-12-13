@@ -21,6 +21,15 @@ export const getVendors = async () => {
   }
 };
 
+export const getVendorContacts = async (fornecedorid) => {
+  try {
+    const response = await api.get(`/vendor/contact/${fornecedorid}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Houve um problema com a chamada')
+  }
+}
+
 export const getProduct = async (id) => {
   try {
     const response = await api.get(`/inventory/item/${id}`);
@@ -154,6 +163,7 @@ export const deleteContact = async (id) => {
         'Authorization': `Bearer ${token}`
       }
     })
+    return response.data;
   } catch (error) {
     throw new Error('Houve um problema com a chamada')
   }

@@ -1,22 +1,34 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Modal, Button } from "react-bootstrap";
 import { deleteContact, deleteItem, deleteItemHasVendor, deleteVendor } from "services/estoque";
 
 
-const DeleteModal = ({ showModal, id, type, setShow, getData }) => {
+const DeleteModal = ({ showModal, id, type, setShow}) => {
 
-  async function handleDeleteContact() {
-    if (type === 'contact') {
-      deleteContact(id);
-      getData();
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: deleteVendorContact,
+    isLoading: isCallLoading,
+    isError: isCallError,
+  } = useMutation(deleteContact, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['vendorContacts']);
       setShow();
-    };
-  }
+    },
+  });
 
   async function handleDeleteItem() {
     if (type === 'item') deleteItem(id);
     if (type === 'vendor') deleteVendor(id);
     if (type === 'itemHasVendor') deleteItemHasVendor(id);
     setShow();
+  }
+
+  async function handleDeleteContact() {
+    if (type === 'contact') {
+      deleteVendorContact(id);
+    };
   }
 
   return (

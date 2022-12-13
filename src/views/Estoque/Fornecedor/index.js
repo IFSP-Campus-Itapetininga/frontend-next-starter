@@ -208,7 +208,7 @@ const Fornecedor = () => {
           className="mb-3"
         >
           <Tab eventKey="contacts" title="Contatos">
-            <VendorContacts contatos={vendor.contato} getContacts={getVendor} />
+            <VendorContacts fornecedorid={id}/>
             <Button variant={"primary"} onClick={handleNewContact} className="mb-5">
               Adicionar contato
             </Button>
@@ -217,7 +217,7 @@ const Fornecedor = () => {
               setShow={() => setNewContact(false)}
               title="Novo contato"
             >
-              <ContactForm fornecedorid={id} getContacts={getVendor} setShowContactForm={() => setNewContact(false)} />
+              <ContactForm fornecedorid={id} setShowContactForm={() => setNewContact(false)} />
             </StockModal>
           </Tab>
           <Tab eventKey="products" title="Produtos">

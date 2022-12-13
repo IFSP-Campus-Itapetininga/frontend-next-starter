@@ -2,6 +2,8 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import api from '../../../../services';
 import { getCookie } from 'cookies-next'
+import { handleUpdateContact } from "services/estoque";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const ContactEditForm = ({ contactData, setShowContactForm }) => {
   const token = getCookie('auth.token');
@@ -10,6 +12,19 @@ const ContactEditForm = ({ contactData, setShowContactForm }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const queryClient = useQueryClient();
+
+  const {
+    mutate: editVendorContact,
+    isLoading: isCallLoading,
+    isError: isCallError,
+  } = useMutation(handleUpdateContact, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['vendorContacts']);
+      setShowContactForm(false);
+    },
+  });
 
   const onSubmit = async data => {
     const newContact = {
@@ -21,17 +36,7 @@ const ContactEditForm = ({ contactData, setShowContactForm }) => {
       funcao: data.funcao
 
     }
-    const response = await api.patch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/vendor/contact`, JSON.stringify(newContact), {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    })
-
-    if (response.status === 204) {
-      setShowContactForm(false);
-      alert("Atualizado com sucesso!");
-    }
+    editVendorContact(newContact);
   };
 
   return (
